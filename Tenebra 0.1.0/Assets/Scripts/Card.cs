@@ -43,10 +43,9 @@ public class Card : MonoBehaviour
     public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f); // Kartýn üzerine gelindiðinde büyüme oraný
     public Vector3 selectedScale = new Vector3(1.2f, 1.2f, 1f); // Kart seçildiðinde büyüme oraný
 
-    // Start is called before the first frame update
     void Start()
     {
-        if(targetPoint == Vector3.zero)
+        if (targetPoint == Vector3.zero)
         {
             targetPoint = transform.position;
             targetRot = transform.rotation;
@@ -67,9 +66,6 @@ public class Card : MonoBehaviour
         attackPower = cardSO.attackPower;
         essenceCost = cardSO.essenceCost;
 
-        /*healthText.text = currentHealth.ToString();
-        attackText.text = attackPower.ToString();
-        costText.text = essenceCost.ToString();*/
         UpdateCardDisplay();
 
         nameText.text = cardSO.cardName;
@@ -79,7 +75,6 @@ public class Card : MonoBehaviour
         bgArt.sprite = cardSO.bgSprite;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isSelected && BattleController.instance.battleEnded == false && Time.timeScale != 0f)
@@ -87,8 +82,8 @@ public class Card : MonoBehaviour
             Vector3 mousePosition = Input.mousePosition;
             mousePosition.z = Camera.main.nearClipPlane;
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            worldPosition.z = 0; // Ensure the card stays on the same z-plane
-            MoveToPoint(worldPosition + new Vector3(0f, 2f, -4f), Quaternion.identity); // Hareket ederken rotasyonu sýfýrlar
+            worldPosition.z = 0;
+            MoveToPoint(worldPosition + new Vector3(0f, 2f, -4f), Quaternion.identity);
 
             if (Input.GetMouseButtonDown(1) && BattleController.instance.battleEnded == false)
             {
@@ -122,6 +117,8 @@ public class Card : MonoBehaviour
                             theHC.RemoveCardFromHand(this);
 
                             BattleController.instance.SpendPlayerEssence(essenceCost);
+
+                            ActivateAbility();
                         }
                         else
                         {
@@ -143,7 +140,7 @@ public class Card : MonoBehaviour
         }
 
         transform.position = Vector3.Lerp(transform.position, targetPoint, moveSpeed * Time.deltaTime);
-        float currentRotateSpeed = isSelected || returningToHand ? selectedRotateSpeed : rotateSpeed; // Seçildiðinde veya ele dönerken farklý rotation hýzý kullan
+        float currentRotateSpeed = isSelected || returningToHand ? selectedRotateSpeed : rotateSpeed;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, currentRotateSpeed * Time.deltaTime);
         transform.localScale = Vector3.Lerp(transform.localScale, targetScale, scaleSpeed * Time.deltaTime);
 
@@ -162,7 +159,7 @@ public class Card : MonoBehaviour
         {
             targetScale = hoverScale;
             Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
-            MoveToPoint(hoverPosition, targetRot); // Mevcut rotasyonu kullanarak pozisyonu deðiþtir
+            MoveToPoint(hoverPosition, targetRot);
         }
     }
 
@@ -181,7 +178,7 @@ public class Card : MonoBehaviour
         {
             isSelected = true;
             theCol.enabled = false;
-            targetRot = Quaternion.identity; // Seçildiðinde hedef rotasyonu sýfýrla
+            targetRot = Quaternion.identity;
             targetScale = selectedScale;
 
             justPressed = true;
@@ -191,9 +188,9 @@ public class Card : MonoBehaviour
     public void ReturnToHand()
     {
         isSelected = false;
-        returningToHand = true; // Ele dönerken durumu ayarlayýn
+        returningToHand = true;
         theCol.enabled = true;
-        targetRot = theHC.cardRotations[handPosition]; // El pozisyonundaki rotasyonu geri yükle
+        targetRot = theHC.cardRotations[handPosition];
         MoveToPoint(theHC.cardPositions[handPosition], targetRot);
         targetScale = originalScale;
     }
@@ -201,13 +198,13 @@ public class Card : MonoBehaviour
     public void DamageCard(int damageAmount)
     {
         currentHealth -= damageAmount;
-        if(currentHealth <=0)
+        if (currentHealth <= 0)
         {
             currentHealth = 0;
 
             assignedPlace.activeCard = null;
 
-            StartCoroutine(WaitJumpAfterDeadCo());    
+            StartCoroutine(WaitJumpAfterDeadCo());
         }
 
         anim.SetTrigger("Hurt");
@@ -226,6 +223,14 @@ public class Card : MonoBehaviour
         MoveToPoint(BattleController.instance.discardPoint.position, BattleController.instance.discardPoint.rotation);
 
         Destroy(gameObject, 5f);
+    }
+
+    public void ActivateAbility()
+    {
+        if (cardSO.ability != null)
+        {
+            cardSO.ability.ActivateAbility(this);
+        }
     }
 
     public void UpdateCardDisplay()
