@@ -15,5 +15,5 @@ public class CardSO : ScriptableObject
 
     public Sprite characterSprite, bgSprite;
 
-    public CardAbility ability;
+    public CardAbilitySO[] abilities;
 }

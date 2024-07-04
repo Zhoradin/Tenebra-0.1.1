@@ -40,7 +40,7 @@ public class CardPointsController : MonoBehaviour
         {
             if(playerCardPoints[i].activeCard != null)
             {
-                if(enemyCardPoints[i].activeCard != null)
+                if (enemyCardPoints[i].activeCard != null && playerCardPoints[i].activeCard.direchHit == false)
                 {
                     //Attack the enemy card
                     enemyCardPoints[i].activeCard.DamageCard(playerCardPoints[i].activeCard.attackPower);
@@ -49,6 +49,8 @@ public class CardPointsController : MonoBehaviour
                 {
                     //Attack the enemy's overall health
                     BattleController.instance.DamageEnemy(playerCardPoints[i].activeCard.attackPower);
+
+                    Card.instance.direchHit = false;
                 }
 
                 playerCardPoints[i].activeCard.anim.SetTrigger("Attack");
@@ -80,7 +82,7 @@ public class CardPointsController : MonoBehaviour
         {
             if (enemyCardPoints[i].activeCard != null)
             {
-                if (playerCardPoints[i].activeCard != null)
+                if (playerCardPoints[i].activeCard != null && enemyCardPoints[i].activeCard.direchHit == false)
                 {
                     //Attack the player card
                     playerCardPoints[i].activeCard.DamageCard(enemyCardPoints[i].activeCard.attackPower);

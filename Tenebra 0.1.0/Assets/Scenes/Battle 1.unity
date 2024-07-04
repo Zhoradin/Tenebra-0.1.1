@@ -372,6 +372,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1243885134900030152, guid: 514223ae58f5e7840bbf3561feb33fc3, type: 3}
+      propertyPath: isPlayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7421567816918797662, guid: 514223ae58f5e7840bbf3561feb33fc3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -465,6 +469,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1048241986792241342, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2206181021006604463, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -549,6 +557,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 7309474100136167400, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7309474100136167400, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7788706255166361015, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7911675444445504157, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -562,6 +586,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
+      propertyPath: enemyHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
+      propertyPath: playerHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
+      propertyPath: playerFirstChance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
+      propertyPath: startingEssenceAmount
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4019797948704510020, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -723,10 +763,6 @@ PrefabInstance:
     - target: {fileID: 591419349761946171, guid: 1b50b98e95acaed4691a2e36fe0e2a99, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8569995307087556094, guid: 1b50b98e95acaed4691a2e36fe0e2a99, type: 3}
-      propertyPath: assignedPlace
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

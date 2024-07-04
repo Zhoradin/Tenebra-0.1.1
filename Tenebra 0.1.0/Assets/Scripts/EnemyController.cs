@@ -285,11 +285,13 @@ public class EnemyController : MonoBehaviour
         Card newCard = Instantiate(cardToSpawn, cardSpawnPoint.position, cardSpawnPoint.rotation);
         newCard.cardSO = cardSO;
 
-        newCard.SetupCard();
+        
         newCard.MoveToPoint(placePoint.transform.position + new Vector3(0f, 0.75f, 0f), placePoint.transform.rotation);
 
         placePoint.activeCard = newCard;
         newCard.assignedPlace = placePoint;
+
+        Card.instance.PlayCard();
 
         cardsInHand.Remove(cardSO);
 
