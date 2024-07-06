@@ -100,7 +100,7 @@ public class BattleController : MonoBehaviour
 
     public void AdvanceTurn()
     {
-        if(battleEnded == false)
+        if (battleEnded == false)
         {
             currentPhase++;
 
@@ -112,43 +112,26 @@ public class BattleController : MonoBehaviour
             switch (currentPhase)
             {
                 case TurnOrder.playerActive:
-
                     UIController.instance.endTurnButton.SetActive(true);
                     UIController.instance.drawCardButton.GetComponent<Button>().interactable = true;
 
                     FillPlayerEssence();
-
+                    HandController.instance.EmptyHand();
                     DeckController.instance.DrawMultipleCards(cardsToDrawPerTurn);
 
                     break;
 
                 case TurnOrder.playerCardAttacks:
-
-                    //Debug.Log("Skipping Player Card Attacks");
-                    //AdvanceTurn();
-
                     CardPointsController.instance.PlayerAttack();
-
                     break;
 
                 case TurnOrder.enemyActive:
-
-                    //Debug.Log("Skipping Enemy Actions");
-                    //AdvanceTurn();
-
                     FillEnemyEssence();
-
                     EnemyController.instance.StartAction();
-
                     break;
 
                 case TurnOrder.enemyCardAttacks:
-
-                    //Debug.Log("Skipping Enemy Card Attacks");
-                    //AdvanceTurn();
-
                     CardPointsController.instance.EnemyAttack();
-
                     break;
             }
         }

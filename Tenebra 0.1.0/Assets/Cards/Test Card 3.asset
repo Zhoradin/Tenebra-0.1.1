@@ -19,5 +19,4 @@ MonoBehaviour:
   essenceCost: 2
   characterSprite: {fileID: 21300000, guid: b4c581d5d64171147bcce550cc614d4f, type: 3}
   bgSprite: {fileID: 21300000, guid: ac44cb3326b919c4b93300164cde8661, type: 3}
-  abilities:
-  - {fileID: 11400000, guid: e8ee0169f43136241b545fdadf0fcf67, type: 2}
+  abilities: []

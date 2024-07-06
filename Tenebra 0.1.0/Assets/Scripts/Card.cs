@@ -61,8 +61,6 @@ public class Card : MonoBehaviour
             targetRot = transform.rotation;
         }
 
-        SetupCard();
-
         theHC = FindObjectOfType<HandController>();
         theCol = GetComponent<Collider2D>();
 
@@ -169,7 +167,7 @@ public class Card : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (inHand && !isSelected && isPlayer && BattleController.instance.battleEnded == false)
+        if (inHand && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
             targetScale = hoverScale;
             Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
@@ -179,7 +177,7 @@ public class Card : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (inHand && !isSelected && isPlayer && BattleController.instance.battleEnded == false)
+        if (inHand && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
             targetScale = originalScale;
             MoveToPoint(theHC.cardPositions[handPosition], targetRot);
@@ -188,7 +186,7 @@ public class Card : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (inHand && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && isPlayer && BattleController.instance.battleEnded == false && Time.timeScale != 0f)
+        if (inHand && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && isPlayer && BattleController.instance.battleEnded == false && Time.timeScale != 0f && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
             isSelected = true;
             theCol.enabled = false;
@@ -212,13 +210,19 @@ public class Card : MonoBehaviour
     public void DamageCard(int damageAmount)
     {
         currentHealth -= damageAmount;
-        if(currentHealth <=0)
+        if (currentHealth <= 0)
         {
             currentHealth = 0;
 
             assignedPlace.activeCard = null;
 
-            StartCoroutine(WaitJumpAfterDeadCo());    
+            // Sadece isPlayer olan kartlarý discardPile'a ekleyin
+            if (isPlayer)
+            {
+                CardPileController.instance.AddToDiscardPile(cardSO);
+            }
+
+            StartCoroutine(WaitJumpAfterDeadCo());
         }
 
         anim.SetTrigger("Hurt");
@@ -226,11 +230,14 @@ public class Card : MonoBehaviour
         UpdateCardDisplay();
     }
 
+
     IEnumerator WaitJumpAfterDeadCo()
     {
         yield return new WaitForSeconds(.2f);
 
         anim.SetTrigger("Jump");
+
+        
 
         yield return new WaitForSeconds(.5f);
 
@@ -265,7 +272,6 @@ public class Card : MonoBehaviour
     private void Heal(int healAmount)
     {
         currentHealth += healAmount;
-        Debug.Log(currentHealth);
 
         UpdateCardDisplay();
     }

@@ -13,67 +13,63 @@ public class DeckController : MonoBehaviour
     }
 
     public List<CardSO> deckToUse = new List<CardSO>();
-
-    private List<CardSO> activeCards = new List<CardSO>();
+    public List<CardSO> drawDeck = new List<CardSO>();
 
     public Card cardToSpawn;
-
     public int drawCardCost = 1;
+    public float waitBetweenDrawingCards = 0.5f;
 
-    public float waitBetweenDrawingCards = .5f;
+    private bool isStarting = true;
 
-    // Start is called before the first frame update
     void Start()
     {
-        SetupDeck();
+        InitializeDrawDeck();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void InitializeDrawDeck()
     {
-        /*if (Input.GetKeyDown(KeyCode.T))
-        {
-            DrawCardToHand();
-        }*/
-    }
-
-    public void SetupDeck()
-    {
-        activeCards.Clear();
-
-        List<CardSO> tempDeck = new List<CardSO>();
-        tempDeck.AddRange(deckToUse);
-
-        int iterations = 0;
-        while(tempDeck.Count > 0 && iterations < 500)
-        {
-            int selected = Random.Range(0, tempDeck.Count);
-            activeCards.Add(tempDeck[selected]);
-            tempDeck.RemoveAt(selected);
-
-            iterations++;
-        }
+        drawDeck = deckToUse;
     }
 
     public void DrawCardToHand()
     {
-        if(activeCards.Count == 0)
+        if (drawDeck.Count == 0)
         {
-            SetupDeck();
+            if (isStarting)
+            {
+                InitializeDrawDeck();
+                isStarting = false;
+            }
+            else
+            {
+                UIController.instance.drawCardButton.GetComponent<Button>().interactable = false;
+                Debug.Log("Kart Listesi Boþ!");
+                return;
+            }
         }
 
+        // Kartý çek
+        int selected = Random.Range(0, drawDeck.Count);
+        CardSO selectedCard = drawDeck[selected];
+
         Card newCard = Instantiate(cardToSpawn, transform.position, transform.rotation);
-        newCard.cardSO = activeCards[0];
+        newCard.cardSO = selectedCard;
         newCard.SetupCard();
 
-        activeCards.RemoveAt(0);
+        // Kartý drawDeck'ten kaldýr
+        drawDeck.RemoveAt(selected);
 
         HandController.instance.AddCardToHand(newCard);
+
+        if (CardPileController.instance != null)
+        {
+            CardPileController.instance.SetupPile();
+        }
     }
 
     public void DrawCardForEssence()
     {
-        if(BattleController.instance.playerEssence >= drawCardCost)
+        if (BattleController.instance.playerEssence >= drawCardCost)
         {
             DrawCardToHand();
             BattleController.instance.SpendPlayerEssence(drawCardCost);
@@ -81,7 +77,7 @@ public class DeckController : MonoBehaviour
         else
         {
             UIController.instance.ShowEssenceWarning();
-            UIController.instance.drawCardButton.GetComponent<Button>().interactable = false;
+            UIController.instance.drawCardButton.GetComponent<UnityEngine.UI.Button>().interactable = false;
         }
     }
 
@@ -95,7 +91,6 @@ public class DeckController : MonoBehaviour
         for (int i = 0; i < amountToDraw; i++)
         {
             DrawCardToHand();
-
             yield return new WaitForSeconds(waitBetweenDrawingCards);
         }
     }

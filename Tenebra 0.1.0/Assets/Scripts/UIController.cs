@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class UIController : MonoBehaviour
     public float essenceWarningTime;
     private float essenceWarningCounter;
 
-    public GameObject drawCardButton, endTurnButton;
+    public GameObject drawCardButton, endTurnButton, drawPileButton, discardPileButton;
 
     public UIDamageIndicator playerDamage, enemyDamage;
 
@@ -29,6 +30,9 @@ public class UIController : MonoBehaviour
     public string mainMenuScene, battleSelectScene;
 
     public GameObject pauseScreen;
+
+    public GameObject drawPilePanel, discardPilePanel;
+    public bool drawPileOpen ,discardPileOpen = false;
 
     // Start is called before the first frame update
     void Start()
@@ -125,6 +129,37 @@ public class UIController : MonoBehaviour
             pauseScreen.SetActive(false);
 
             Time.timeScale = 1f;
+        }
+    }
+
+    public void OpenDrawPile()
+    {
+        if(drawPileOpen == false)
+        {
+            drawPilePanel.SetActive(true);
+            drawPileButton.GetComponent<Button>().interactable = false;
+            drawPileOpen = true;
+        }
+        else
+        {
+            drawPilePanel.SetActive(false);
+            drawPileButton.GetComponent<Button>().interactable = true;
+            drawPileOpen = false;
+        }
+    }
+    public void OpenDiscardPile()
+    {
+        if (discardPileOpen == false)
+        {
+            discardPilePanel.SetActive(true);
+            discardPileButton.GetComponent<Button>().interactable = false;
+            discardPileOpen = true;
+        }
+        else
+        {
+            discardPilePanel.SetActive(false);
+            discardPileButton.GetComponent<Button>().interactable = true;
+            discardPileOpen = false;
         }
     }
 }

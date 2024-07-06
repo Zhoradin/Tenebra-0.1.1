@@ -86,10 +86,16 @@ public class HandController : MonoBehaviour
 
     public void EmptyHand()
     {
-        foreach(Card heldCard in heldCards)
+        foreach (Card heldCard in heldCards)
         {
             heldCard.inHand = false;
             heldCard.MoveToPoint(BattleController.instance.discardPoint.position, Quaternion.identity);
+
+            // Eðer bu kart isPlayer'a aitse discardPile'a ekle
+            if (heldCard.isPlayer)
+            {
+                CardPileController.instance.AddToDiscardPile(heldCard.cardSO);
+            }
         }
 
         heldCards.Clear();
