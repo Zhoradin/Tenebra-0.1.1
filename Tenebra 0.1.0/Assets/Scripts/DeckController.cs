@@ -42,7 +42,7 @@ public class DeckController : MonoBehaviour
             }
             else
             {
-                UIController.instance.drawCardButton.GetComponent<Button>().interactable = false;
+                CardPileController.instance.DiscardToDraw();
                 Debug.Log("Kart Listesi Boþ!");
                 return;
             }

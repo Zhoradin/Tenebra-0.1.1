@@ -33,6 +33,8 @@ public class BattleController : MonoBehaviour
     [Range(0f, 1f)]
     public float playerFirstChance = .5f;
 
+    private bool isStarting = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +43,7 @@ public class BattleController : MonoBehaviour
         FillPlayerEssence();
         FillEnemyEssence();
 
-        DeckController.instance.DrawMultipleCards(startingCardsAmount);
+        
 
         UIController.instance.SetPlayerHealthText(playerHealth);
         UIController.instance.SetEnemyHealthText(enemyHealth);
@@ -50,6 +52,10 @@ public class BattleController : MonoBehaviour
         {
             currentPhase = TurnOrder.playerCardAttacks;
             AdvanceTurn();
+        }
+        else
+        {
+            DeckController.instance.DrawMultipleCards(startingCardsAmount);
         }
     }
 

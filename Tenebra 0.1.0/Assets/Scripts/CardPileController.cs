@@ -75,4 +75,9 @@ public class CardPileController : MonoBehaviour
         CreateDiscardPileCardSlots(); // Güncellenmiþ discardPile'ý görsel olarak güncelleyin
     }
 
+    public void DiscardToDraw()
+    {
+        drawPile = discardPile;
+        discardPile.Clear();
+    }
 }

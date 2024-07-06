@@ -37,7 +37,9 @@ public class UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        drawPilePanel.SetActive(false);
+
+        discardPilePanel.SetActive(false);
     }
 
     // Update is called once per frame
