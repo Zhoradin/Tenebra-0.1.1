@@ -19,9 +19,13 @@ public class Card : MonoBehaviour
 
     public int currentHealth, attackPower, essenceCost;
 
-    public TMP_Text healthText, attackText, costText, nameText, descriptionText;
+    public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText;
 
     public Image characterArt, bgArt;
+
+    public GameObject abilityDescription;
+
+    public CardType cardType;
 
     private Vector3 targetPoint;
     private Quaternion targetRot;
@@ -66,6 +70,8 @@ public class Card : MonoBehaviour
 
         originalScale = transform.localScale;
         targetScale = originalScale;
+
+        abilityDescription.SetActive(false);
     }
 
     public void SetupCard()
@@ -84,6 +90,10 @@ public class Card : MonoBehaviour
 
         characterArt.sprite = cardSO.characterSprite;
         bgArt.sprite = cardSO.bgSprite;
+
+        cardType = cardSO.cardType;
+
+        UpdateAbilityDescription();
     }
 
     // Update is called once per frame
@@ -127,6 +137,11 @@ public class Card : MonoBehaviour
                             targetScale = originalScale;
 
                             theHC.RemoveCardFromHand(this);
+
+                            if (abilityDescription.activeSelf == true)
+                            {
+                                abilityDescription.SetActive(false);
+                            }
 
                             PlayCard();
 
@@ -172,6 +187,10 @@ public class Card : MonoBehaviour
             targetScale = hoverScale;
             Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
             MoveToPoint(hoverPosition, targetRot); // Mevcut rotasyonu kullanarak pozisyonu deðiþtir
+
+            // Açýklama metnini güncelleyerek göster
+            abilityDescription.SetActive(true);
+            abilityDescriptionText.text = abilityDescriptionText.text;
         }
     }
 
@@ -181,6 +200,9 @@ public class Card : MonoBehaviour
         {
             targetScale = originalScale;
             MoveToPoint(theHC.cardPositions[handPosition], targetRot);
+
+            // Açýklama metnini gizle
+            abilityDescription.SetActive(false);
         }
     }
 
@@ -216,11 +238,7 @@ public class Card : MonoBehaviour
 
             assignedPlace.activeCard = null;
 
-            // Sadece isPlayer olan kartlarý discardPile'a ekleyin
-            if (isPlayer)
-            {
-                CardPileController.instance.AddToDiscardPile(cardSO);
-            }
+            DiscardPileController.instance.AddToDiscardPile(cardSO);
 
             StartCoroutine(WaitJumpAfterDeadCo());
         }
@@ -267,6 +285,16 @@ public class Card : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void UpdateAbilityDescription()
+    {
+        string abilityDesc = "";
+        foreach (CardAbilitySO ability in cardSO.abilities)
+        {
+            abilityDesc += ability.abilityType + "\n" + ability.description;
+        }
+        abilityDescriptionText.text = abilityDesc;
     }
 
     private void Heal(int healAmount)

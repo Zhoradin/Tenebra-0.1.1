@@ -43,7 +43,10 @@ public class CardPointsController : MonoBehaviour
                 if (enemyCardPoints[i].activeCard != null && playerCardPoints[i].activeCard.direchHit == false)
                 {
                     //Attack the enemy card
-                    enemyCardPoints[i].activeCard.DamageCard(playerCardPoints[i].activeCard.attackPower);
+                    float effectiveness = TypeEffectiveness.GetEffectiveness(playerCardPoints[i].activeCard.cardType, enemyCardPoints[i].activeCard.cardType);
+                    float damage = playerCardPoints[i].activeCard.attackPower * effectiveness;
+                    Debug.Log("Effectiveness: " + effectiveness);
+                    enemyCardPoints[i].activeCard.DamageCard(Mathf.RoundToInt(damage));
                 }
                 else
                 {
@@ -85,7 +88,10 @@ public class CardPointsController : MonoBehaviour
                 if (playerCardPoints[i].activeCard != null && enemyCardPoints[i].activeCard.direchHit == false)
                 {
                     //Attack the player card
-                    playerCardPoints[i].activeCard.DamageCard(enemyCardPoints[i].activeCard.attackPower);
+                    float effectiveness = TypeEffectiveness.GetEffectiveness(enemyCardPoints[i].activeCard.cardType, playerCardPoints[i].activeCard.cardType);
+                    float damage = enemyCardPoints[i].activeCard.attackPower * effectiveness;
+                    Debug.Log("Effectiveness: " + effectiveness);
+                    playerCardPoints[i].activeCard.DamageCard(Mathf.RoundToInt(damage));
                 }
                 else
                 {

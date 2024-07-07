@@ -11,4 +11,5 @@ public class CardAbilitySO : ScriptableObject
 
     public AbilityType abilityType;
     public int value;
+    public string description;
 }

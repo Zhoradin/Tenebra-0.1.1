@@ -94,7 +94,7 @@ public class HandController : MonoBehaviour
             // Eðer bu kart isPlayer'a aitse discardPile'a ekle
             if (heldCard.isPlayer)
             {
-                CardPileController.instance.AddToDiscardPile(heldCard.cardSO);
+                DiscardPileController.instance.AddToDiscardPile(heldCard.cardSO);
             }
         }
 

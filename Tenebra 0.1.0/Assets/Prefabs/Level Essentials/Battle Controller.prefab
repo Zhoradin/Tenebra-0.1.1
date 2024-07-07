@@ -81,11 +81,11 @@ MonoBehaviour:
   playerEssence: 0
   enemyEssence: 0
   startingCardsAmount: 5
-  cardsToDrawPerTurn: 2
+  cardsToDrawPerTurn: 5
   currentPhase: 0
   discardPoint: {fileID: 8420260223434285748}
-  playerHealth: 30
-  enemyHealth: 30
+  playerHealth: 100
+  enemyHealth: 100
   battleEnded: 0
   resultScreenDelayTime: 1
   playerFirstChance: 0.5

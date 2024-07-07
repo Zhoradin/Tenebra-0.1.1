@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
@@ -34,13 +32,18 @@ public class UIController : MonoBehaviour
     public GameObject drawPilePanel, discardPilePanel;
     public bool drawPileOpen, discardPileOpen = false;
 
-    // Start is called before the first frame update
+    public Vector2 drawPileOpenPosition, drawPileClosedPosition;
+    public Vector2 discardPileOpenPosition, discardPileClosedPosition;
+
+    public TMP_Text drawPileCount, discardPileCount;
+
     void Start()
     {
-
+        // Set initial positions
+        drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileClosedPosition;
+        discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileClosedPosition;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (essenceWarningCounter > 0)
@@ -98,21 +101,18 @@ public class UIController : MonoBehaviour
     public void MainMenu()
     {
         SceneManager.LoadScene(mainMenuScene);
-
         Time.timeScale = 1f;
     }
 
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
         Time.timeScale = 1f;
     }
 
     public void ChooseNewBattle()
     {
         SceneManager.LoadScene(battleSelectScene);
-
         Time.timeScale = 1f;
     }
 
@@ -121,13 +121,11 @@ public class UIController : MonoBehaviour
         if (pauseScreen.activeSelf == false)
         {
             pauseScreen.SetActive(true);
-
             Time.timeScale = 0f;
         }
         else
         {
             pauseScreen.SetActive(false);
-
             Time.timeScale = 1f;
         }
     }
@@ -136,30 +134,41 @@ public class UIController : MonoBehaviour
     {
         if (drawPileOpen == false)
         {
-            drawPilePanel.SetActive(true);
+            drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileOpenPosition;
             drawPileButton.GetComponent<Button>().interactable = false;
             drawPileOpen = true;
         }
         else
         {
-            drawPilePanel.SetActive(false);
+            drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileClosedPosition;
             drawPileButton.GetComponent<Button>().interactable = true;
             drawPileOpen = false;
         }
     }
+
     public void OpenDiscardPile()
     {
         if (discardPileOpen == false)
         {
-            discardPilePanel.SetActive(true);
+            discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileOpenPosition;
             discardPileButton.GetComponent<Button>().interactable = false;
             discardPileOpen = true;
         }
         else
         {
-            discardPilePanel.SetActive(false);
+            discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileClosedPosition;
             discardPileButton.GetComponent<Button>().interactable = true;
             discardPileOpen = false;
         }
+    }
+
+    public void ShowDrawPileCount()
+    {
+        drawPileCount.text = DrawPileController.instance.drawPile.Count.ToString();
+    }
+
+    public void ShowDiscardPileCount()
+    {
+        discardPileCount.text = DiscardPileController.instance.discardPile.Count.ToString();
     }
 }

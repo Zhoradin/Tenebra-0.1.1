@@ -16,5 +16,6 @@ public class CardSO : ScriptableObject
     public Sprite characterSprite, bgSprite;
 
     public CardAbilitySO[] abilities;
-    internal object transform;
+
+    public CardType cardType;
 }

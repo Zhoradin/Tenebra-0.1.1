@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,12 +23,24 @@ public class DeckController : MonoBehaviour
 
     void Start()
     {
-        InitializeDrawDeck();
+        
+    }
+
+    private void Update()
+    {
+        
     }
 
     public void InitializeDrawDeck()
     {
-        drawDeck = deckToUse;
+        drawDeck = new List<CardSO>(deckToUse);
+        UIController.instance.ShowDrawPileCount();
+        UIController.instance.ShowDiscardPileCount();
+    }
+
+    public void DrawDeckRedeck()
+    {
+        drawDeck.AddRange(DrawPileController.instance.drawPile);
     }
 
     public void DrawCardToHand()
@@ -40,15 +52,8 @@ public class DeckController : MonoBehaviour
                 InitializeDrawDeck();
                 isStarting = false;
             }
-            else
-            {
-                CardPileController.instance.DiscardToDraw();
-                Debug.Log("Kart Listesi Boþ!");
-                return;
-            }
         }
 
-        // Kartý çek
         int selected = Random.Range(0, drawDeck.Count);
         CardSO selectedCard = drawDeck[selected];
 
@@ -56,15 +61,13 @@ public class DeckController : MonoBehaviour
         newCard.cardSO = selectedCard;
         newCard.SetupCard();
 
-        // Kartý drawDeck'ten kaldýr
         drawDeck.RemoveAt(selected);
 
         HandController.instance.AddCardToHand(newCard);
 
-        if (CardPileController.instance != null)
-        {
-            CardPileController.instance.SetupPile();
-        }
+        DrawPileController.instance.RemoveCardFromDrawPile(selectedCard);
+
+        UIController.instance.ShowDrawPileCount();
     }
 
     public void DrawCardForEssence()
@@ -73,6 +76,12 @@ public class DeckController : MonoBehaviour
         {
             DrawCardToHand();
             BattleController.instance.SpendPlayerEssence(drawCardCost);
+            if(drawDeck.Count == 0)
+            {
+                DiscardPileController.instance.DiscardToDraw();
+                DrawDeckRedeck();
+                Debug.Log("Kart Listesi BoÅŸ!");
+            }
         }
         else
         {
@@ -92,6 +101,12 @@ public class DeckController : MonoBehaviour
         {
             DrawCardToHand();
             yield return new WaitForSeconds(waitBetweenDrawingCards);
+            if (drawDeck.Count == 0)
+            {
+                DiscardPileController.instance.DiscardToDraw();
+                DrawDeckRedeck();
+                Debug.Log("Kart Listesi BoÅŸ!");
+            }
         }
     }
 }
