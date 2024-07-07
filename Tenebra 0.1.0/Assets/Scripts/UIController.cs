@@ -32,24 +32,22 @@ public class UIController : MonoBehaviour
     public GameObject pauseScreen;
 
     public GameObject drawPilePanel, discardPilePanel;
-    public bool drawPileOpen ,discardPileOpen = false;
+    public bool drawPileOpen, discardPileOpen = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        drawPilePanel.SetActive(false);
 
-        discardPilePanel.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(essenceWarningCounter > 0)
+        if (essenceWarningCounter > 0)
         {
             essenceWarningCounter -= Time.deltaTime;
 
-            if(essenceWarningCounter <= 0)
+            if (essenceWarningCounter <= 0)
             {
                 essenceWarning.SetActive(false);
             }
@@ -136,7 +134,7 @@ public class UIController : MonoBehaviour
 
     public void OpenDrawPile()
     {
-        if(drawPileOpen == false)
+        if (drawPileOpen == false)
         {
             drawPilePanel.SetActive(true);
             drawPileButton.GetComponent<Button>().interactable = false;

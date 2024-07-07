@@ -72,12 +72,13 @@ public class CardPileController : MonoBehaviour
     public void AddToDiscardPile(CardSO card)
     {
         discardPile.Add(card);
-        CreateDiscardPileCardSlots(); // Güncellenmiþ discardPile'ý görsel olarak güncelleyin
+        CreateDiscardPileCardSlots();
     }
 
     public void DiscardToDraw()
     {
         drawPile = discardPile;
         discardPile.Clear();
+        SetupPile();
     }
 }
