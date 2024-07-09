@@ -155,8 +155,9 @@ public class BattleController : MonoBehaviour
             {
                 playerHealth = 0;
 
+                CardSelectController.instance.ShowCardSelect();
                 //End Battle
-                EndBattle();
+                //EndBattle();
             }
 
             UIController.instance.SetPlayerHealthText(playerHealth);

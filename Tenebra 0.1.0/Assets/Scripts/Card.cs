@@ -188,9 +188,12 @@ public class Card : MonoBehaviour
             Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
             MoveToPoint(hoverPosition, targetRot); // Mevcut rotasyonu kullanarak pozisyonu deðiþtir
 
-            // Açýklama metnini güncelleyerek göster
-            abilityDescription.SetActive(true);
-            abilityDescriptionText.text = abilityDescriptionText.text;
+            if(Time.timeScale != 0f)
+            {
+                // Açýklama metnini güncelleyerek göster
+                abilityDescription.SetActive(true);
+                abilityDescriptionText.text = abilityDescriptionText.text;
+            }   
         }
     }
 
