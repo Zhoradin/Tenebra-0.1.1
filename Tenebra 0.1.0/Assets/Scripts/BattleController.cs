@@ -12,14 +12,13 @@ public class BattleController : MonoBehaviour
         instance = this;
     }
 
-
     public int startingEssenceAmount = 4, maxEssence = 12;
     public int playerEssence, enemyEssence;
 
     public int startingCardsAmount = 5;
     public int cardsToDrawPerTurn = 2;
 
-    public enum TurnOrder { playerActive, playerCardAttacks, enemyActive, enemyCardAttacks}
+    public enum TurnOrder { playerActive, playerCardAttacks, enemyActive, enemyCardAttacks }
     public TurnOrder currentPhase;
 
     public Transform discardPoint;
@@ -29,15 +28,12 @@ public class BattleController : MonoBehaviour
     public bool battleEnded;
 
     public float resultScreenDelayTime = 1f;
-    
+
     [Range(0f, 1f)]
     public float playerFirstChance = .5f;
 
-    // Start is called before the first frame update
     void Start()
     {
-        //playerEssence = startingEssenceAmount;
-        //UIController.instance.SetPlayerEssenceText(playerEssence);
         FillPlayerEssence();
         FillEnemyEssence();
 
@@ -46,14 +42,13 @@ public class BattleController : MonoBehaviour
         UIController.instance.SetPlayerHealthText(playerHealth);
         UIController.instance.SetEnemyHealthText(enemyHealth);
 
-        if(Random.value > playerFirstChance)
+        if (Random.value > playerFirstChance)
         {
             currentPhase = TurnOrder.playerCardAttacks;
             AdvanceTurn();
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
@@ -66,7 +61,7 @@ public class BattleController : MonoBehaviour
     {
         playerEssence = playerEssence - amountToSpend;
 
-        if(playerEssence < 0)
+        if (playerEssence < 0)
         {
             playerEssence = 0;
         }
@@ -147,17 +142,16 @@ public class BattleController : MonoBehaviour
 
     public void DamagePlayer(int damageAmount)
     {
-        if(playerHealth > 0 || battleEnded == false)
+        if (playerHealth > 0 || battleEnded == false)
         {
             playerHealth -= damageAmount;
 
-            if(playerHealth <= 0)
+            if (playerHealth <= 0)
             {
                 playerHealth = 0;
 
-                CardSelectController.instance.ShowCardSelect();
                 //End Battle
-                //EndBattle();
+                EndBattle();
             }
 
             UIController.instance.SetPlayerHealthText(playerHealth);
@@ -196,13 +190,13 @@ public class BattleController : MonoBehaviour
 
         HandController.instance.EmptyHand();
 
-        if(enemyHealth <= 0)
+        if (enemyHealth <= 0)
         {
             UIController.instance.battleResultText.text = "YOU WON!";
 
-            foreach(CardPlacePoint point in CardPointsController.instance.enemyCardPoints)
+            foreach (CardPlacePoint point in CardPointsController.instance.enemyCardPoints)
             {
-                if(point.activeCard != null)
+                if (point.activeCard != null)
                 {
                     point.activeCard.MoveToPoint(discardPoint.position, Quaternion.identity);
                 }
@@ -221,11 +215,13 @@ public class BattleController : MonoBehaviour
             }
         }
 
-        StartCoroutine(ShowResultsCo());
+        CardSelectController.instance.ShowRandomCards();
     }
 
-    IEnumerator ShowResultsCo()
+    public IEnumerator ShowResultsCo()
     {
+        yield return StartCoroutine(CardSelectController.instance.SlideMenuToOriginalPosition());
+
         yield return new WaitForSeconds(resultScreenDelayTime);
 
         UIController.instance.battleEndedScreen.SetActive(true);
