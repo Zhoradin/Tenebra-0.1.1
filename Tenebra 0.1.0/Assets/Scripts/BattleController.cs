@@ -201,6 +201,8 @@ public class BattleController : MonoBehaviour
                     point.activeCard.MoveToPoint(discardPoint.position, Quaternion.identity);
                 }
             }
+
+            CardSelectController.instance.ShowRandomCards();
         }
         else
         {
@@ -213,9 +215,11 @@ public class BattleController : MonoBehaviour
                     point.activeCard.MoveToPoint(discardPoint.position, Quaternion.identity);
                 }
             }
+
+            StartCoroutine(ShowResultsCo());
         }
 
-        CardSelectController.instance.ShowRandomCards();
+        
     }
 
     public IEnumerator ShowResultsCo()
@@ -223,6 +227,18 @@ public class BattleController : MonoBehaviour
         yield return StartCoroutine(CardSelectController.instance.SlideMenuToOriginalPosition());
 
         yield return new WaitForSeconds(resultScreenDelayTime);
+
+        if (UIController.instance.drawPileOpen)
+        {
+            UIController.instance.OpenDrawPile();
+        }
+
+        if (UIController.instance.discardPileOpen)
+        {
+            UIController.instance.OpenDiscardPile();
+        }
+
+        UIController.instance.coins.SetActive(false);
 
         UIController.instance.battleEndedScreen.SetActive(true);
     }

@@ -37,11 +37,19 @@ public class UIController : MonoBehaviour
 
     public TMP_Text drawPileCount, discardPileCount;
 
+    public GameObject coins;
+    public TMP_Text coinAmountText;
+    private int coinAmount = 0; // Coin adedini burada saklayacaðýz
+
     void Start()
     {
         // Set initial positions
         drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileClosedPosition;
         discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileClosedPosition;
+
+        // Coin adedini baþlangýçta 0 olarak ayarlayýn
+        coinAmount = 0;
+        UpdateCoinAmountText();
     }
 
     void Update()
@@ -170,5 +178,18 @@ public class UIController : MonoBehaviour
     public void ShowDiscardPileCount()
     {
         discardPileCount.text = DiscardPileController.instance.discardPile.Count.ToString();
+    }
+
+    public void AddCoins()
+    {
+        coinAmount += 6;
+        UpdateCoinAmountText();
+
+        BattleController.instance.StartCoroutine(BattleController.instance.ShowResultsCo());
+    }
+
+    private void UpdateCoinAmountText()
+    {
+        coinAmountText.text = coinAmount.ToString();
     }
 }
