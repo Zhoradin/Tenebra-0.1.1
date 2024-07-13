@@ -241,5 +241,7 @@ public class BattleController : MonoBehaviour
         UIController.instance.coins.SetActive(false);
 
         UIController.instance.battleEndedScreen.SetActive(true);
+
+        //abuzer
     }
 }
