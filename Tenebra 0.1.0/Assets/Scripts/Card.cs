@@ -23,7 +23,7 @@ public class Card : MonoBehaviour
 
     public Image characterArt, bgArt;
 
-    public GameObject abilityDescription;
+    public GameObject abilityDescription, abilityDescriptionToo;
 
     public CardType cardType;
 
@@ -59,7 +59,7 @@ public class Card : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(targetPoint == Vector3.zero)
+        if (targetPoint == Vector3.zero)
         {
             targetPoint = transform.position;
             targetRot = transform.rotation;
@@ -188,12 +188,12 @@ public class Card : MonoBehaviour
             Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
             MoveToPoint(hoverPosition, targetRot); // Mevcut rotasyonu kullanarak pozisyonu deðiþtir
 
-            if(Time.timeScale != 0f)
+            if (Time.timeScale != 0f && cardSO.abilities.Length > 0)
             {
                 // Açýklama metnini güncelleyerek göster
                 abilityDescription.SetActive(true);
                 abilityDescriptionText.text = abilityDescriptionText.text;
-            }   
+            }
         }
     }
 
@@ -258,7 +258,7 @@ public class Card : MonoBehaviour
 
         anim.SetTrigger("Jump");
 
-        
+
 
         yield return new WaitForSeconds(.5f);
 
