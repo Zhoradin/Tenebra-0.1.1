@@ -19,7 +19,7 @@ public class Card : MonoBehaviour
 
     public int currentHealth, attackPower, essenceCost;
 
-    public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText;
+    public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo;
 
     public Image characterArt, bgArt;
 
@@ -72,6 +72,7 @@ public class Card : MonoBehaviour
         targetScale = originalScale;
 
         abilityDescription.SetActive(false);
+        abilityDescriptionToo.SetActive(false);
     }
 
     public void SetupCard()
@@ -186,13 +187,16 @@ public class Card : MonoBehaviour
         {
             targetScale = hoverScale;
             Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
-            MoveToPoint(hoverPosition, targetRot); // Mevcut rotasyonu kullanarak pozisyonu deðiþtir
+            MoveToPoint(hoverPosition, targetRot);
 
             if (Time.timeScale != 0f && cardSO.abilities.Length > 0)
             {
-                // Açýklama metnini güncelleyerek göster
                 abilityDescription.SetActive(true);
-                abilityDescriptionText.text = abilityDescriptionText.text;
+
+                if(cardSO.abilities.Length > 1)
+                {
+                    abilityDescriptionToo.SetActive(true);
+                }
             }
         }
     }
@@ -206,6 +210,7 @@ public class Card : MonoBehaviour
 
             // Açýklama metnini gizle
             abilityDescription.SetActive(false);
+            abilityDescriptionToo.SetActive(false);
         }
     }
 
@@ -225,9 +230,9 @@ public class Card : MonoBehaviour
     public void ReturnToHand()
     {
         isSelected = false;
-        returningToHand = true; // Ele dönerken durumu ayarlayýn
+        returningToHand = true;
         theCol.enabled = true;
-        targetRot = theHC.cardRotations[handPosition]; // El pozisyonundaki rotasyonu geri yükle
+        targetRot = theHC.cardRotations[handPosition];
         MoveToPoint(theHC.cardPositions[handPosition], targetRot);
         targetScale = originalScale;
     }
@@ -292,12 +297,15 @@ public class Card : MonoBehaviour
 
     private void UpdateAbilityDescription()
     {
-        string abilityDesc = "";
-        foreach (CardAbilitySO ability in cardSO.abilities)
+        if (cardSO.abilities.Length > 0)
         {
-            abilityDesc += ability.abilityType + "\n" + ability.description;
+            abilityDescriptionText.text = cardSO.abilities[0].abilityType + "\n" + cardSO.abilities[0].description;
+
+            if (cardSO.abilities.Length > 1)
+            {
+                abilityDescriptionTextToo.text = cardSO.abilities[0].abilityType + "\n" + cardSO.abilities[1].description;
+            }
         }
-        abilityDescriptionText.text = abilityDesc;
     }
 
     private void Heal(int healAmount)

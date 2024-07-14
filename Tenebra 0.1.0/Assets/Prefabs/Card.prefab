@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4130833841627352491
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1966,9 +1966,11 @@ MonoBehaviour:
   nameText: {fileID: 5223523973051901888}
   descriptionText: {fileID: 3630245090929733916}
   abilityDescriptionText: {fileID: 218615713339654245}
+  abilityDescriptionTextToo: {fileID: 1039947202862248860}
   characterArt: {fileID: 2357040949159273376}
   bgArt: {fileID: 6582079235945193437}
   abilityDescription: {fileID: 7778786355584961167}
+  abilityDescriptionToo: {fileID: 205070032946060294}
   cardType: 0
   moveSpeed: 5
   rotateSpeed: 540
