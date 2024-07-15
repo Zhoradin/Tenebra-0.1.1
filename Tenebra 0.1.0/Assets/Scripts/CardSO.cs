@@ -15,7 +15,22 @@ public class CardSO : ScriptableObject
 
     public Sprite characterSprite, bgSprite;
 
+    public Sprite moonPhaseSprite;
+
     public CardAbilitySO[] abilities;
 
+    public MoonPhase moonPhase;
+
     public CardType cardType;
+}
+public enum MoonPhase
+{
+    NewMoon,
+    WaxingCrescent,
+    FirstQuarter,
+    WaxingGibbous,
+    FullMoon,
+    WaningGibbous,
+    LastQuarter,
+    WaningCrescent
 }
