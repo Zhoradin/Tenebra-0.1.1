@@ -1721,6 +1721,7 @@ MonoBehaviour:
   abilityDescriptionText: {fileID: 218615713339654245}
   characterArt: {fileID: 2357040949159273376}
   bgArt: {fileID: 6582079235945193437}
+  moonPhaseArt: {fileID: 5165075588857808217}
   abilityDescription: {fileID: 7778786355584961167}
   cardType: 0
   moveSpeed: 5

@@ -21,7 +21,7 @@ public class Card : MonoBehaviour
 
     public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText;
 
-    public Image characterArt, bgArt;
+    public Image characterArt, bgArt, moonPhaseArt;
 
     public GameObject abilityDescription;
 
@@ -90,6 +90,7 @@ public class Card : MonoBehaviour
 
         characterArt.sprite = cardSO.characterSprite;
         bgArt.sprite = cardSO.bgSprite;
+        moonPhaseArt.sprite = cardSO.moonPhaseSprite;
 
         cardType = cardSO.cardType;
 
