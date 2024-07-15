@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+// deneme yorumu...
 
 public class BattleController : MonoBehaviour
 {
@@ -241,5 +242,7 @@ public class BattleController : MonoBehaviour
         UIController.instance.coins.SetActive(false);
 
         UIController.instance.battleEndedScreen.SetActive(true);
+
+        //abuzer
     }
 }

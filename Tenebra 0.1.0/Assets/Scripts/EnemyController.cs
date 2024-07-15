@@ -291,7 +291,7 @@ public class EnemyController : MonoBehaviour
         placePoint.activeCard = newCard;
         newCard.assignedPlace = placePoint;
 
-        Card.instance.ActivateAbility();
+        Card.instance.PlayCard();
 
         cardsInHand.Remove(cardSO);
 

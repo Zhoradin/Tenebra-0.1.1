@@ -34,7 +34,6 @@ public class Card : MonoBehaviour
     public float scaleSpeed = 5f; // Ölçek deðiþtirme hýzý
 
     public bool inHand;
-    public bool isActive;
     public int handPosition;
 
     private HandController theHC;
@@ -140,13 +139,14 @@ public class Card : MonoBehaviour
 
                             theHC.RemoveCardFromHand(this);
 
-                            ActivateAbility();
+                            if (abilityDescription.activeSelf == true)
+                            {
+                                abilityDescription.SetActive(false);
+                            }
+
+                            PlayCard();
 
                             BattleController.instance.SpendPlayerEssence(essenceCost);
-
-                            isActive = true;
-
-                            theCol.enabled = true;
                         }
                         else
                         {
@@ -183,40 +183,32 @@ public class Card : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if ((inHand || isActive) && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
+        if (inHand && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
             targetScale = hoverScale;
-            if (inHand)
-            {
-                Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
-                MoveToPoint(hoverPosition, targetRot);
-            }
+            Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
+            MoveToPoint(hoverPosition, targetRot);
 
             if (Time.timeScale != 0f && cardSO.abilities.Length > 0)
             {
                 abilityDescription.SetActive(true);
 
-                if (cardSO.abilities.Length > 1)
+                if(cardSO.abilities.Length > 1)
                 {
                     abilityDescriptionToo.SetActive(true);
                 }
             }
         }
     }
+
     private void OnMouseExit()
     {
-        if ((inHand && !isActive) && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
+        if (inHand && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
             targetScale = originalScale;
             MoveToPoint(theHC.cardPositions[handPosition], targetRot);
 
-            abilityDescription.SetActive(false);
-            abilityDescriptionToo.SetActive(false);
-        }
-        else if (isActive && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
-        {
-            targetScale = originalScale;
-
+            // Açýklama metnini gizle
             abilityDescription.SetActive(false);
             abilityDescriptionToo.SetActive(false);
         }
@@ -243,11 +235,6 @@ public class Card : MonoBehaviour
         targetRot = theHC.cardRotations[handPosition];
         MoveToPoint(theHC.cardPositions[handPosition], targetRot);
         targetScale = originalScale;
-    }
-
-    public void MakeItActive()
-    {
-
     }
 
     public void DamageCard(int damageAmount)
@@ -292,17 +279,8 @@ public class Card : MonoBehaviour
         costText.text = essenceCost.ToString();
     }
 
-    public void ActivateAbility()
+    public void PlayCard()
     {
-        if (abilityDescription.activeSelf == true)
-        {
-            abilityDescription.SetActive(false);
-        }
-        if (abilityDescriptionToo.activeSelf == true)
-        {
-            abilityDescriptionToo.SetActive(false);
-        }
-
         foreach (CardAbilitySO ability in cardSO.abilities)
         {
             switch (ability.abilityType)
