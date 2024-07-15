@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -30,16 +30,17 @@ public class Card : MonoBehaviour
     private Vector3 targetPoint;
     private Quaternion targetRot;
     public float moveSpeed = 5f, rotateSpeed = 540f;
-    public float selectedRotateSpeed = 720f; // Seçildiðinde kullanýlacak olan rotation hýzý
-    public float scaleSpeed = 5f; // Ölçek deðiþtirme hýzý
+    public float selectedRotateSpeed = 720f;
+    public float scaleSpeed = 5f;
 
     public bool inHand;
+    public bool isActive;
     public int handPosition;
 
     private HandController theHC;
 
     private bool isSelected;
-    private bool returningToHand; // Ele dönerken farklý hýz kullanýmý için
+    private bool returningToHand;
     private Collider2D theCol;
 
     public LayerMask whatIsDesktop, whatIsPlacement;
@@ -51,9 +52,8 @@ public class Card : MonoBehaviour
 
     private Vector3 originalScale;
     private Vector3 targetScale;
-    public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f); // Kartýn üzerine gelindiðinde büyüme oraný
-    public Vector3 selectedScale = new Vector3(1.2f, 1.2f, 1f); // Kart seçildiðinde büyüme oraný
-
+    public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f);
+    public Vector3 selectedScale = new Vector3(1.2f, 1.2f, 1f);
     public bool direchHit = false;
 
     // Start is called before the first frame update
@@ -91,9 +91,10 @@ public class Card : MonoBehaviour
 
         characterArt.sprite = cardSO.characterSprite;
         bgArt.sprite = cardSO.bgSprite;
-        moonPhaseArt.sprite = cardSO.moonPhaseSprite;
 
         cardType = cardSO.cardType;
+
+        moonPhaseArt.sprite = cardSO.moonPhaseSprite;
 
         UpdateAbilityDescription();
     }
@@ -107,7 +108,7 @@ public class Card : MonoBehaviour
             mousePosition.z = Camera.main.nearClipPlane;
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
             worldPosition.z = 0; // Ensure the card stays on the same z-plane
-            MoveToPoint(worldPosition + new Vector3(0f, 2f, -4f), Quaternion.identity); // Hareket ederken rotasyonu sýfýrlar
+            MoveToPoint(worldPosition + new Vector3(0f, 2f, -4f), Quaternion.identity); // Hareket ederken rotasyonu sï¿½fï¿½rlar
 
             if (Input.GetMouseButtonDown(1) && BattleController.instance.battleEnded == false)
             {
@@ -140,14 +141,13 @@ public class Card : MonoBehaviour
 
                             theHC.RemoveCardFromHand(this);
 
-                            if (abilityDescription.activeSelf == true)
-                            {
-                                abilityDescription.SetActive(false);
-                            }
-
-                            PlayCard();
+                            ActivateAbility();
 
                             BattleController.instance.SpendPlayerEssence(essenceCost);
+
+                            isActive = true;
+
+                            theCol.enabled = true;
                         }
                         else
                         {
@@ -169,7 +169,7 @@ public class Card : MonoBehaviour
         }
 
         transform.position = Vector3.Lerp(transform.position, targetPoint, moveSpeed * Time.deltaTime);
-        float currentRotateSpeed = isSelected || returningToHand ? selectedRotateSpeed : rotateSpeed; // Seçildiðinde veya ele dönerken farklý rotation hýzý kullan
+        float currentRotateSpeed = isSelected || returningToHand ? selectedRotateSpeed : rotateSpeed; // Seï¿½ildiï¿½inde veya ele dï¿½nerken farklï¿½ rotation hï¿½zï¿½ kullan
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, currentRotateSpeed * Time.deltaTime);
         transform.localScale = Vector3.Lerp(transform.localScale, targetScale, scaleSpeed * Time.deltaTime);
 
@@ -184,32 +184,40 @@ public class Card : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (inHand && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
+        if ((inHand || isActive) && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
             targetScale = hoverScale;
-            Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
-            MoveToPoint(hoverPosition, targetRot);
+            if (inHand)
+            {
+                Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
+                MoveToPoint(hoverPosition, targetRot);
+            }
 
             if (Time.timeScale != 0f && cardSO.abilities.Length > 0)
             {
                 abilityDescription.SetActive(true);
 
-                if(cardSO.abilities.Length > 1)
+                if (cardSO.abilities.Length > 1)
                 {
                     abilityDescriptionToo.SetActive(true);
                 }
             }
         }
     }
-
     private void OnMouseExit()
     {
-        if (inHand && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
+        if ((inHand && !isActive) && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
             targetScale = originalScale;
             MoveToPoint(theHC.cardPositions[handPosition], targetRot);
 
-            // Açýklama metnini gizle
+            abilityDescription.SetActive(false);
+            abilityDescriptionToo.SetActive(false);
+        }
+        else if (isActive && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
+        {
+            targetScale = originalScale;
+
             abilityDescription.SetActive(false);
             abilityDescriptionToo.SetActive(false);
         }
@@ -221,7 +229,7 @@ public class Card : MonoBehaviour
         {
             isSelected = true;
             theCol.enabled = false;
-            targetRot = Quaternion.identity; // Seçildiðinde hedef rotasyonu sýfýrla
+            targetRot = Quaternion.identity;
             targetScale = selectedScale;
 
             justPressed = true;
@@ -236,6 +244,11 @@ public class Card : MonoBehaviour
         targetRot = theHC.cardRotations[handPosition];
         MoveToPoint(theHC.cardPositions[handPosition], targetRot);
         targetScale = originalScale;
+    }
+
+    public void MakeItActive()
+    {
+
     }
 
     public void DamageCard(int damageAmount)
@@ -280,8 +293,17 @@ public class Card : MonoBehaviour
         costText.text = essenceCost.ToString();
     }
 
-    public void PlayCard()
+    public void ActivateAbility()
     {
+        if (abilityDescription.activeSelf == true)
+        {
+            abilityDescription.SetActive(false);
+        }
+        if (abilityDescriptionToo.activeSelf == true)
+        {
+            abilityDescriptionToo.SetActive(false);
+        }
+
         foreach (CardAbilitySO ability in cardSO.abilities)
         {
             switch (ability.abilityType)

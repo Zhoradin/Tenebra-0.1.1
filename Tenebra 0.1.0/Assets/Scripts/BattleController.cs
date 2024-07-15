@@ -21,6 +21,7 @@ public class BattleController : MonoBehaviour
 
     public enum TurnOrder { playerActive, playerCardAttacks, enemyActive, enemyCardAttacks }
     public TurnOrder currentPhase;
+    public MoonPhase currentMoonPhase;
 
     public Transform discardPoint;
 
@@ -108,6 +109,12 @@ public class BattleController : MonoBehaviour
             switch (currentPhase)
             {
                 case TurnOrder.playerActive:
+                    currentMoonPhase++;
+                    MoonPhaseController.instance.UpdateMoonPhase();
+                    if ((int)currentMoonPhase >= System.Enum.GetValues(typeof(MoonPhase)).Length)
+                    {
+                        currentMoonPhase = 0;
+                    }
                     UIController.instance.endTurnButton.SetActive(true);
                     UIController.instance.drawCardButton.GetComponent<Button>().interactable = true;
 
@@ -242,7 +249,5 @@ public class BattleController : MonoBehaviour
         UIController.instance.coins.SetActive(false);
 
         UIController.instance.battleEndedScreen.SetActive(true);
-
-        //abuzer
     }
 }
