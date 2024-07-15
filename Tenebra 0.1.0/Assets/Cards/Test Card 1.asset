@@ -19,5 +19,9 @@ MonoBehaviour:
   essenceCost: 1
   characterSprite: {fileID: 21300000, guid: e12313697df4cbf48b5f64d90a01e2fe, type: 3}
   bgSprite: {fileID: 21300000, guid: 5497578e3cd8a8e4db15437ebb95c430, type: 3}
-  abilities: []
+  moonPhaseSprite: {fileID: 21300000, guid: 86fdf100d0bc5cb4c8bfd87919fb0d93, type: 3}
+  abilities:
+  - {fileID: 11400000, guid: 43b9b678edc89f949aa229a09399ea46, type: 2}
+  - {fileID: 11400000, guid: e8ee0169f43136241b545fdadf0fcf67, type: 2}
+  moonPhase: 2
   cardType: 0

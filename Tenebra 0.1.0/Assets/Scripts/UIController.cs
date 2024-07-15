@@ -39,15 +39,13 @@ public class UIController : MonoBehaviour
 
     public GameObject coins;
     public TMP_Text coinAmountText;
-    private int coinAmount = 0; // Coin adedini burada saklayacaðýz
+    private int coinAmount = 0;
 
     void Start()
     {
-        // Set initial positions
         drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileClosedPosition;
         discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileClosedPosition;
 
-        // Coin adedini baþlangýçta 0 olarak ayarlayýn
         coinAmount = 0;
         UpdateCoinAmountText();
     }
