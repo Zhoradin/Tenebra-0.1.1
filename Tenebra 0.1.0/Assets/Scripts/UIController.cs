@@ -142,12 +142,14 @@ public class UIController : MonoBehaviour
         {
             drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileOpenPosition;
             drawPileButton.GetComponent<Button>().interactable = false;
+            discardPileButton.GetComponent<Button>().interactable = false;
             drawPileOpen = true;
         }
         else
         {
             drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileClosedPosition;
             drawPileButton.GetComponent<Button>().interactable = true;
+            discardPileButton.GetComponent<Button>().interactable = true;
             drawPileOpen = false;
         }
     }
@@ -158,12 +160,14 @@ public class UIController : MonoBehaviour
         {
             discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileOpenPosition;
             discardPileButton.GetComponent<Button>().interactable = false;
+            drawPileButton.GetComponent<Button>().interactable = false;
             discardPileOpen = true;
         }
         else
         {
             discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileClosedPosition;
             discardPileButton.GetComponent<Button>().interactable = true;
+            drawPileButton.GetComponent<Button>().interactable = true;
             discardPileOpen = false;
         }
     }
