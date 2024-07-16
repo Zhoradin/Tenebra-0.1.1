@@ -544,6 +544,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2167d0e33f8360445b8a29847d513674, type: 3}
   moonPhaseImage: {fileID: 529409948}
   currentMoonPhase: 0
+  transitionDuration: 1
 --- !u!224 &918484722 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2206181021006604463, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
@@ -712,7 +713,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: playerFirstChance
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4019797948704510020, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: m_LocalPosition.x
