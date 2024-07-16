@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-// deneme yorumu...
 
 public class BattleController : MonoBehaviour
 {
@@ -31,6 +30,8 @@ public class BattleController : MonoBehaviour
 
     public float resultScreenDelayTime = 1f;
 
+    private int turnCount = 0;
+
     [Range(0f, 1f)]
     public float playerFirstChance = .5f;
 
@@ -39,7 +40,10 @@ public class BattleController : MonoBehaviour
         FillPlayerEssence();
         FillEnemyEssence();
 
-        DeckController.instance.DrawMultipleCards(startingCardsAmount);
+        if(currentPhase == TurnOrder.enemyActive)
+        {
+            DeckController.instance.DrawMultipleCards(startingCardsAmount);
+        }
 
         UIController.instance.SetPlayerHealthText(playerHealth);
         UIController.instance.SetEnemyHealthText(enemyHealth);
@@ -121,11 +125,17 @@ public class BattleController : MonoBehaviour
                     FillPlayerEssence();
                     HandController.instance.EmptyHand();
                     DeckController.instance.DrawMultipleCards(cardsToDrawPerTurn);
-
                     break;
 
                 case TurnOrder.playerCardAttacks:
-                    CardPointsController.instance.PlayerAttack();
+                    if (turnCount >= 2)
+                    {
+                        CardPointsController.instance.PlayerAttack();
+                    }
+                    else
+                    {
+                        AdvanceTurn();
+                    }
                     break;
 
                 case TurnOrder.enemyActive:
@@ -134,11 +144,28 @@ public class BattleController : MonoBehaviour
                     break;
 
                 case TurnOrder.enemyCardAttacks:
-                    CardPointsController.instance.EnemyAttack();
+                    if (turnCount >= 2)
+                    {
+                        CardPointsController.instance.EnemyAttack();
+                    }
+                    else
+                    {
+                        AdvanceTurn();
+                    }
                     break;
+            }
+
+            if (currentPhase == TurnOrder.enemyActive || currentPhase == TurnOrder.playerActive)
+            {
+                if(turnCount < 2)
+                {
+                    turnCount++;
+                }
             }
         }
     }
+
+
 
     public void EndPlayerTurn()
     {
@@ -180,7 +207,6 @@ public class BattleController : MonoBehaviour
             {
                 enemyHealth = 0;
 
-                //End Battle
                 EndBattle();
             }
 
