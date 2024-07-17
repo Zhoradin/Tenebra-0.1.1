@@ -54,7 +54,10 @@ public class Card : MonoBehaviour
     private Vector3 targetScale;
     public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f);
     public Vector3 selectedScale = new Vector3(1.2f, 1.2f, 1f);
+
     public bool direchHit = false;
+    public bool doubleTap = false;
+    public bool quickAttack = false;
 
     // Start is called before the first frame update
     void Start()
@@ -246,11 +249,6 @@ public class Card : MonoBehaviour
         targetScale = originalScale;
     }
 
-    public void MakeItActive()
-    {
-
-    }
-
     public void DamageCard(int damageAmount)
     {
         currentHealth -= damageAmount;
@@ -314,6 +312,12 @@ public class Card : MonoBehaviour
                 case CardAbilitySO.AbilityType.DirectHit:
                     DirectHit();
                     break;
+                case CardAbilitySO.AbilityType.DoubleTap:
+                    DoubleTap();
+                    break;
+                case CardAbilitySO.AbilityType.QuickAttack:
+                    StartCoroutine(QuickAttackCoroutine());
+                    break;
             }
         }
     }
@@ -326,7 +330,7 @@ public class Card : MonoBehaviour
 
             if (cardSO.abilities.Length > 1)
             {
-                abilityDescriptionTextToo.text = cardSO.abilities[0].abilityType + "\n" + cardSO.abilities[1].description;
+                abilityDescriptionTextToo.text = cardSO.abilities[1].abilityType + "\n" + cardSO.abilities[1].description;
             }
         }
     }
@@ -343,4 +347,26 @@ public class Card : MonoBehaviour
     {
         direchHit = true;
     }
+
+    private void DoubleTap()
+    {
+        doubleTap = true;
+    }
+
+    private IEnumerator QuickAttackCoroutine()
+    {
+        quickAttack = true;
+        yield return new WaitForSeconds(0.5f); // Biraz bekle, böylece kart yerleşene kadar animasyon tamamlanır
+        if (isPlayer)
+        {
+            CardPointsController.instance.PlayerSingleCardAttack(this);
+        }
+        else
+        {
+            CardPointsController.instance.EnemySingleCardAttack(this);
+        }
+        
+        quickAttack = false; // Quick attack sadece bir defa yapılacak
+    }
+
 }

@@ -53,6 +53,11 @@ public class BattleController : MonoBehaviour
             currentPhase = TurnOrder.playerCardAttacks;
             AdvanceTurn();
         }
+        else
+        {
+            currentPhase = TurnOrder.enemyCardAttacks;
+            AdvanceTurn();
+        }
     }
 
     void Update()
