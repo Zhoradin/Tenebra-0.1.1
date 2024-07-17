@@ -23,4 +23,4 @@ MonoBehaviour:
   abilities:
   - {fileID: 11400000, guid: 43b9b678edc89f949aa229a09399ea46, type: 2}
   moonPhase: 3
-  cardType: 1
+  cardType: 5

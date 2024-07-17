@@ -6,7 +6,9 @@ public class CardAbilitySO : ScriptableObject
     public enum AbilityType
     {
         Heal,
-        DirectHit
+        DirectHit,
+        DoubleTap,
+        QuickAttack
     }
 
     public AbilityType abilityType;

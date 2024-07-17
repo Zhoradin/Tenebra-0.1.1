@@ -709,11 +709,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: enemyHealth
-      value: 5
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
+      propertyPath: currentPhase
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: playerFirstChance
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4019797948704510020, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1006,7 +1010,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
       propertyPath: enemyAIType
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5748313443184183603, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
       propertyPath: m_Name
