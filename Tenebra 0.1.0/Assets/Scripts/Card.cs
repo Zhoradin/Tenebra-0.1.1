@@ -146,6 +146,8 @@ public class Card : MonoBehaviour
 
                             ActivateAbility();
 
+                            CheckMoonPhase();
+
                             BattleController.instance.SpendPlayerEssence(essenceCost);
 
                             isActive = true;
@@ -369,4 +371,11 @@ public class Card : MonoBehaviour
         quickAttack = false; // Quick attack sadece bir defa yapılacak
     }
 
+    public void CheckMoonPhase()
+    {
+        if(cardSO.moonPhase == BattleController.instance.currentMoonPhase)
+        {
+            Debug.Log("garibim hadi gül biraz");
+        }
+    }
 }

@@ -21,6 +21,7 @@ public class BattleController : MonoBehaviour
     public enum TurnOrder { playerActive, playerCardAttacks, enemyActive, enemyCardAttacks }
     public TurnOrder currentPhase;
     public MoonPhase currentMoonPhase;
+    public int moonPhaseCount = 0;
 
     public Transform discardPoint;
 
@@ -118,7 +119,13 @@ public class BattleController : MonoBehaviour
             switch (currentPhase)
             {
                 case TurnOrder.playerActive:
-                    currentMoonPhase++;
+                    MoonPhaseController.instance.AdvanceMoonPhase();
+                    moonPhaseCount++;
+                    if(moonPhaseCount > 15)
+                    {
+                        moonPhaseCount = 0;
+                        currentMoonPhase = MoonPhase.NewMoon;
+                    }
                     MoonPhaseController.instance.UpdateMoonPhase();
                     if ((int)currentMoonPhase >= System.Enum.GetValues(typeof(MoonPhase)).Length)
                     {
@@ -169,8 +176,6 @@ public class BattleController : MonoBehaviour
             }
         }
     }
-
-
 
     public void EndPlayerTurn()
     {
