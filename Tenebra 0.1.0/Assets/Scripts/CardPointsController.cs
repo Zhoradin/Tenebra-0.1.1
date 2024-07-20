@@ -52,6 +52,17 @@ public class CardPointsController : MonoBehaviour
                         float damage = playerCardPoints[i].activeCard.attackPower * effectiveness;
                         Debug.Log("Effectiveness: " + effectiveness);
                         enemyCardPoints[i].activeCard.DamageCard(Mathf.RoundToInt(damage));
+                        if(enemyCardPoints[i].activeCard != null && enemyCardPoints[i].activeCard.mend == true)
+                        {
+                            enemyCardPoints[i].activeCard.currentHealth += Mathf.RoundToInt(damage/2);
+                            enemyCardPoints[i].activeCard.UpdateCardDisplay();
+                        }
+                        if (enemyCardPoints[i].activeCard != null && enemyCardPoints[i].activeCard.leech == true)
+                        {
+                            BattleController.instance.enemyHealth += Mathf.RoundToInt(damage);
+                            UIController.instance.SetEnemyHealthText(BattleController.instance.enemyHealth);
+                            Debug.Log(BattleController.instance.enemyHealth);
+                        }
                         BattleController.instance.SetupActiveCards();
 
                         if (playerCardPoints[i].activeCard.cardSO.moonPhase == BattleController.instance.currentMoonPhase)
@@ -139,6 +150,18 @@ public class CardPointsController : MonoBehaviour
                         float damage = enemyCardPoints[i].activeCard.attackPower * effectiveness;
                         Debug.Log("Effectiveness: " + effectiveness);
                         playerCardPoints[i].activeCard.DamageCard(Mathf.RoundToInt(damage));
+                        if(playerCardPoints[i].activeCard != null && playerCardPoints[i].activeCard.mend == true)
+                        {
+                            playerCardPoints[i].activeCard.currentHealth += Mathf.RoundToInt(damage/2);
+                            playerCardPoints[i].activeCard.UpdateCardDisplay();
+                        }
+
+                         if (playerCardPoints[i].activeCard != null && playerCardPoints[i].activeCard.leech == true)
+                        {
+                            BattleController.instance.playerHealth += Mathf.RoundToInt(damage);
+                            UIController.instance.SetPlayerHealthText(BattleController.instance.playerHealth);
+                            Debug.Log(BattleController.instance.playerHealth);
+                        }
                         BattleController.instance.SetupActiveCards();
                         if (enemyCardPoints[i].activeCard.cardSO.moonPhase == BattleController.instance.currentMoonPhase)
                         {

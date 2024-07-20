@@ -60,6 +60,9 @@ public class Card : MonoBehaviour
     public bool direchHit = false;
     public bool doubleTap = false;
     public bool quickAttack = false;
+    public bool glassCannon = false;
+    public bool mend = false;
+    public bool leech = false;
 
     // Start is called before the first frame update
     void Start()
@@ -328,6 +331,15 @@ public class Card : MonoBehaviour
                 case CardAbilitySO.AbilityType.QuickAttack:
                     StartCoroutine(QuickAttackCoroutine());
                     break;
+                case CardAbilitySO.AbilityType.GlassCannon:
+                    GlassCannon();
+                    break;
+                case CardAbilitySO.AbilityType.Mend:
+                    Mend();
+                    break;
+                case CardAbilitySO.AbilityType.Leech:
+                    Leech();
+                    break;
             }
         }
     }
@@ -490,4 +502,20 @@ public class Card : MonoBehaviour
     {
         Heal(stealAmount);
     }
+
+    private void GlassCannon()
+    {
+        glassCannon = true;
+    }
+
+    private void Mend()
+    {
+        mend = true;
+    }
+
+    private void Leech()
+    {
+        leech = true;
+    }
+
 }

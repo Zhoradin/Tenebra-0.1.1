@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
-  m_Name: Test Card 1
+  m_Name: Test Ember
   m_EditorClassIdentifier: 
-  cardName: Test Card 1
+  cardName: Test Ember
   cardDescription: This is the test card
   currentHealth: 1
   attackPower: 2
@@ -20,7 +20,6 @@ MonoBehaviour:
   characterSprite: {fileID: 21300000, guid: e12313697df4cbf48b5f64d90a01e2fe, type: 3}
   bgSprite: {fileID: 21300000, guid: 5497578e3cd8a8e4db15437ebb95c430, type: 3}
   moonPhaseSprite: {fileID: 21300000, guid: 21b71951eda532349b4a8f85137aa076, type: 3}
-  abilities:
-  - {fileID: 11400000, guid: 43b9b678edc89f949aa229a09399ea46, type: 2}
+  abilities: []
   moonPhase: 0
   cardType: 3

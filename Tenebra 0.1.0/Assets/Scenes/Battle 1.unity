@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -835,6 +836,66 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.size
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 75869764fe1a8b14db9a3f8913e0e80b, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9bd58c0bdaee74348a8b41088f0f3246, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 219e780c88339b74f82a694e22647bfc, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8c3cf27eb2ce1984ba4e19bf4a2f0baf, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 35583191ae9e696469026924218ec6b5, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: dd4a4d73dbb02af4e8788f6eb269a274, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 67f9449e6a9e54243b9ada2724b201d4, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 75869764fe1a8b14db9a3f8913e0e80b, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9bd58c0bdaee74348a8b41088f0f3246, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: 219e780c88339b74f82a694e22647bfc, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[10]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8c3cf27eb2ce1984ba4e19bf4a2f0baf, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[11]
+      value: 
+      objectReference: {fileID: 11400000, guid: 35583191ae9e696469026924218ec6b5, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[12]
+      value: 
+      objectReference: {fileID: 11400000, guid: dd4a4d73dbb02af4e8788f6eb269a274, type: 2}
+    - target: {fileID: 9028345149227173416, guid: dce4f5de8864f2f46ae0bfd5f14c04ce, type: 3}
+      propertyPath: deckToUse.Array.data[13]
+      value: 
+      objectReference: {fileID: 11400000, guid: 67f9449e6a9e54243b9ada2724b201d4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1033,7 +1094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
       propertyPath: deckToUse.Array.size
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
       propertyPath: deckToUse.Array.data[1]
@@ -1047,6 +1108,18 @@ PrefabInstance:
       propertyPath: deckToUse.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: 8c3cf27eb2ce1984ba4e19bf4a2f0baf, type: 2}
+    - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
+      propertyPath: deckToUse.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 75869764fe1a8b14db9a3f8913e0e80b, type: 2}
+    - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
+      propertyPath: deckToUse.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9bd58c0bdaee74348a8b41088f0f3246, type: 2}
+    - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
+      propertyPath: deckToUse.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 67f9449e6a9e54243b9ada2724b201d4, type: 2}
     - target: {fileID: 5748313443184183603, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
       propertyPath: m_Name
       value: Enemy Controller

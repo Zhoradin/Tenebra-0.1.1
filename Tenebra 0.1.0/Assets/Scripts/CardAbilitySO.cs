@@ -8,7 +8,10 @@ public class CardAbilitySO : ScriptableObject
         Heal,
         DirectHit,
         DoubleTap,
-        QuickAttack
+        QuickAttack,
+        GlassCannon,
+        Mend,
+        Leech
     }
 
     public AbilityType abilityType;
