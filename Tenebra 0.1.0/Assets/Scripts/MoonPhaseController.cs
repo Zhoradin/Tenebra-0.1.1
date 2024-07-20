@@ -18,7 +18,7 @@ public class MoonPhaseController : MonoBehaviour
 
     public MoonPhase currentMoonPhase;
 
-    public float transitionDuration = 1f; // Geçiþ süresi
+    public float transitionDuration = 1f;
 
     private void Start()
     {
@@ -58,5 +58,46 @@ public class MoonPhaseController : MonoBehaviour
 
         moonPhaseImage.sprite = newSprite;
         moonPhaseImage.color = new Color(1f, 1f, 1f, 1f); // Geçiþi tamamladýktan sonra tam opak yap
+    }
+
+    public void AdvanceMoonPhase()
+    {
+        if(BattleController.instance.moonPhaseCount == 0)
+        {
+            BattleController.instance.currentMoonPhase = MoonPhase.WaningCrescent;
+        }
+        else if(BattleController.instance.moonPhaseCount <= 3)
+        {
+            BattleController.instance.currentMoonPhase = MoonPhase.WaningCrescent;
+        }
+        else if(BattleController.instance.moonPhaseCount == 4)
+        {
+            BattleController.instance.currentMoonPhase = MoonPhase.FirstQuarter;
+        } 
+        else if(BattleController.instance.moonPhaseCount <= 7)
+        {
+            BattleController.instance.currentMoonPhase = MoonPhase.WaxingGibbous;
+        }
+        else if(BattleController.instance.moonPhaseCount == 8)
+        {
+            BattleController.instance.currentMoonPhase = MoonPhase.FullMoon;
+        }
+        else if(BattleController.instance.moonPhaseCount <= 11)
+        {
+            BattleController.instance.currentMoonPhase = MoonPhase.WaningGibbous;
+        }
+        else if(BattleController.instance.moonPhaseCount == 12)
+        {
+            BattleController.instance.currentMoonPhase = MoonPhase.LastQuarter;
+        }
+        else if(BattleController.instance.moonPhaseCount <= 15)
+        {
+            BattleController.instance.currentMoonPhase = MoonPhase.WaningCrescent;
+        }
+        else
+        {
+            Debug.Log("New Moona geri dönülüyor");
+
+        }
     }
 }

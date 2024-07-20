@@ -21,6 +21,7 @@ public class BattleController : MonoBehaviour
     public enum TurnOrder { playerActive, playerCardAttacks, enemyActive, enemyCardAttacks }
     public TurnOrder currentPhase;
     public MoonPhase currentMoonPhase;
+    public int moonPhaseCount = 0;
 
     public Transform discardPoint;
 
@@ -34,6 +35,9 @@ public class BattleController : MonoBehaviour
 
     [Range(0f, 1f)]
     public float playerFirstChance = .5f;
+
+    public CardPlacePoint[] playerCardPoints;
+    public CardPlacePoint[] enemyCardPoints;
 
     void Start()
     {
@@ -58,6 +62,8 @@ public class BattleController : MonoBehaviour
             currentPhase = TurnOrder.enemyCardAttacks;
             AdvanceTurn();
         }
+
+        SetupActiveCards();
     }
 
     void Update()
@@ -66,6 +72,12 @@ public class BattleController : MonoBehaviour
         {
             AdvanceTurn();
         }
+    }
+
+    public void SetupActiveCards()
+    {
+        playerCardPoints = CardPointsController.instance.playerCardPoints;
+        enemyCardPoints = CardPointsController.instance.enemyCardPoints;
     }
 
     public void SpendPlayerEssence(int amountToSpend)
@@ -101,7 +113,20 @@ public class BattleController : MonoBehaviour
     public void FillEnemyEssence()
     {
         enemyEssence = startingEssenceAmount;
-        UIController.instance.SetEnemyEssenceText(playerEssence);
+        UIController.instance.SetEnemyEssenceText(enemyEssence);
+    }
+
+    public void PlayerGainEssence(int essenceAmount)
+    {
+        playerEssence += essenceAmount;
+        UIController.instance.SetPlayerEssenceText(playerEssence);
+    }
+
+    public void EnemyGainEssence(int essenceAmount)
+    {
+        Debug.Log("arttý");
+        enemyEssence += essenceAmount;
+        UIController.instance.SetEnemyEssenceText(enemyEssence);
     }
 
     public void AdvanceTurn()
@@ -109,7 +134,6 @@ public class BattleController : MonoBehaviour
         if (battleEnded == false)
         {
             currentPhase++;
-
             if ((int)currentPhase >= System.Enum.GetValues(typeof(TurnOrder)).Length)
             {
                 currentPhase = 0;
@@ -118,7 +142,13 @@ public class BattleController : MonoBehaviour
             switch (currentPhase)
             {
                 case TurnOrder.playerActive:
-                    currentMoonPhase++;
+                    MoonPhaseController.instance.AdvanceMoonPhase();
+                    moonPhaseCount++;
+                    if (moonPhaseCount > 15)
+                    {
+                        moonPhaseCount = 0;
+                        currentMoonPhase = MoonPhase.NewMoon;
+                    }
                     MoonPhaseController.instance.UpdateMoonPhase();
                     if ((int)currentMoonPhase >= System.Enum.GetValues(typeof(MoonPhase)).Length)
                     {
@@ -130,6 +160,9 @@ public class BattleController : MonoBehaviour
                     FillPlayerEssence();
                     HandController.instance.EmptyHand();
                     DeckController.instance.DrawMultipleCards(cardsToDrawPerTurn);
+                    // Check moon phase for player cards
+                    CheckMoonPhaseForAllCards(playerCardPoints);
+                    CheckMoonPhaseForAllCards(enemyCardPoints);
                     break;
 
                 case TurnOrder.playerCardAttacks:
@@ -146,6 +179,8 @@ public class BattleController : MonoBehaviour
                 case TurnOrder.enemyActive:
                     FillEnemyEssence();
                     EnemyController.instance.StartAction();
+                    // Check moon phase for enemy cards
+                    CheckMoonPhaseForAllCards(enemyCardPoints);
                     break;
 
                 case TurnOrder.enemyCardAttacks:
@@ -162,7 +197,7 @@ public class BattleController : MonoBehaviour
 
             if (currentPhase == TurnOrder.enemyActive || currentPhase == TurnOrder.playerActive)
             {
-                if(turnCount < 2)
+                if (turnCount < 2)
                 {
                     turnCount++;
                 }
@@ -170,6 +205,16 @@ public class BattleController : MonoBehaviour
         }
     }
 
+    public void CheckMoonPhaseForAllCards(CardPlacePoint[] cardPoints)
+    {
+        foreach (var point in cardPoints)
+        {
+            if (point.activeCard != null)
+            {
+                point.activeCard.CheckMoonPhase();
+            }
+        }
+    }
 
 
     public void EndPlayerTurn()
@@ -256,9 +301,7 @@ public class BattleController : MonoBehaviour
             }
 
             StartCoroutine(ShowResultsCo());
-        }
-
-        
+        }        
     }
 
     public IEnumerator ShowResultsCo()

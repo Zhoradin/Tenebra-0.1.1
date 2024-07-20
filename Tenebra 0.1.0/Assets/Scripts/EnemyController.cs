@@ -292,6 +292,8 @@ public class EnemyController : MonoBehaviour
         newCard.assignedPlace = placePoint;
 
         Card.instance.ActivateAbility();
+        Card.instance.isActive = true;
+        Card.instance.CheckMoonPhase();
 
         cardsInHand.Remove(cardSO);
 
