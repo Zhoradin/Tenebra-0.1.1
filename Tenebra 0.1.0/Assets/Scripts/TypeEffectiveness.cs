@@ -13,6 +13,17 @@ public static class TypeEffectiveness
 {
     public static readonly float[,] effectivenessMatrix = new float[,]
     {
+
+        // Aqua, Gale, Gloom, Ember, Dust, Holy, Normal
+        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }, // Aqua
+        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }, // Gale
+        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }, // Gloom
+        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }, // Ember
+        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }, // Dust
+        { 1f, 1f, 1f, 1f, 1f, 1f, 1f },  // Holy
+        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }    // Normal
+
+        /*
         // Aqua, Gale, Gloom, Ember, Dust, Holy, Normal
         { .5f, 1f, 2f, .5f, 2f, 1f, 1f }, // Aqua
         { 1f, .5f, 1f, 2f, .5f, 2f, 1f }, // Gale
@@ -20,7 +31,7 @@ public static class TypeEffectiveness
         { 2f, .5f, 1f, .5f, 2f, 1f, 1f }, // Ember
         { 2f, 2f, .5f, 1f, .5f, 1f, 1f }, // Dust
         { 1f, 2f, 2f, 1f, 1f, .5f, 1f },  // Holy
-        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }    // Normal
+        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }    // Normal */
     };
 
     public static float GetEffectiveness(CardType attacker, CardType defender)

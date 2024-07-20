@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
   m_Name: Test Gloom
   m_EditorClassIdentifier: 
-  cardName: Test Card 3
+  cardName: Test Gloom
   cardDescription: Third Test Card
   currentHealth: 5
-  attackPower: 8
+  attackPower: 2
   essenceCost: 2
   characterSprite: {fileID: 21300000, guid: b4c581d5d64171147bcce550cc614d4f, type: 3}
   bgSprite: {fileID: 21300000, guid: ac44cb3326b919c4b93300164cde8661, type: 3}

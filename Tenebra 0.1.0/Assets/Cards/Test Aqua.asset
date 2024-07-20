@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
   m_Name: Test Aqua
   m_EditorClassIdentifier: 
-  cardName: 
+  cardName: Test Aqua
   cardDescription: 
-  currentHealth: 0
-  attackPower: 0
-  essenceCost: 0
+  currentHealth: 3
+  attackPower: 2
+  essenceCost: 1
   characterSprite: {fileID: 21300000, guid: 9da94a45f4c5e7041b43aaae5264d8ca, type: 3}
-  bgSprite: {fileID: 0}
-  moonPhaseSprite: {fileID: 0}
+  bgSprite: {fileID: 21300000, guid: 677a10913d9f9a84a9a29cf791d9bd29, type: 3}
+  moonPhaseSprite: {fileID: 21300000, guid: 2cb7bc705714a6c429ff5ba1b4f2287e, type: 3}
   abilities:
   - {fileID: 11400000, guid: f231168c6b8ae744b928ac3caaddbd59, type: 2}
   moonPhase: 1
