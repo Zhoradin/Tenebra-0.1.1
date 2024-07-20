@@ -64,7 +64,7 @@ public class MoonPhaseController : MonoBehaviour
     {
         if(BattleController.instance.moonPhaseCount == 0)
         {
-            BattleController.instance.currentMoonPhase = MoonPhase.WaningCrescent;
+            BattleController.instance.currentMoonPhase = MoonPhase.NewMoon;
         }
         else if(BattleController.instance.moonPhaseCount <= 3)
         {
