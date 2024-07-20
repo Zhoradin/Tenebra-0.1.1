@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
-  m_Name: Test Card 4
+  m_Name: Test Gale
   m_EditorClassIdentifier: 
   cardName: Test Card 4
   cardDescription: Card for testing
