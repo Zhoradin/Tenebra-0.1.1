@@ -41,25 +41,38 @@ public class CardPointsController : MonoBehaviour
         {
             if (playerCardPoints[i].activeCard != null)
             {
-                if (enemyCardPoints[i].activeCard != null && playerCardPoints[i].activeCard.direchHit == false)
+                int attackCount = playerCardPoints[i].activeCard.doubleTap ? 2 : 1;
+
+                for (int j = 0; j < attackCount; j++)
                 {
-                    //Attack the enemy card
-                    float effectiveness = TypeEffectiveness.GetEffectiveness(playerCardPoints[i].activeCard.cardType, enemyCardPoints[i].activeCard.cardType);
-                    float damage = playerCardPoints[i].activeCard.attackPower * effectiveness;
-                    Debug.Log("Effectiveness: " + effectiveness);
-                    enemyCardPoints[i].activeCard.DamageCard(Mathf.RoundToInt(damage));
+                    if (enemyCardPoints[i].activeCard != null && playerCardPoints[i].activeCard.direchHit == false)
+                    {
+                        // Attack the enemy card
+                        float effectiveness = TypeEffectiveness.GetEffectiveness(playerCardPoints[i].activeCard.cardType, enemyCardPoints[i].activeCard.cardType);
+                        float damage = playerCardPoints[i].activeCard.attackPower * effectiveness;
+                        Debug.Log("Effectiveness: " + effectiveness);
+                        enemyCardPoints[i].activeCard.DamageCard(Mathf.RoundToInt(damage));
+                        BattleController.instance.SetupActiveCards();
+
+                        if (playerCardPoints[i].activeCard.cardSO.moonPhase == BattleController.instance.currentMoonPhase)
+                        {
+                            if (playerCardPoints[i].activeCard.cardSO.moonPhase == MoonPhase.WaningCrescent)
+                            {
+                                playerCardPoints[i].activeCard.StealHealth(1);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Attack the enemy's overall health
+                        BattleController.instance.DamageEnemy(playerCardPoints[i].activeCard.attackPower);
+                        playerCardPoints[i].activeCard.direchHit = false;
+                    }
+
+                    playerCardPoints[i].activeCard.anim.SetTrigger("Attack");
+
+                    yield return new WaitForSeconds(timeBetweenAttacks);
                 }
-                else
-                {
-                    //Attack the enemy's overall health
-                    BattleController.instance.DamageEnemy(playerCardPoints[i].activeCard.attackPower);
-
-                    Card.instance.direchHit = false;
-                }
-
-                playerCardPoints[i].activeCard.anim.SetTrigger("Attack");
-
-                yield return new WaitForSeconds(timeBetweenAttacks);
             }
 
             if (BattleController.instance.battleEnded == true)
@@ -86,6 +99,7 @@ public class CardPointsController : MonoBehaviour
                     float damage = card.attackPower * effectiveness;
                     Debug.Log("Effectiveness: " + effectiveness);
                     enemyCardPoints[i].activeCard.DamageCard(Mathf.RoundToInt(damage));
+                    BattleController.instance.SetupActiveCards();      
                 }
                 else
                 {
@@ -100,7 +114,6 @@ public class CardPointsController : MonoBehaviour
             }
         }
     }
-
 
     public void EnemyAttack()
     {
@@ -126,6 +139,14 @@ public class CardPointsController : MonoBehaviour
                         float damage = enemyCardPoints[i].activeCard.attackPower * effectiveness;
                         Debug.Log("Effectiveness: " + effectiveness);
                         playerCardPoints[i].activeCard.DamageCard(Mathf.RoundToInt(damage));
+                        BattleController.instance.SetupActiveCards();
+                        if (enemyCardPoints[i].activeCard.cardSO.moonPhase == BattleController.instance.currentMoonPhase)
+                        {
+                            if (enemyCardPoints[i].activeCard.cardSO.moonPhase == MoonPhase.WaningCrescent)
+                            {
+                                enemyCardPoints[i].activeCard.StealHealth(1);
+                            }
+                        }
                     }
                     else
                     {

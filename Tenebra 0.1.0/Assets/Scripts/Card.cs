@@ -19,6 +19,8 @@ public class Card : MonoBehaviour
 
     public int currentHealth, attackPower, essenceCost;
 
+    private int originalHealth, originalAttack, originalEssence;
+
     public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo;
 
     public Image characterArt, bgArt, moonPhaseArt;
@@ -84,6 +86,10 @@ public class Card : MonoBehaviour
         attackPower = cardSO.attackPower;
         essenceCost = cardSO.essenceCost;
 
+        originalHealth = currentHealth;
+        originalAttack = attackPower;
+        originalEssence = essenceCost;
+
         /*healthText.text = currentHealth.ToString();
         attackText.text = attackPower.ToString();
         costText.text = essenceCost.ToString();*/
@@ -100,6 +106,8 @@ public class Card : MonoBehaviour
         moonPhaseArt.sprite = cardSO.moonPhaseSprite;
 
         UpdateAbilityDescription();
+
+        CheckMoonPhase();
     }
 
     // Update is called once per frame
@@ -146,11 +154,11 @@ public class Card : MonoBehaviour
 
                             ActivateAbility();
 
-                            CheckMoonPhase();
-
                             BattleController.instance.SpendPlayerEssence(essenceCost);
 
                             isActive = true;
+
+                            CheckMoonPhase();
 
                             theCol.enabled = true;
                         }
@@ -358,7 +366,7 @@ public class Card : MonoBehaviour
     private IEnumerator QuickAttackCoroutine()
     {
         quickAttack = true;
-        yield return new WaitForSeconds(0.5f); // Biraz bekle, böylece kart yerleşene kadar animasyon tamamlanır
+        yield return new WaitForSeconds(0.5f);
         if (isPlayer)
         {
             CardPointsController.instance.PlayerSingleCardAttack(this);
@@ -368,14 +376,118 @@ public class Card : MonoBehaviour
             CardPointsController.instance.EnemySingleCardAttack(this);
         }
         
-        quickAttack = false; // Quick attack sadece bir defa yapılacak
+        quickAttack = false;
     }
 
     public void CheckMoonPhase()
     {
-        if(cardSO.moonPhase == BattleController.instance.currentMoonPhase)
+        if (cardSO.moonPhase == BattleController.instance.currentMoonPhase)
         {
-            Debug.Log("garibim hadi gül biraz");
+            if (cardSO.moonPhase == MoonPhase.NewMoon)
+            {
+
+            }
+            else if (cardSO.moonPhase == MoonPhase.WaxingCrescent)
+            {
+                currentHealth += Mathf.RoundToInt(currentHealth * .33f);
+                attackPower += Mathf.RoundToInt(attackPower * .33f);
+                UpdateCardDisplay();
+            }
+            else if (cardSO.moonPhase == MoonPhase.FirstQuarter)
+            {
+
+            }
+            else if (cardSO.moonPhase == MoonPhase.WaxingGibbous)
+            {
+                essenceCost /= 2;
+                UpdateCardDisplay();
+            }
+            else if (cardSO.moonPhase == MoonPhase.FullMoon)
+            {
+
+            }
+            else if (cardSO.moonPhase == MoonPhase.WaningGibbous)
+            {
+                //increase overall essence by 1
+                if (isActive)
+                {
+                    if (isPlayer)
+                    {
+                        BattleController.instance.PlayerGainEssence(1);
+                    }
+                    else
+                    {  
+                        BattleController.instance.EnemyGainEssence(1);
+                    } 
+                }
+            }
+            else if (cardSO.moonPhase == MoonPhase.LastQuarter)
+            {
+
+            }
+            else if (cardSO.moonPhase == MoonPhase.FullMoon)
+            {
+
+            }
+            else if (cardSO.moonPhase == MoonPhase.WaningCrescent)
+            {
+                //steal 1 health
+            }
+            else
+            {
+                Debug.Log("Eşleşen bir moon phase yok.");
+            }
         }
+        else if (cardSO.moonPhase != BattleController.instance.currentMoonPhase)
+        {
+            if (cardSO.moonPhase == MoonPhase.NewMoon)
+            {
+
+            }
+            else if (cardSO.moonPhase == MoonPhase.WaxingCrescent)
+            {
+                currentHealth = originalHealth;
+                attackPower = originalAttack;
+                UpdateCardDisplay();
+            }
+            else if (cardSO.moonPhase == MoonPhase.FirstQuarter)
+            {
+
+            }
+            else if (cardSO.moonPhase == MoonPhase.WaxingGibbous)
+            {
+                essenceCost = originalEssence;
+                UpdateCardDisplay();
+            }
+            else if (cardSO.moonPhase == MoonPhase.FullMoon)
+            {
+
+            }
+            else if (cardSO.moonPhase == MoonPhase.WaningGibbous)
+            {
+                //no effect
+            }
+            else if (cardSO.moonPhase == MoonPhase.LastQuarter)
+            {
+                
+            }
+            else if (cardSO.moonPhase == MoonPhase.FullMoon)
+            {
+
+            }
+            else if (cardSO.moonPhase == MoonPhase.WaningCrescent)
+            {
+                //no effect
+            }
+            else
+            {
+                Debug.Log("Eşleşen bir moon phase yok.");
+            }
+        }
+    }
+
+    public void StealHealth(int stealAmount)
+    {
+        Heal(stealAmount);
     }
 }

@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -716,8 +715,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
+      propertyPath: enemyEssence
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: playerHealth
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
+      propertyPath: playerEssence
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: playerFirstChance
@@ -1018,12 +1025,28 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
       propertyPath: enemyAIType
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
       propertyPath: startHandSize
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
+      propertyPath: deckToUse.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
+      propertyPath: deckToUse.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: dd4a4d73dbb02af4e8788f6eb269a274, type: 2}
+    - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
+      propertyPath: deckToUse.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 35583191ae9e696469026924218ec6b5, type: 2}
+    - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
+      propertyPath: deckToUse.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8c3cf27eb2ce1984ba4e19bf4a2f0baf, type: 2}
     - target: {fileID: 5748313443184183603, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
       propertyPath: m_Name
       value: Enemy Controller

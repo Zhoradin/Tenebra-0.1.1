@@ -18,7 +18,7 @@ public class MoonPhaseController : MonoBehaviour
 
     public MoonPhase currentMoonPhase;
 
-    public float transitionDuration = 1f; // Geçiþ süresi
+    public float transitionDuration = 1f;
 
     private void Start()
     {
@@ -64,11 +64,11 @@ public class MoonPhaseController : MonoBehaviour
     {
         if(BattleController.instance.moonPhaseCount == 0)
         {
-            BattleController.instance.currentMoonPhase = MoonPhase.NewMoon;
+            BattleController.instance.currentMoonPhase = MoonPhase.WaningCrescent;
         }
         else if(BattleController.instance.moonPhaseCount <= 3)
         {
-            BattleController.instance.currentMoonPhase = MoonPhase.WaxingCrescent;
+            BattleController.instance.currentMoonPhase = MoonPhase.WaningCrescent;
         }
         else if(BattleController.instance.moonPhaseCount == 4)
         {
