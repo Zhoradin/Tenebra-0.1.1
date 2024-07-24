@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -729,11 +728,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: playerFirstChance
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: cardsToDrawPerTurn
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4019797948704510020, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1090,7 +1089,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
       propertyPath: startHandSize
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1127374941106666591, guid: 2065fb353a1c70c4f88b689598eeb096, type: 3}
       propertyPath: deckToUse.Array.size

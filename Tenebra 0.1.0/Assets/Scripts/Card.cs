@@ -384,6 +384,16 @@ public class Card : MonoBehaviour
         glassCannon = true;
     }
 
+    private void Mend()
+    {
+        mend = true;
+    }
+
+    private void Leech()
+    {
+        leech = true;
+    }
+
     public IEnumerator QuickAttackCoroutine()
     {
         quickAttack = true;
@@ -509,20 +519,4 @@ public class Card : MonoBehaviour
     {
         Heal(stealAmount);
     }
-
-    private void GlassCannon()
-    {
-        glassCannon = true;
-    }
-
-    private void Mend()
-    {
-        mend = true;
-    }
-
-    private void Leech()
-    {
-        leech = true;
-    }
-
 }
