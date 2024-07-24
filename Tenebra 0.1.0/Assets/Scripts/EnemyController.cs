@@ -293,6 +293,10 @@ public class EnemyController : MonoBehaviour
 
         Card.instance.ActivateAbility();
         Card.instance.isActive = true;
+        if (Card.instance.instaKill == true)
+        {
+            StartCoroutine(Card.instance.QuickAttackCoroutine());
+        }
         Card.instance.CheckMoonPhase();
 
         cardsInHand.Remove(cardSO);
