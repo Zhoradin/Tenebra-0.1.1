@@ -57,12 +57,8 @@ public class Card : MonoBehaviour
     public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f);
     public Vector3 selectedScale = new Vector3(1.2f, 1.2f, 1f);
 
-    public bool direchHit = false;
-    public bool doubleTap = false;
-    public bool quickAttack = false;
-    public bool glassCannon = false;
-    public bool mend = false;
-    public bool leech = false;
+    [HideInInspector]
+    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, multipleHit, mend, leech = false;
 
     // Start is called before the first frame update
     void Start()
@@ -156,6 +152,11 @@ public class Card : MonoBehaviour
                             theHC.RemoveCardFromHand(this);
 
                             ActivateAbility();
+
+                            if(instaKill == true)
+                            {
+                                StartCoroutine(QuickAttackCoroutine());
+                            }
 
                             BattleController.instance.SpendPlayerEssence(essenceCost);
 
@@ -271,7 +272,10 @@ public class Card : MonoBehaviour
 
             assignedPlace.activeCard = null;
 
-            DiscardPileController.instance.AddToDiscardPile(cardSO);
+            if (isPlayer)
+            {
+                DiscardPileController.instance.AddToDiscardPile(cardSO);
+            }
 
             StartCoroutine(WaitJumpAfterDeadCo());
         }
@@ -367,7 +371,7 @@ public class Card : MonoBehaviour
 
     private void DirectHit()
     {
-        direchHit = true;
+        directHit = true;
     }
 
     private void DoubleTap()
@@ -375,7 +379,12 @@ public class Card : MonoBehaviour
         doubleTap = true;
     }
 
-    private IEnumerator QuickAttackCoroutine()
+    private void GlassCannon()
+    {
+        glassCannon = true;
+    }
+
+    public IEnumerator QuickAttackCoroutine()
     {
         quickAttack = true;
         yield return new WaitForSeconds(0.5f);
@@ -401,22 +410,25 @@ public class Card : MonoBehaviour
             }
             else if (cardSO.moonPhase == MoonPhase.WaxingCrescent)
             {
+                //increase health and attackPower by .33
                 currentHealth += Mathf.RoundToInt(currentHealth * .33f);
                 attackPower += Mathf.RoundToInt(attackPower * .33f);
                 UpdateCardDisplay();
             }
             else if (cardSO.moonPhase == MoonPhase.FirstQuarter)
             {
-
+                //insta kill
+                instaKill = true;
             }
             else if (cardSO.moonPhase == MoonPhase.WaxingGibbous)
             {
+                //decrease essence cost to half
                 essenceCost /= 2;
                 UpdateCardDisplay();
             }
             else if (cardSO.moonPhase == MoonPhase.FullMoon)
             {
-
+                //reflect the damage
             }
             else if (cardSO.moonPhase == MoonPhase.WaningGibbous)
             {
@@ -435,11 +447,8 @@ public class Card : MonoBehaviour
             }
             else if (cardSO.moonPhase == MoonPhase.LastQuarter)
             {
-
-            }
-            else if (cardSO.moonPhase == MoonPhase.FullMoon)
-            {
-
+                //attack 3 opponents
+                multipleHit = true;
             }
             else if (cardSO.moonPhase == MoonPhase.WaningCrescent)
             {
@@ -458,13 +467,15 @@ public class Card : MonoBehaviour
             }
             else if (cardSO.moonPhase == MoonPhase.WaxingCrescent)
             {
+                //convert health and attack to its original
                 currentHealth = originalHealth;
                 attackPower = originalAttack;
                 UpdateCardDisplay();
             }
             else if (cardSO.moonPhase == MoonPhase.FirstQuarter)
             {
-
+                //no effect
+                instaKill = false;
             }
             else if (cardSO.moonPhase == MoonPhase.WaxingGibbous)
             {
@@ -473,7 +484,7 @@ public class Card : MonoBehaviour
             }
             else if (cardSO.moonPhase == MoonPhase.FullMoon)
             {
-
+                //no effect
             }
             else if (cardSO.moonPhase == MoonPhase.WaningGibbous)
             {
@@ -481,11 +492,7 @@ public class Card : MonoBehaviour
             }
             else if (cardSO.moonPhase == MoonPhase.LastQuarter)
             {
-                
-            }
-            else if (cardSO.moonPhase == MoonPhase.FullMoon)
-            {
-
+                multipleHit = false;
             }
             else if (cardSO.moonPhase == MoonPhase.WaningCrescent)
             {
