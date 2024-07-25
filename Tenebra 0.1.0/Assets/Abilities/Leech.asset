@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityType: 6
   value: 0
-  description: Steals life to heal overall health of the user
+  description: Absorbs the taken damage and add to overall health
