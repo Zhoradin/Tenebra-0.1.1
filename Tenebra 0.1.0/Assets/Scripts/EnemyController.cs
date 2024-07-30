@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class EnemyController : MonoBehaviour
     {
         instance = this;
     }
+
+    public EnemySO enemySO;
 
     public List<CardSO> deckToUse = new List<CardSO>();
     private List<CardSO> activeCards = new List<CardSO>();
@@ -23,15 +26,28 @@ public class EnemyController : MonoBehaviour
     private List<CardSO> cardsInHand = new List<CardSO>();
     public int startHandSize;
 
+    [HideInInspector]
+    public int enemyHealth;
+    public Image enemyImage;
+
     // Start is called before the first frame update
     void Start()
     {
+        if (enemySO != null)
+        {
+            deckToUse = new List<CardSO>(enemySO.deckToUse);
+            enemyHealth = enemySO.enemyHealth;
+            BattleController.instance.SetEnemyHealth();
+        }
+
         SetupDeck();
 
         if (enemyAIType != AIType.placeFromDeck)
         {
             SetupHand();
         }
+
+        enemyImage.sprite = enemySO.enemySprite;
     }
 
     // Update is called once per frame
@@ -301,7 +317,7 @@ public class EnemyController : MonoBehaviour
 
         cardsInHand.Remove(cardSO);
 
-        BattleController.instance.SpendEnemyEssence(cardSO.essenceCost); 
+        BattleController.instance.SpendEnemyEssence(cardSO.essenceCost);
     }
 
     CardSO SelectedCardToPlay()

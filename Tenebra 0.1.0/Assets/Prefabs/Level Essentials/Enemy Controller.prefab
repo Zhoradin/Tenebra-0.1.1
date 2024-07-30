@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57ecaf6a67761d49be919d6ca03de7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemySO: {fileID: 0}
   deckToUse:
   - {fileID: 11400000, guid: 219e780c88339b74f82a694e22647bfc, type: 2}
   - {fileID: 11400000, guid: dd4a4d73dbb02af4e8788f6eb269a274, type: 2}
@@ -85,3 +86,5 @@ MonoBehaviour:
   cardSpawnPoint: {fileID: 3338439421060587878}
   enemyAIType: 3
   startHandSize: 5
+  enemyHealth: 0
+  enemyImage: {fileID: 0}
