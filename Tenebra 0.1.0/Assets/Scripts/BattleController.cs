@@ -74,6 +74,12 @@ public class BattleController : MonoBehaviour
         }
     }
 
+    public void SetEnemyHealth()
+    {
+        enemyHealth = EnemyController.instance.enemyHealth;
+        UIController.instance.SetEnemyHealthText(EnemyController.instance.enemyHealth);
+    }
+
     public void SetupActiveCards()
     {
         playerCardPoints = CardPointsController.instance.playerCardPoints;

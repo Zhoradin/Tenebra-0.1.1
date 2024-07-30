@@ -78,14 +78,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingEssenceAmount: 4
   maxEssence: 12
-  playerEssence: 0
-  enemyEssence: 0
+  playerEssence: 4
+  enemyEssence: 4
   startingCardsAmount: 5
   cardsToDrawPerTurn: 5
   currentPhase: 0
+  currentMoonPhase: 0
+  moonPhaseCount: 0
   discardPoint: {fileID: 8420260223434285748}
   playerHealth: 100
   enemyHealth: 100
   battleEnded: 0
   resultScreenDelayTime: 1
   playerFirstChance: 0
+  playerCardPoints: []
+  enemyCardPoints: []

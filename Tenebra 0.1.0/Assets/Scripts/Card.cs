@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Text;
 
 public class Card : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class Card : MonoBehaviour
 
     private int originalHealth, originalAttack, originalEssence;
 
-    public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo;
+    public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo, superEffectiveText, notEffectiveText;
 
     public Image characterArt, bgArt, moonPhaseArt;
 
@@ -118,7 +119,9 @@ public class Card : MonoBehaviour
             mousePosition.z = Camera.main.nearClipPlane;
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
             worldPosition.z = 0; // Ensure the card stays on the same z-plane
-            MoveToPoint(worldPosition + new Vector3(0f, 2f, -4f), Quaternion.identity); // Hareket ederken rotasyonu s�f�rlar
+            MoveToPoint(worldPosition + new Vector3(0f, 2f, -4f), Quaternion.identity); // Resets rotation while moving
+
+            CheckForSuperEffectiveText();
 
             if (Input.GetMouseButtonDown(1) && BattleController.instance.battleEnded == false)
             {
@@ -153,7 +156,7 @@ public class Card : MonoBehaviour
 
                             ActivateAbility();
 
-                            if(instaKill == true)
+                            if (instaKill == true)
                             {
                                 StartCoroutine(QuickAttackCoroutine());
                             }
@@ -186,12 +189,73 @@ public class Card : MonoBehaviour
         }
 
         transform.position = Vector3.Lerp(transform.position, targetPoint, moveSpeed * Time.deltaTime);
-        float currentRotateSpeed = isSelected || returningToHand ? selectedRotateSpeed : rotateSpeed; // Se�ildi�inde veya ele d�nerken farkl� rotation h�z� kullan
+        float currentRotateSpeed = isSelected || returningToHand ? selectedRotateSpeed : rotateSpeed; // Seçildiğinde veya ele dönerken farklı rotation hızı kullan
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, currentRotateSpeed * Time.deltaTime);
         transform.localScale = Vector3.Lerp(transform.localScale, targetScale, scaleSpeed * Time.deltaTime);
 
         justPressed = false;
     }
+
+    private void CheckForSuperEffectiveText()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, whatIsPlacement);
+
+        if (hit.collider != null)
+        {
+            CardPlacePoint selectedPoint = hit.collider.GetComponent<CardPlacePoint>();
+            if (selectedPoint != null)
+            {
+                int index = System.Array.IndexOf(CardPointsController.instance.playerCardPoints, selectedPoint);
+                if (index >= 0 && index < CardPointsController.instance.enemyCardPoints.Length)
+                {
+                    if (CardPointsController.instance.enemyCardPoints[index] != null && CardPointsController.instance.enemyCardPoints[index].activeCard != null)
+                    {
+                        float effectiveness = TypeEffectiveness.GetEffectiveness(cardType, CardPointsController.instance.enemyCardPoints[index].activeCard.cardType);
+                        float result = attackPower * effectiveness;
+                        float final = result - attackPower;
+                        Debug.Log(effectiveness);
+                        if (effectiveness == 2)
+                        {
+                            superEffectiveText.text = "+" + Mathf.RoundToInt(final).ToString();
+                            superEffectiveText.gameObject.SetActive(true);
+                        }
+                        else if (effectiveness == .5f)
+                        {
+                            notEffectiveText.text = Mathf.RoundToInt(final).ToString();
+                            notEffectiveText.gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            superEffectiveText.gameObject.SetActive(false);
+                            notEffectiveText.gameObject.SetActive(false);
+                        }
+                    }
+                    else
+                    {
+                        superEffectiveText.gameObject.SetActive(false);
+                        notEffectiveText.gameObject.SetActive(false);
+                    }
+                }
+                else
+                {
+                    superEffectiveText.gameObject.SetActive(false);
+                    notEffectiveText.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                superEffectiveText.gameObject.SetActive(false);
+                notEffectiveText.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            superEffectiveText.gameObject.SetActive(false);
+            notEffectiveText.gameObject.SetActive(false);
+        }
+    }
+
 
     public void MoveToPoint(Vector3 pointToMoveTo, Quaternion rotToMatch)
     {
@@ -210,6 +274,11 @@ public class Card : MonoBehaviour
                 MoveToPoint(hoverPosition, targetRot);
             }
 
+            if (isActive)
+            {
+                CheckForSuperEffectiveText();
+            }
+
             if (Time.timeScale != 0f && cardSO.abilities.Length > 0)
             {
                 abilityDescription.SetActive(true);
@@ -221,6 +290,8 @@ public class Card : MonoBehaviour
             }
         }
     }
+
+
     private void OnMouseExit()
     {
         if ((inHand && !isActive) && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
@@ -238,6 +309,9 @@ public class Card : MonoBehaviour
             abilityDescription.SetActive(false);
             abilityDescriptionToo.SetActive(false);
         }
+
+        superEffectiveText.gameObject.SetActive(false);
+        notEffectiveText.gameObject.SetActive(false);
     }
 
     private void OnMouseDown()
@@ -352,14 +426,35 @@ public class Card : MonoBehaviour
     {
         if (cardSO.abilities.Length > 0)
         {
-            abilityDescriptionText.text = cardSO.abilities[0].abilityType + "\n" + cardSO.abilities[0].description;
+            abilityDescriptionText.text = AddSpacesToAbilityName(cardSO.abilities[0].abilityType.ToString()) + "\n" + cardSO.abilities[0].description;
 
             if (cardSO.abilities.Length > 1)
             {
-                abilityDescriptionTextToo.text = cardSO.abilities[1].abilityType + "\n" + cardSO.abilities[1].description;
+                abilityDescriptionTextToo.text = AddSpacesToAbilityName(cardSO.abilities[1].abilityType.ToString()) + "\n" + cardSO.abilities[1].description;
             }
         }
     }
+
+    private string AddSpacesToAbilityName(string abilityName)
+    {
+        if (string.IsNullOrEmpty(abilityName))
+            return "";
+
+        StringBuilder newAbilityName = new StringBuilder();
+        newAbilityName.Append(abilityName[0]);
+
+        for (int i = 1; i < abilityName.Length; i++)
+        {
+            if (char.IsUpper(abilityName[i]) && abilityName[i - 1] != ' ')
+            {
+                newAbilityName.Append(' ');
+            }
+            newAbilityName.Append(abilityName[i]);
+        }
+
+        return newAbilityName.ToString();
+    }
+
 
     private void Heal(int healAmount)
     {
