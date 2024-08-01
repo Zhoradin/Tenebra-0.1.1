@@ -560,6 +560,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
+      propertyPath: playerFirstChance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
+      propertyPath: cardsToDrawPerTurn
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960611633036151820, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
+      propertyPath: startingCardsAmount
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4019797948704510020, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -735,9 +747,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1212646246958327586, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2885808032650653460, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
       propertyPath: m_Name
       value: Card Points Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188813410235885622, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3637681998898669139, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4346181572385941948, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 8561523123564238825, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -832,9 +860,65 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5017210442921389406, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017210442921389406, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017210442921389406, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9961947
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017210442921389406, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.08715578
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017210442921389406, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5807513293055565791, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
       propertyPath: m_Name
       value: Hand Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291910520922546009, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291910520922546009, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291910520922546009, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9961947
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291910520922546009, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.08715578
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291910520922546009, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340963841946973868, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: spacing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340963841946973868, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: maxSpacing
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340963841946973868, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: minSpacing
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340963841946973868, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
+      propertyPath: curveHeight
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
