@@ -272,6 +272,7 @@ public class Card : MonoBehaviour
             {
                 Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
                 MoveToPoint(hoverPosition, targetRot);
+                theHC.SpreadCards(handPosition, 1f);
             }
 
             if (isActive)
@@ -301,6 +302,8 @@ public class Card : MonoBehaviour
 
             abilityDescription.SetActive(false);
             abilityDescriptionToo.SetActive(false);
+
+            theHC.ResetCardPositions();
         }
         else if (isActive && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {

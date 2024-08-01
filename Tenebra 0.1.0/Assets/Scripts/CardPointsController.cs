@@ -91,7 +91,6 @@ public class CardPointsController : MonoBehaviour
                         float damage = playerCardPoints[i].activeCard.attackPower * effectiveness;
                         Debug.Log("Effectiveness: " + effectiveness);
 
-
                         if (enemyCardPoints[targetIndex].activeCard.cardSO.moonPhase == BattleController.instance.currentMoonPhase && enemyCardPoints[targetIndex].activeCard.cardSO.moonPhase == MoonPhase.FullMoon)
                         {
                             enemyCardPoints[targetIndex].activeCard.DamageCard(0);
@@ -99,12 +98,12 @@ public class CardPointsController : MonoBehaviour
                         }
                         else
                         {
-                            if (enemyCardPoints[i].activeCard != null && enemyCardPoints[i].activeCard.mend == true)
+                            if (enemyCardPoints[targetIndex].activeCard != null && enemyCardPoints[targetIndex].activeCard.mend == true)
                             {
-                                enemyCardPoints[i].activeCard.currentHealth += Mathf.RoundToInt(damage / 2);
-                                enemyCardPoints[i].activeCard.UpdateCardDisplay();
+                                enemyCardPoints[targetIndex].activeCard.currentHealth += Mathf.RoundToInt(damage / 2);
+                                enemyCardPoints[targetIndex].activeCard.UpdateCardDisplay();
                             }
-                            if (enemyCardPoints[i].activeCard != null && enemyCardPoints[i].activeCard.leech == true)
+                            if (enemyCardPoints[targetIndex].activeCard != null && enemyCardPoints[targetIndex].activeCard.leech == true)
                             {
                                 BattleController.instance.enemyHealth += Mathf.RoundToInt(damage);
                                 UIController.instance.SetEnemyHealthText(BattleController.instance.enemyHealth);
@@ -132,15 +131,12 @@ public class CardPointsController : MonoBehaviour
 
                         playerCardPoints[i].activeCard.anim.SetTrigger("Attack");
                         yield return new WaitForSeconds(0.5f);
-                    }
 
-                    if (enemyCardPoints[i].activeCard == null && playerCardPoints[i].activeCard.multipleHit == false)
-                    {
-                        // Attack the enemy's overall health
-                        BattleController.instance.DamageEnemy(playerCardPoints[i].activeCard.attackPower);
-                        playerCardPoints[i].activeCard.anim.SetTrigger("Attack");
-                        yield return new WaitForSeconds(0.5f);
-                        playerCardPoints[i].activeCard.directHit = false;
+                        // Check if the target card is dead
+                        if (enemyCardPoints[targetIndex].activeCard == null)
+                        {
+                            break; // Exit the loop if the target card is dead
+                        }
                     }
 
                     yield return new WaitForSeconds(timeBetweenAttacks);

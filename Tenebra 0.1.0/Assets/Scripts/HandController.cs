@@ -17,6 +17,8 @@ public class HandController : MonoBehaviour
     public List<Vector3> cardPositions = new List<Vector3>();
     public List<Quaternion> cardRotations = new List<Quaternion>();
     public float curveHeight = 2f; // Kartlarýn y eksenindeki þiþkinlik miktarý
+    public float maxSpacing = 2f; // Maksimum kartlar arasýndaki mesafe, Inspector'da ayarlanabilir
+    public float minSpacing = 0.5f; // Minimum kartlar arasýndaki mesafe, Inspector'da ayarlanabilir
 
     // Start is called before the first frame update
     void Start()
@@ -35,10 +37,10 @@ public class HandController : MonoBehaviour
         cardPositions.Clear();
         cardRotations.Clear();
 
-        Vector3 distanceBetweenPoints = Vector3.zero;
+        float spacing = maxSpacing;
         if (heldCards.Count > 1)
         {
-            distanceBetweenPoints = (maxPos.position - minPos.position) / (heldCards.Count - 1);
+            spacing = Mathf.Lerp(maxSpacing, minSpacing, (float)(heldCards.Count - 1) / (heldCards.Count));
         }
 
         Vector3 midpoint = (minPos.position + maxPos.position) / 2;
@@ -46,7 +48,11 @@ public class HandController : MonoBehaviour
         for (int i = 0; i < heldCards.Count; i++)
         {
             float t = heldCards.Count > 1 ? (float)i / (heldCards.Count - 1) : 0.5f;
-            Vector3 straightPosition = minPos.position + (distanceBetweenPoints * i);
+            Vector3 straightPosition = midpoint + new Vector3((i - (heldCards.Count - 1) / 2f) * spacing, 0, 0);
+
+            // Kenar kartlar minPos ve maxPos'a göre z konumunu alacak
+            float zPos = Mathf.Lerp(minPos.position.z, maxPos.position.z, t);
+            straightPosition.z = zPos;
 
             // Create a parabolic curve
             float parabolicOffset = curveHeight * Mathf.Sin(t * Mathf.PI);
@@ -63,6 +69,31 @@ public class HandController : MonoBehaviour
             heldCards[i].handPosition = i;
         }
     }
+
+    public void SpreadCards(int hoveredIndex, float spreadAmount)
+    {
+        for (int i = 0; i < heldCards.Count; i++)
+        {
+            if (i == hoveredIndex)
+            {
+                // Kartýn pozisyonunu deðiþtirme
+                continue;
+            }
+
+            float offset = (i < hoveredIndex) ? -spreadAmount : spreadAmount;
+            Vector3 newPosition = cardPositions[i] + new Vector3(offset, 0, 0);
+            heldCards[i].MoveToPoint(newPosition, cardRotations[i]);
+        }
+    }
+
+    public void ResetCardPositions()
+    {
+        for (int i = 0; i < heldCards.Count; i++)
+        {
+            heldCards[i].MoveToPoint(cardPositions[i], cardRotations[i]);
+        }
+    }
+
 
     public void RemoveCardFromHand(Card cardToRemove)
     {
