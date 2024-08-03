@@ -127,7 +127,7 @@ public class MoonPhaseController : MonoBehaviour
         else if (BattleController.instance.moonPhaseCount == 4)
         {
             BattleController.instance.currentMoonPhase = MoonPhase.FirstQuarter;
-            moonPhaseTillNextRound = 1; // Example value
+            moonPhaseTillNextRound = 1;
         }
         else if (BattleController.instance.moonPhaseCount <= 7)
         {
@@ -147,7 +147,7 @@ public class MoonPhaseController : MonoBehaviour
         else if (BattleController.instance.moonPhaseCount == 12)
         {
             BattleController.instance.currentMoonPhase = MoonPhase.LastQuarter;
-            moonPhaseTillNextRound = 1; // Example value
+            moonPhaseTillNextRound = 1;
         }
         else if (BattleController.instance.moonPhaseCount <= 15)
         {
