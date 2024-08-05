@@ -90,6 +90,6 @@ MonoBehaviour:
   enemyHealth: 100
   battleEnded: 0
   resultScreenDelayTime: 1
-  playerFirstChance: 0
+  playerFirstChance: 1
   playerCardPoints: []
   enemyCardPoints: []

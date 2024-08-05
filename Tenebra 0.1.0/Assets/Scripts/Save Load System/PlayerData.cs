@@ -3,11 +3,12 @@
 [System.Serializable]
 public class PlayerData
 {
-    public List<CardSO> deck;    // Oyuncunun kart destesi
-    public List<ItemSO> items;   // Oyuncunun sahip oldu�u itemler
-    public int health;           // Oyuncunun can�
-    public int essence;          // Oyuncunun essence miktar�
-    public int money;            // Oyuncunun paras�
+    public List<CardSO> deck;       // Oyuncunun kart destesi
+    public List<ItemSO> items;      // Oyuncunun sahip olduğu itemler
+    public int health;              // Oyuncunun canı
+    public int essence;             // Oyuncunun essence miktarı
+    public int money;               // Oyuncunun parası
+    public string currentSceneName; // Oyuncunun en son bulunduğu sahne
 
     public PlayerData()
     {
@@ -16,5 +17,6 @@ public class PlayerData
         health = 100;
         essence = 4;
         money = 0;
+        currentSceneName = "";
     }
 }

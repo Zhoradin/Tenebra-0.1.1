@@ -335,6 +335,8 @@ public class BattleController : MonoBehaviour, IDataPersistence
     {
         playerHealth = data.health;
         playerEssence = data.essence;
+        UIController.instance.SetPlayerEssenceText(playerEssence);
+        UIController.instance.SetEnemyHealthText(playerHealth);
         // Daha fazla veri y�kleme i�lemi burada yap�labilir
     }
 
