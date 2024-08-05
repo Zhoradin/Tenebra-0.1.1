@@ -1,9 +1,9 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleController : MonoBehaviour
+public class BattleController : MonoBehaviour, IDataPersistence
 {
     public static BattleController instance;
 
@@ -44,7 +44,7 @@ public class BattleController : MonoBehaviour
         FillPlayerEssence();
         FillEnemyEssence();
 
-        if(currentPhase == TurnOrder.enemyActive)
+        if (currentPhase == TurnOrder.enemyActive)
         {
             DeckController.instance.DrawMultipleCards(startingCardsAmount);
         }
@@ -130,7 +130,7 @@ public class BattleController : MonoBehaviour
 
     public void EnemyGainEssence(int essenceAmount)
     {
-        Debug.Log("arttý");
+        Debug.Log("arttï¿½");
         enemyEssence += essenceAmount;
         UIController.instance.SetEnemyEssenceText(enemyEssence);
     }
@@ -307,7 +307,7 @@ public class BattleController : MonoBehaviour
             }
 
             StartCoroutine(ShowResultsCo());
-        }        
+        }
     }
 
     public IEnumerator ShowResultsCo()
@@ -329,5 +329,19 @@ public class BattleController : MonoBehaviour
         UIController.instance.coins.SetActive(false);
 
         UIController.instance.battleEndedScreen.SetActive(true);
+    }
+
+    public void LoadData(PlayerData data)
+    {
+        playerHealth = data.health;
+        playerEssence = data.essence;
+        // Daha fazla veri yï¿½kleme iï¿½lemi burada yapï¿½labilir
+    }
+
+    public void SaveData(PlayerData data)
+    {
+        data.health = playerHealth;
+        data.essence = playerEssence;
+        // Daha fazla veri kaydetme iï¿½lemi burada yapï¿½labilir
     }
 }

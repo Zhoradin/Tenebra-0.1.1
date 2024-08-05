@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -28,7 +29,7 @@ public class UIController : MonoBehaviour
 
     public string mainMenuScene, battleSelectScene;
 
-    public GameObject pauseScreen;
+    public GameObject pauseScreen, areYouSurePanel;
 
     public GameObject drawPilePanel, discardPilePanel;
     public bool drawPileOpen, discardPileOpen = false;
@@ -106,6 +107,26 @@ public class UIController : MonoBehaviour
     }
 
     public void MainMenu()
+    {
+        if (areYouSurePanel.activeSelf == false)
+        {
+            areYouSurePanel.SetActive(true);
+        }
+        else
+        {
+            areYouSurePanel.SetActive(false);
+        }
+        Time.timeScale = 1f;
+    }
+
+    public void MainMenuYes()
+    {
+        SceneManager.LoadScene(mainMenuScene);
+        FindObjectOfType<GameController>().SaveGame();
+        Time.timeScale = 1f;
+    }
+
+    public void MainMenuNo()
     {
         SceneManager.LoadScene(mainMenuScene);
         Time.timeScale = 1f;
@@ -194,5 +215,15 @@ public class UIController : MonoBehaviour
     private void UpdateCoinAmountText()
     {
         coinAmountText.text = coinAmount.ToString();
+    }
+
+    public void OnSaveButtonClick()
+    {
+        FindObjectOfType<GameController>().SaveGame();
+    }
+
+    public void OnLoadButtonClick()
+    {
+        FindObjectOfType<GameController>().LoadGame();
     }
 }
