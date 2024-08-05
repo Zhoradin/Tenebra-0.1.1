@@ -19,13 +19,6 @@ public class DrawPileController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Kart listesini doðru þekilde temizleyip yeniden ekleme iþlemi yapýyoruz.
-        InitializeDrawPile();
-    }
-
-    public void InitializeDrawPile()
-    {
-        drawPile.Clear();
         drawPile.AddRange(DeckController.instance.deckToUse);
         CreateDrawPileCardSlots();
     }
