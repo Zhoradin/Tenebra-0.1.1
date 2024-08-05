@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleController : MonoBehaviour
+public class BattleController : MonoBehaviour, IDataPersistence
 {
     public static BattleController instance;
 
@@ -329,5 +329,19 @@ public class BattleController : MonoBehaviour
         UIController.instance.coins.SetActive(false);
 
         UIController.instance.battleEndedScreen.SetActive(true);
+    }
+
+    public void LoadData(PlayerData data)
+    {
+        playerHealth = data.health;
+        playerEssence = data.essence;
+        // Daha fazla veri yükleme iþlemi burada yapýlabilir
+    }
+
+    public void SaveData(PlayerData data)
+    {
+        data.health = playerHealth;
+        data.essence = playerEssence;
+        // Daha fazla veri kaydetme iþlemi burada yapýlabilir
     }
 }

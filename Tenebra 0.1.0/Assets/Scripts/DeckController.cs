@@ -23,17 +23,20 @@ public class DeckController : MonoBehaviour
 
     void Start()
     {
-        
+        // Oyunun başlangıcında drawDeck listesini başlatıyoruz
+        InitializeDrawDeck();
     }
 
     private void Update()
     {
-        
+
     }
 
     public void InitializeDrawDeck()
     {
-        drawDeck = new List<CardSO>(deckToUse);
+        // drawDeck listesini temizleyip deckToUse listesinden kart ekliyoruz
+        drawDeck.Clear();
+        drawDeck.AddRange(deckToUse);
         UIController.instance.ShowDrawPileCount();
         UIController.instance.ShowDiscardPileCount();
     }
@@ -76,7 +79,7 @@ public class DeckController : MonoBehaviour
         {
             DrawCardToHand();
             BattleController.instance.SpendPlayerEssence(drawCardCost);
-            if(drawDeck.Count == 0)
+            if (drawDeck.Count == 0)
             {
                 DiscardPileController.instance.DiscardToDraw();
                 DrawDeckRedeck();
@@ -109,4 +112,16 @@ public class DeckController : MonoBehaviour
             }
         }
     }
+    /*
+    public void LoadData(PlayerData data)
+    {
+        deckToUse.Clear();
+        deckToUse.AddRange(data.deck);
+    }
+
+    public void SaveData(PlayerData data)
+    {
+        data.deck.Clear();
+        data.deck.AddRange(deckToUse);
+    }*/
 }
