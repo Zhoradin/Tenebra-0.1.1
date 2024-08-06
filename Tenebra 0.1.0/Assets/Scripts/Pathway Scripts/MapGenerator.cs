@@ -98,22 +98,6 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void ConnectToNearbyRooms(Room room, int nextFloor)
-    {
-        List<Room> possibleConnections = new List<Room>();
-        for (int dx = -1; dx <= 1; dx++)
-        {
-            int nx = room.X + dx;
-            if (nx >= 0 && nx < width)
-            {
-                possibleConnections.Add(grid[nx, nextFloor]);
-            }
-        }
-
-        Room nextRoom = possibleConnections[random.Next(possibleConnections.Count)];
-        room.Connect(nextRoom);
-    }
-
     private void ConnectToNextFloor(Room room, int currentFloor)
     {
         if (currentFloor >= height - 1)
@@ -220,9 +204,9 @@ public class MapGenerator : MonoBehaviour
             Room bossRoom = grid[width / 2, height - 1];
             if (bossRoom != null)
             {
-                Vector3 position = new Vector3(bossRoom.X, bossRoom.Y, 0);
+                Vector3 position = new Vector3(bossRoom.X, bossRoom.Y + 1, 0);
                 Gizmos.color = GetColorForRoomType(bossRoom.RoomType);
-                Gizmos.DrawSphere(position, 0.2f);
+                Gizmos.DrawSphere(position, 0.4f);
             }
         }
     }
