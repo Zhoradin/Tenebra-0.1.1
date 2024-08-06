@@ -168,6 +168,16 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: d898a4fad93be7046bedd56dfc28786e, type: 3}
   - roomType: 2
     sprite: {fileID: 21300000, guid: e504ad5fb7d49384c87feae625e1e70f, type: 3}
+  - roomType: 3
+    sprite: {fileID: 21300000, guid: f972962ee1934044b872ab2d7cd61415, type: 3}
+  - roomType: 4
+    sprite: {fileID: 21300000, guid: bf29c5cb7dfd861448a69b50a9a3125e, type: 3}
+  - roomType: 5
+    sprite: {fileID: 21300000, guid: f3e69ffbfdbd8fd45bd1cc31ac0e8945, type: 3}
+  - roomType: 6
+    sprite: {fileID: 21300000, guid: e8d4dd50ac916ed4d9cded516dcb1351, type: 3}
+  - roomType: 7
+    sprite: {fileID: 21300000, guid: f4d452a7d9b8cfe4197f54b721009ef0, type: 3}
   showNullSpheres: 0
 --- !u!4 &337811194
 Transform:
