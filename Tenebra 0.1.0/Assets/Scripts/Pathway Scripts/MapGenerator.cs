@@ -55,7 +55,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color bossColor = Color.black;
     [SerializeField] private Color defaultColor = Color.white;
 
-    [SerializeField] private bool showNullSpheres = true;
+    [SerializeField] private bool showNullSpheres = false;
 
     private Room[,] grid;
     private System.Random random = new System.Random();
