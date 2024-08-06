@@ -151,6 +151,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17deb89cb7d9acf4da19d8293d6449e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 7
+  height: 15
+  minPaths: 3
+  maxPaths: 4
+  monsterColor: {r: 1, g: 0, b: 0, a: 1}
+  eventColor: {r: 0, g: 0, b: 1, a: 1}
+  eliteMonsterColor: {r: 1, g: 0, b: 1, a: 1}
+  restSiteColor: {r: 0, g: 1, b: 0, a: 1}
+  merchantColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  treasureColor: {r: 0, g: 1, b: 1, a: 1}
+  bossColor: {r: 0, g: 0, b: 0, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &337811194
 Transform:
   m_ObjectHideFlags: 0
@@ -160,7 +172,7 @@ Transform:
   m_GameObject: {fileID: 337811192}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.6615005, y: 1.1926712, z: 0.047733013}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

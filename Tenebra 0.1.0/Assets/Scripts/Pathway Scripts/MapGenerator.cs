@@ -43,6 +43,18 @@ public class MapGenerator : MonoBehaviour
 {
     [SerializeField] private int width = 7;
     [SerializeField] private int height = 15;
+    [SerializeField] private int minPaths = 3;
+    [SerializeField] private int maxPaths = 4;
+
+    [SerializeField] private Color monsterColor = Color.red;
+    [SerializeField] private Color eventColor = Color.blue;
+    [SerializeField] private Color eliteMonsterColor = Color.magenta;
+    [SerializeField] private Color restSiteColor = Color.green;
+    [SerializeField] private Color merchantColor = Color.yellow;
+    [SerializeField] private Color treasureColor = Color.cyan;
+    [SerializeField] private Color bossColor = Color.black;
+    [SerializeField] private Color defaultColor = Color.white;
+
     private Room[,] grid;
     private System.Random random = new System.Random();
 
@@ -66,29 +78,40 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        // Connect rooms
-        for (int y = 0; y < height - 1; y++)
+        // Generate starting paths
+        int pathCount = random.Next(minPaths, maxPaths + 1);
+        List<Room> startingRooms = new List<Room>();
+        for (int i = 0; i < pathCount; i++)
         {
-            for (int x = 0; x < width; x++)
+            Room startRoom;
+            do
             {
-                if (grid[x, y] != null && grid[x, y + 1] != null)
-                {
-                    grid[x, y].Connect(grid[x, y + 1]);
-                }
+                startRoom = grid[random.Next(width), 0];
+            } while (startingRooms.Contains(startRoom));
+            startingRooms.Add(startRoom);
+        }
+
+        // Connect starting rooms to next floor
+        foreach (Room startRoom in startingRooms)
+        {
+            ConnectToNextFloor(startRoom, 0);
+        }
+    }
+
+    private void ConnectToNearbyRooms(Room room, int nextFloor)
+    {
+        List<Room> possibleConnections = new List<Room>();
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            int nx = room.X + dx;
+            if (nx >= 0 && nx < width)
+            {
+                possibleConnections.Add(grid[nx, nextFloor]);
             }
         }
 
-        // Ensure first two rooms are different
-        Room startRoom1 = grid[random.Next(width), 0];
-        Room startRoom2;
-        do
-        {
-            startRoom2 = grid[random.Next(width), 0];
-        } while (startRoom1 == startRoom2);
-
-        // Connect starting rooms to next floor
-        ConnectToNextFloor(startRoom1, 0);
-        ConnectToNextFloor(startRoom2, 0);
+        Room nextRoom = possibleConnections[random.Next(possibleConnections.Count)];
+        room.Connect(nextRoom);
     }
 
     private void ConnectToNextFloor(Room room, int currentFloor)
@@ -98,9 +121,13 @@ public class MapGenerator : MonoBehaviour
 
         int nextFloor = currentFloor + 1;
         List<Room> possibleConnections = new List<Room>();
-        for (int i = Math.Max(0, room.X - 1); i <= Math.Min(width - 1, room.X + 1); i++)
+        for (int dx = -1; dx <= 1; dx++)
         {
-            possibleConnections.Add(grid[i, nextFloor]);
+            int nx = room.X + dx;
+            if (nx >= 0 && nx < width)
+            {
+                possibleConnections.Add(grid[nx, nextFloor]);
+            }
         }
 
         Room nextRoom = possibleConnections[random.Next(possibleConnections.Count)];
@@ -186,20 +213,32 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+
+        // Draw boss room
+        if (grid != null && height > 0 && width > 0)
+        {
+            Room bossRoom = grid[width / 2, height - 1];
+            if (bossRoom != null)
+            {
+                Vector3 position = new Vector3(bossRoom.X, bossRoom.Y, 0);
+                Gizmos.color = GetColorForRoomType(bossRoom.RoomType);
+                Gizmos.DrawSphere(position, 0.2f);
+            }
+        }
     }
 
     private Color GetColorForRoomType(RoomType roomType)
     {
         switch (roomType)
         {
-            case RoomType.Monster: return Color.red;
-            case RoomType.Event: return Color.blue;
-            case RoomType.EliteMonster: return Color.magenta;
-            case RoomType.RestSite: return Color.green;
-            case RoomType.Merchant: return Color.yellow;
-            case RoomType.Treasure: return Color.cyan;
-            case RoomType.Boss: return Color.gray;
-            default: return Color.white;
+            case RoomType.Monster: return monsterColor;
+            case RoomType.Event: return eventColor;
+            case RoomType.EliteMonster: return eliteMonsterColor;
+            case RoomType.RestSite: return restSiteColor;
+            case RoomType.Merchant: return merchantColor;
+            case RoomType.Treasure: return treasureColor;
+            case RoomType.Boss: return bossColor;
+            default: return defaultColor;
         }
     }
 }
