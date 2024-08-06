@@ -56,6 +56,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color defaultColor = Color.white;
 
     private Room[,] grid;
+    private Room bossRoom;
     private System.Random random = new System.Random();
 
     void Start()
@@ -67,7 +68,7 @@ public class MapGenerator : MonoBehaviour
 
     private void GenerateMap()
     {
-        grid = new Room[width, height];
+        grid = new Room[width, height]; // Create the grid with the original height
 
         // Create rooms
         for (int x = 0; x < width; x++)
@@ -127,7 +128,7 @@ public class MapGenerator : MonoBehaviour
         foreach (Room room in GetRoomsOnFloor(14)) { room.RoomType = RoomType.RestSite; }
 
         // Randomly assign remaining rooms
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < height; y++) // Only iterate up to the original height
         {
             for (int x = 0; x < width; x++)
             {
@@ -153,9 +154,13 @@ public class MapGenerator : MonoBehaviour
 
     private void AllocateBossRoom()
     {
-        Room bossRoom = new Room(width / 2, height);
+        int bossRoomX = width / 2;
+        int bossRoomY = height; // Position boss room on the 16th floor
+
+        bossRoom = new Room(bossRoomX, bossRoomY); // Create the boss room separately
         bossRoom.RoomType = RoomType.Boss;
-        foreach (Room room in GetRoomsOnFloor(14))
+
+        foreach (Room room in GetRoomsOnFloor(height - 1)) // Connect from the 15th floor
         {
             room.Connect(bossRoom);
         }
@@ -178,12 +183,12 @@ public class MapGenerator : MonoBehaviour
     {
         if (grid == null) return;
 
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < height; y++) // Only iterate up to the original height
         {
             for (int x = 0; x < width; x++)
             {
                 Room room = grid[x, y];
-                if (room != null && room.RoomType != RoomType.None)
+                if (room != null)
                 {
                     Vector3 position = new Vector3(x, y, 0);
                     Gizmos.color = GetColorForRoomType(room.RoomType);
@@ -199,7 +204,6 @@ public class MapGenerator : MonoBehaviour
         }
 
         // Draw boss room
-        Room bossRoom = new Room(width / 2, height);
         if (bossRoom != null)
         {
             Vector3 position = new Vector3(bossRoom.X, bossRoom.Y, 0);
