@@ -163,6 +163,11 @@ MonoBehaviour:
   treasureColor: {r: 0, g: 1, b: 1, a: 1}
   bossColor: {r: 0, g: 0, b: 0, a: 1}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  roomTypeSprites:
+  - roomType: 1
+    sprite: {fileID: 21300000, guid: d898a4fad93be7046bedd56dfc28786e, type: 3}
+  - roomType: 2
+    sprite: {fileID: 21300000, guid: e504ad5fb7d49384c87feae625e1e70f, type: 3}
   showNullSpheres: 0
 --- !u!4 &337811194
 Transform:
