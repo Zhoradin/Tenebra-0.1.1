@@ -75,8 +75,8 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
         AssignRoomLocations();
         AllocateBossRoom();
-        AssignRoomSprites();
         RemoveUnconnectedRooms();
+        AssignRoomSprites();
     }
 
     private void GenerateMap()
@@ -191,25 +191,6 @@ public class MapGenerator : MonoBehaviour
         return rooms;
     }
 
-    private void AssignRoomSprites()
-    {
-        foreach (Room room in grid)
-        {
-            if (room != null)
-            {
-                RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == room.RoomType);
-                if (rts.sprite != null)
-                {
-                    GameObject roomObj = new GameObject($"Room_{room.X}_{room.Y}");
-                    roomObj.transform.position = new Vector3(room.X, room.Y, 0);
-                    SpriteRenderer sr = roomObj.AddComponent<SpriteRenderer>();
-                    sr.sprite = rts.sprite;
-                    room.SpriteRenderer = sr;
-                }
-            }
-        }
-    }
-
     private void RemoveUnconnectedRooms()
     {
         for (int y = 0; y < height; y++)
@@ -220,6 +201,25 @@ public class MapGenerator : MonoBehaviour
                 if (room != null && room.Connections.Count == 0)
                 {
                     grid[x, y] = null;
+                }
+            }
+        }
+    }
+
+    private void AssignRoomSprites()
+    {
+        foreach (Room room in grid)
+        {
+            if (room != null && room.RoomType != RoomType.None)
+            {
+                RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == room.RoomType);
+                if (rts.sprite != null)
+                {
+                    GameObject roomObj = new GameObject($"Room_{room.X}_{room.Y}");
+                    roomObj.transform.position = new Vector3(room.X, room.Y, 0);
+                    SpriteRenderer sr = roomObj.AddComponent<SpriteRenderer>();
+                    sr.sprite = rts.sprite;
+                    room.SpriteRenderer = sr;
                 }
             }
         }
