@@ -55,6 +55,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color bossColor = Color.black;
     [SerializeField] private Color defaultColor = Color.white;
 
+    [SerializeField] private bool showNullSpheres = true;
+
     private Room[,] grid;
     private System.Random random = new System.Random();
 
@@ -211,6 +213,12 @@ public class MapGenerator : MonoBehaviour
                         Vector3 connectionPosition = new Vector3(connection.X, connection.Y, 0);
                         Gizmos.DrawLine(position, connectionPosition);
                     }
+                }
+                else if (showNullSpheres)
+                {
+                    Vector3 position = new Vector3(x, y, 0);
+                    Gizmos.color = defaultColor;
+                    Gizmos.DrawSphere(position, 0.1f); // Draw smaller sphere for null rooms
                 }
             }
         }
