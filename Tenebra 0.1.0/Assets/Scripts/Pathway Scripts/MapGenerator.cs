@@ -169,9 +169,11 @@ public class MapGenerator : MonoBehaviour
     {
         Room bossRoom = new Room(width / 2, height);
         bossRoom.RoomType = RoomType.Boss;
+        grid[width / 2, height - 1] = bossRoom;
+        
         foreach (Room room in GetRoomsOnFloor(14))
         {
-            if (room.Connections.Count > 0)
+            if (room != null && room.Connections.Count > 0)
             {
                 room.Connect(bossRoom);
             }
@@ -223,6 +225,21 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+        
+        // Assign sprite for boss room
+        Room bossRoom = grid[width / 2, height - 1];
+        if (bossRoom != null && bossRoom.RoomType == RoomType.Boss)
+        {
+            RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == RoomType.Boss);
+            if (rts.sprite != null)
+            {
+                GameObject bossRoomObj = new GameObject($"Room_{bossRoom.X}_{bossRoom.Y}_{bossRoom.RoomType}");
+                bossRoomObj.transform.position = new Vector3(bossRoom.X, bossRoom.Y, 0);
+                SpriteRenderer sr = bossRoomObj.AddComponent<SpriteRenderer>();
+                sr.sprite = rts.sprite;
+                bossRoom.SpriteRenderer = sr;
+            }
+        }
     }
 
     private void OnDrawGizmos()
@@ -261,7 +278,7 @@ public class MapGenerator : MonoBehaviour
             Room bossRoom = grid[width / 2, height - 1];
             if (bossRoom != null)
             {
-                Vector3 position = new Vector3(bossRoom.X, bossRoom.Y + 1, 0);
+                Vector3 position = new Vector3(bossRoom.X, bossRoom.Y, 0);
                 Gizmos.color = GetColorForRoomType(bossRoom.RoomType);
                 Gizmos.DrawSphere(position, 0.4f);
             }
