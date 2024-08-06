@@ -159,9 +159,24 @@ public class MapGenerator : MonoBehaviour
         Room bossRoom = new Room(width / 2, height);
         bossRoom.RoomType = RoomType.Boss;
         grid[width / 2, height] = bossRoom;
+
+        List<Room> connectedRooms = new List<Room>();
         foreach (Room room in GetRoomsOnFloor(14))
         {
-            room.Connect(bossRoom);
+            if (room.Connections.Count > 0)
+            {
+                room.Connect(bossRoom);
+                connectedRooms.Add(room);
+            }
+        }
+
+        // Set unconnected rooms on 15th floor to null
+        for (int x = 0; x < width; x++)
+        {
+            if (!connectedRooms.Contains(grid[x, 14]))
+            {
+                grid[x, 14] = null;
+            }
         }
     }
 
