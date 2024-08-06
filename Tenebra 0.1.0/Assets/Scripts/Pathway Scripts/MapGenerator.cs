@@ -56,7 +56,6 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color defaultColor = Color.white;
 
     private Room[,] grid;
-    private Room bossRoom;
     private System.Random random = new System.Random();
 
     void Start()
@@ -64,11 +63,12 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
         AssignRoomLocations();
         AllocateBossRoom();
+        RemoveUnconnectedRooms();
     }
 
     private void GenerateMap()
     {
-        grid = new Room[width, height]; // Create the grid with the original height
+        grid = new Room[width, height + 1]; // Allow room for boss room
 
         // Create rooms
         for (int x = 0; x < width; x++)
@@ -128,7 +128,7 @@ public class MapGenerator : MonoBehaviour
         foreach (Room room in GetRoomsOnFloor(14)) { room.RoomType = RoomType.RestSite; }
 
         // Randomly assign remaining rooms
-        for (int y = 0; y < height; y++) // Only iterate up to the original height
+        for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
@@ -154,13 +154,10 @@ public class MapGenerator : MonoBehaviour
 
     private void AllocateBossRoom()
     {
-        int bossRoomX = width / 2;
-        int bossRoomY = height; // Position boss room on the 16th floor
-
-        bossRoom = new Room(bossRoomX, bossRoomY); // Create the boss room separately
+        Room bossRoom = new Room(width / 2, height);
         bossRoom.RoomType = RoomType.Boss;
-
-        foreach (Room room in GetRoomsOnFloor(height - 1)) // Connect from the 15th floor
+        grid[width / 2, height] = bossRoom;
+        foreach (Room room in GetRoomsOnFloor(14))
         {
             room.Connect(bossRoom);
         }
@@ -179,11 +176,26 @@ public class MapGenerator : MonoBehaviour
         return rooms;
     }
 
+    private void RemoveUnconnectedRooms()
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Room room = grid[x, y];
+                if (room != null && room.Connections.Count == 0)
+                {
+                    grid[x, y] = null; // Set unconnected room to null
+                }
+            }
+        }
+    }
+
     private void OnDrawGizmos()
     {
         if (grid == null) return;
 
-        for (int y = 0; y < height; y++) // Only iterate up to the original height
+        for (int y = 0; y < height + 1; y++)
         {
             for (int x = 0; x < width; x++)
             {
@@ -201,14 +213,6 @@ public class MapGenerator : MonoBehaviour
                     }
                 }
             }
-        }
-
-        // Draw boss room
-        if (bossRoom != null)
-        {
-            Vector3 position = new Vector3(bossRoom.X, bossRoom.Y, 0);
-            Gizmos.color = GetColorForRoomType(bossRoom.RoomType);
-            Gizmos.DrawSphere(position, 0.4f);
         }
     }
 
