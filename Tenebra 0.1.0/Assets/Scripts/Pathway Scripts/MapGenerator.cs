@@ -20,6 +20,7 @@ public class Room
     public int Y { get; private set; }
     public RoomType RoomType { get; set; }
     public List<Room> Connections { get; private set; }
+    public SpriteRenderer SpriteRenderer { get; set; }
 
     public Room(int x, int y)
     {
@@ -39,6 +40,13 @@ public class Room
     }
 }
 
+[Serializable]
+public struct RoomTypeSprite
+{
+    public RoomType roomType;
+    public Sprite sprite;
+}
+
 public class MapGenerator : MonoBehaviour
 {
     [SerializeField] private int width = 7;
@@ -55,22 +63,25 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color bossColor = Color.black;
     [SerializeField] private Color defaultColor = Color.white;
 
-    [SerializeField] private bool showNullSpheres = false;
+    [SerializeField] private List<RoomTypeSprite> roomTypeSprites;
 
     private Room[,] grid;
     private System.Random random = new System.Random();
+
+    [SerializeField] private bool showNullSpheres = false;
 
     void Start()
     {
         GenerateMap();
         AssignRoomLocations();
         AllocateBossRoom();
+        AssignRoomSprites();
         RemoveUnconnectedRooms();
     }
 
     private void GenerateMap()
     {
-        grid = new Room[width, height + 1]; // Allow room for boss room
+        grid = new Room[width, height];
 
         // Create rooms
         for (int x = 0; x < width; x++)
@@ -158,24 +169,11 @@ public class MapGenerator : MonoBehaviour
     {
         Room bossRoom = new Room(width / 2, height);
         bossRoom.RoomType = RoomType.Boss;
-        grid[width / 2, height] = bossRoom;
-
-        List<Room> connectedRooms = new List<Room>();
         foreach (Room room in GetRoomsOnFloor(14))
         {
             if (room.Connections.Count > 0)
             {
                 room.Connect(bossRoom);
-                connectedRooms.Add(room);
-            }
-        }
-
-        // Set unconnected rooms on 15th floor to null
-        for (int x = 0; x < width; x++)
-        {
-            if (!connectedRooms.Contains(grid[x, 14]))
-            {
-                grid[x, 14] = null;
             }
         }
     }
@@ -193,6 +191,25 @@ public class MapGenerator : MonoBehaviour
         return rooms;
     }
 
+    private void AssignRoomSprites()
+    {
+        foreach (Room room in grid)
+        {
+            if (room != null)
+            {
+                RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == room.RoomType);
+                if (rts.sprite != null)
+                {
+                    GameObject roomObj = new GameObject($"Room_{room.X}_{room.Y}");
+                    roomObj.transform.position = new Vector3(room.X, room.Y, 0);
+                    SpriteRenderer sr = roomObj.AddComponent<SpriteRenderer>();
+                    sr.sprite = rts.sprite;
+                    room.SpriteRenderer = sr;
+                }
+            }
+        }
+    }
+
     private void RemoveUnconnectedRooms()
     {
         for (int y = 0; y < height; y++)
@@ -202,7 +219,7 @@ public class MapGenerator : MonoBehaviour
                 Room room = grid[x, y];
                 if (room != null && room.Connections.Count == 0)
                 {
-                    grid[x, y] = null; // Set unconnected room to null
+                    grid[x, y] = null;
                 }
             }
         }
@@ -212,7 +229,7 @@ public class MapGenerator : MonoBehaviour
     {
         if (grid == null) return;
 
-        for (int y = 0; y < height + 1; y++)
+        for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
@@ -233,8 +250,20 @@ public class MapGenerator : MonoBehaviour
                 {
                     Vector3 position = new Vector3(x, y, 0);
                     Gizmos.color = defaultColor;
-                    Gizmos.DrawSphere(position, 0.1f); // Draw smaller sphere for null rooms
+                    Gizmos.DrawSphere(position, 0.2f);
                 }
+            }
+        }
+
+        // Draw boss room
+        if (grid != null && height > 0 && width > 0)
+        {
+            Room bossRoom = grid[width / 2, height - 1];
+            if (bossRoom != null)
+            {
+                Vector3 position = new Vector3(bossRoom.X, bossRoom.Y + 1, 0);
+                Gizmos.color = GetColorForRoomType(bossRoom.RoomType);
+                Gizmos.DrawSphere(position, 0.4f);
             }
         }
     }
