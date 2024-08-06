@@ -183,7 +183,7 @@ public class MapGenerator : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 Room room = grid[x, y];
-                if (room != null)
+                if (room != null && room.RoomType != RoomType.None)
                 {
                     Vector3 position = new Vector3(x, y, 0);
                     Gizmos.color = GetColorForRoomType(room.RoomType);
@@ -199,15 +199,12 @@ public class MapGenerator : MonoBehaviour
         }
 
         // Draw boss room
-        if (grid != null && height > 0 && width > 0)
+        Room bossRoom = new Room(width / 2, height);
+        if (bossRoom != null)
         {
-            Room bossRoom = grid[width / 2, height - 1];
-            if (bossRoom != null)
-            {
-                Vector3 position = new Vector3(bossRoom.X, bossRoom.Y + 1, 0);
-                Gizmos.color = GetColorForRoomType(bossRoom.RoomType);
-                Gizmos.DrawSphere(position, 0.4f);
-            }
+            Vector3 position = new Vector3(bossRoom.X, bossRoom.Y, 0);
+            Gizmos.color = GetColorForRoomType(bossRoom.RoomType);
+            Gizmos.DrawSphere(position, 0.4f);
         }
     }
 
