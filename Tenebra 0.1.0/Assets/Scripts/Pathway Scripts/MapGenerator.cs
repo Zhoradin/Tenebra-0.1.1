@@ -235,19 +235,57 @@ public class MapGenerator : MonoBehaviour
     }
 
    private void RemoveUnconnectedRooms()
-{
-    for (int y = 0; y < height; y++)
     {
-        for (int x = 0; x < width; x++)
+        // Determine the boss room's position
+        Vector3 bossPosition = new Vector3(width / 2, height, 0);
+
+        for (int y = 0; y < height; y++)
         {
-            Room room = grid[x, y];
-            if (room != null && room.Connections.Count == 0)
+            for (int x = 0; x < width; x++)
             {
-                grid[x, y] = null;
+                Room room = grid[x, y];
+                if (room != null)
+                {
+                    if (y == 14)
+                    {
+                        // Check if the room on the 14th floor has connections to the 13th floor or boss room
+                        bool hasConnectionTo13thFloor = false;
+                        bool hasConnectionToBossRoom = false;
+
+                        // Check connections to the 13th floor
+                        foreach (Room connection in room.Connections)
+                        {
+                            if (connection != null && connection.Y == 13)
+                            {
+                                hasConnectionTo13thFloor = true;
+                                break;
+                            }
+                        }
+
+                        // Check connection to the boss room
+                        if (room.SpriteRenderer != null)
+                        {
+                            if (Vector3.Distance(room.SpriteRenderer.transform.position, bossPosition) < 0.1f)
+                            {
+                                hasConnectionToBossRoom = true;
+                            }
+                        }
+
+                        if (!hasConnectionTo13thFloor && !hasConnectionToBossRoom)
+                        {
+                            grid[x, y] = null;
+                        }
+                    }
+                    else if (room.Connections.Count == 0)
+                    {
+                        grid[x, y] = null;
+                    }
+                }
             }
         }
     }
-}
+
+
 
     private void AssignRoomSprites()
     {
