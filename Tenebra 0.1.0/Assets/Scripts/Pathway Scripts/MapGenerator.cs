@@ -39,12 +39,26 @@ public class Room
         }
     }
 
-    // Additional method to handle connections to external rooms or objects
+    // Method to handle connections to external objects
     public void ConnectExternal(Vector3 position)
     {
-        // Implement connection logic if necessary
+        // Create a dummy Room object to represent the external connection
+        Room externalRoom = new Room((int)position.x, (int)position.y)
+        {
+            RoomType = RoomType.None // External connections may not have a RoomType
+        };
+
+        // Add connection to the external room
+        if (!Connections.Contains(externalRoom))
+        {
+            Connections.Add(externalRoom);
+        }
+
+        // Optionally: you may need to handle the bidirectional connection depending on the external object
+        // However, since external objects are not part of the grid, this bidirectional aspect is logical rather than physical.
     }
 }
+
 
 
 [Serializable]
@@ -172,7 +186,7 @@ public class MapGenerator : MonoBehaviour
         return RoomType.Treasure;
     }
 
-    private void AllocateBossRoom()
+   private void AllocateBossRoom()
 {
     // Determine the position of the boss room
     int bossRoomX = width / 2;
@@ -190,15 +204,18 @@ public class MapGenerator : MonoBehaviour
         sr.sprite = bossRoomSprite.sprite;
     }
 
-    // Connect boss room to rooms on the 14th floor
+    // Connect the boss room to all non-null rooms on the 14th floor
+    Vector3 bossPosition = new Vector3(bossRoomX, bossRoomY, 0);
     foreach (Room room in GetRoomsOnFloor(14))
     {
         if (room != null)
         {
-            room.Connect(new Room(bossRoomX, bossRoomY) { RoomType = RoomType.Boss });
+            room.ConnectExternal(bossPosition);
         }
     }
 }
+
+
 
 
 
