@@ -38,7 +38,14 @@ public class Room
             other.Connect(this); // Ensure bidirectional connection
         }
     }
+
+    // Additional method to handle connections to external rooms or objects
+    public void ConnectExternal(Vector3 position)
+    {
+        // Implement connection logic if necessary
+    }
 }
+
 
 [Serializable]
 public struct RoomTypeSprite
@@ -166,34 +173,33 @@ public class MapGenerator : MonoBehaviour
     }
 
     private void AllocateBossRoom()
+{
+    // Determine the position of the boss room
+    int bossRoomX = width / 2;
+    int bossRoomY = height; // One floor above the grid
+
+    // Create a new GameObject for the boss room outside the grid
+    GameObject bossRoomObj = new GameObject($"BossRoom");
+    bossRoomObj.transform.position = new Vector3(bossRoomX, bossRoomY, 0);
+
+    // Optionally add a SpriteRenderer to visualize the boss room
+    SpriteRenderer sr = bossRoomObj.AddComponent<SpriteRenderer>();
+    RoomTypeSprite bossRoomSprite = roomTypeSprites.Find(r => r.roomType == RoomType.Boss);
+    if (bossRoomSprite.sprite != null)
     {
-        // Determine the position of the boss room
-        int bossRoomX = width / 2;
-        int bossRoomY = height; // One floor above the grid
+        sr.sprite = bossRoomSprite.sprite;
+    }
 
-        // Ensure that bossRoomY is outside of the grid boundaries
-        if (bossRoomY < height)
+    // Connect boss room to rooms on the 14th floor
+    foreach (Room room in GetRoomsOnFloor(14))
+    {
+        if (room != null)
         {
-            Room bossRoom = grid[bossRoomX, height - 1]; // Set to the last room of the grid
-            if (bossRoom != null)
-            {
-                // Clear the boss room from the grid if it exists
-                bossRoom.RoomType = RoomType.None;
-            }
-        }
-
-        // Create a new GameObject for the boss room outside the grid
-        GameObject bossRoomObj = new GameObject($"BossRoom");
-        bossRoomObj.transform.position = new Vector3(bossRoomX, bossRoomY, 0);
-
-        // Optionally add a SpriteRenderer to visualize the boss room
-        SpriteRenderer sr = bossRoomObj.AddComponent<SpriteRenderer>();
-        RoomTypeSprite bossRoomSprite = roomTypeSprites.Find(r => r.roomType == RoomType.Boss);
-        if (bossRoomSprite.sprite != null)
-        {
-            sr.sprite = bossRoomSprite.sprite;
+            room.Connect(new Room(bossRoomX, bossRoomY) { RoomType = RoomType.Boss });
         }
     }
+}
+
 
 
 
