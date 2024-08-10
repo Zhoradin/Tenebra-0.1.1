@@ -38,28 +38,7 @@ public class Room
             other.Connect(this); // Ensure bidirectional connection
         }
     }
-
-    // Method to handle connections to external objects
-    public void ConnectExternal(Vector3 position)
-    {
-        // Create a dummy Room object to represent the external connection
-        Room externalRoom = new Room((int)position.x, (int)position.y)
-        {
-            RoomType = RoomType.None // External connections may not have a RoomType
-        };
-
-        // Add connection to the external room
-        if (!Connections.Contains(externalRoom))
-        {
-            Connections.Add(externalRoom);
-        }
-
-        // Optionally: you may need to handle the bidirectional connection depending on the external object
-        // However, since external objects are not part of the grid, this bidirectional aspect is logical rather than physical.
-    }
 }
-
-
 
 [Serializable]
 public struct RoomTypeSprite
@@ -86,28 +65,31 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] private List<RoomTypeSprite> roomTypeSprites;
 
+    [SerializeField] private bool showNullSpheres = false; // Reintroduced
+
     private Room[,] grid;
     private System.Random random = new System.Random();
-
-    [SerializeField] private bool showNullSpheres = false;
+    private int extendedHeight;
 
     void Start()
-    {
-        GenerateMap();
-        AssignRoomLocations();
-        AllocateBossRoom();
-        RemoveUnconnectedRooms();
-        AssignRoomSprites();
-    }
+{
+    extendedHeight = height + 1; // Add extra floor for boss room
+    GenerateMap();
+    AssignRoomLocations();
+    RemoveUnconnectedRooms(); // Ensure rooms are cleaned up before boss room allocation
+    AllocateBossRoom();      // Allocate and connect boss room
+    AssignRoomSprites();
+}
+
 
     private void GenerateMap()
     {
-        grid = new Room[width, height];
+        grid = new Room[width, extendedHeight];
 
         // Create rooms
         for (int x = 0; x < width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < extendedHeight; y++)
             {
                 grid[x, y] = new Room(x, y);
             }
@@ -135,7 +117,7 @@ public class MapGenerator : MonoBehaviour
 
     private void ConnectToNextFloor(Room room, int currentFloor)
     {
-        if (currentFloor >= height - 1)
+        if (currentFloor >= extendedHeight - 1)
             return;
 
         int nextFloor = currentFloor + 1;
@@ -186,40 +168,28 @@ public class MapGenerator : MonoBehaviour
         return RoomType.Treasure;
     }
 
-   private void AllocateBossRoom()
-{
-    // Determine the position of the boss room
-    int bossRoomX = width / 2;
-    int bossRoomY = height; // One floor above the grid
-
-    // Create a new GameObject for the boss room outside the grid
-    GameObject bossRoomObj = new GameObject($"BossRoom");
-    bossRoomObj.transform.position = new Vector3(bossRoomX, bossRoomY, 0);
-
-    // Optionally add a SpriteRenderer to visualize the boss room
-    SpriteRenderer sr = bossRoomObj.AddComponent<SpriteRenderer>();
-    RoomTypeSprite bossRoomSprite = roomTypeSprites.Find(r => r.roomType == RoomType.Boss);
-    if (bossRoomSprite.sprite != null)
+    private void AllocateBossRoom()
     {
-        sr.sprite = bossRoomSprite.sprite;
-    }
+        // Determine the position of the boss room
+        int bossRoomX = width / 2;
+        int bossRoomY = extendedHeight - 1; // One floor above the grid
 
-    // Connect the boss room to all non-null rooms on the 14th floor
-    Vector3 bossPosition = new Vector3(bossRoomX, bossRoomY, 0);
-    foreach (Room room in GetRoomsOnFloor(14))
-    {
-        if (room != null)
+        // Create and assign the boss room
+        Room bossRoom = new Room(bossRoomX, bossRoomY)
         {
-            room.ConnectExternal(bossPosition);
+            RoomType = RoomType.Boss
+        };
+        grid[bossRoomX, bossRoomY] = bossRoom;
+
+        // Connect the boss room to all non-null rooms on the highest regular floor
+        foreach (Room room in GetRoomsOnFloor(extendedHeight - 2)) // Previous top floor before boss room
+        {
+            if (room != null)
+            {
+                room.Connect(bossRoom);
+            }
         }
     }
-}
-
-
-
-
-
-
 
     private List<Room> GetRoomsOnFloor(int floor)
     {
@@ -235,56 +205,48 @@ public class MapGenerator : MonoBehaviour
     }
 
    private void RemoveUnconnectedRooms()
+{
+    for (int y = 0; y < extendedHeight; y++)
     {
-        // Determine the boss room's position
-        Vector3 bossPosition = new Vector3(width / 2, height, 0);
-
-        for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++)
         {
-            for (int x = 0; x < width; x++)
+            Room room = grid[x, y];
+            if (room != null)
             {
-                Room room = grid[x, y];
-                if (room != null)
+                if (y == extendedHeight - 2) // Check rooms on the floor below the boss room
                 {
-                    if (y == 14)
+                    bool hasConnectionToLowerFloor = false;
+                    bool hasConnectionToBossRoom = false;
+
+                    // Check if the room has a connection to the lower floor (floor 13)
+                    foreach (Room connection in room.Connections)
                     {
-                        // Check if the room on the 14th floor has connections to the 13th floor or boss room
-                        bool hasConnectionTo13thFloor = false;
-                        bool hasConnectionToBossRoom = false;
-
-                        // Check connections to the 13th floor
-                        foreach (Room connection in room.Connections)
+                        if (connection.Y == extendedHeight - 3) // Floor 13
                         {
-                            if (connection != null && connection.Y == 13)
-                            {
-                                hasConnectionTo13thFloor = true;
-                                break;
-                            }
-                        }
-
-                        // Check connection to the boss room
-                        if (room.SpriteRenderer != null)
-                        {
-                            if (Vector3.Distance(room.SpriteRenderer.transform.position, bossPosition) < 0.1f)
-                            {
-                                hasConnectionToBossRoom = true;
-                            }
-                        }
-
-                        if (!hasConnectionTo13thFloor && !hasConnectionToBossRoom)
-                        {
-                            grid[x, y] = null;
+                            hasConnectionToLowerFloor = true;
+                            break;
                         }
                     }
-                    else if (room.Connections.Count == 0)
+
+                    // Check if the room has a connection to the boss room
+                    if (room.Connections.Exists(r => r.Y == extendedHeight - 1)) // Boss room
+                    {
+                        hasConnectionToBossRoom = true;
+                    }
+
+                    if (!hasConnectionToLowerFloor || !hasConnectionToBossRoom)
                     {
                         grid[x, y] = null;
                     }
                 }
+                else if (room.Connections.Count == 0)
+                {
+                    grid[x, y] = null;
+                }
             }
         }
     }
-
+}
 
 
     private void AssignRoomSprites()
@@ -304,38 +266,23 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-        
-        // Assign sprite for boss room
-        Room bossRoom = grid[width / 2, height - 1];
-        if (bossRoom != null && bossRoom.RoomType == RoomType.Boss)
-        {
-            RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == RoomType.Boss);
-            if (rts.sprite != null)
-            {
-                GameObject bossRoomObj = new GameObject($"Room_{bossRoom.X}_{bossRoom.Y}_{bossRoom.RoomType}");
-                bossRoomObj.transform.position = new Vector3(bossRoom.X, bossRoom.Y, 0);
-                SpriteRenderer sr = bossRoomObj.AddComponent<SpriteRenderer>();
-                sr.sprite = rts.sprite;
-                bossRoom.SpriteRenderer = sr;
-            }
-        }
     }
 
     private void OnDrawGizmos()
     {
         if (grid == null) return;
 
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < extendedHeight; y++)
         {
             for (int x = 0; x < width; x++)
             {
                 Room room = grid[x, y];
                 Vector3 position = new Vector3(x, y, 0);
-                
+                Gizmos.color = room != null ? GetColorForRoomType(room.RoomType) : Color.grey;
+
                 if (room != null)
                 {
-                    Gizmos.color = GetColorForRoomType(room.RoomType);
-                    Gizmos.DrawSphere(position, 0.2f);
+                    Gizmos.DrawSphere(position, 0.15f);
 
                     foreach (Room connection in room.Connections)
                     {
@@ -345,26 +292,15 @@ public class MapGenerator : MonoBehaviour
                 }
                 else if (showNullSpheres)
                 {
-                    Gizmos.color = defaultColor;
-                    Gizmos.DrawSphere(position, 0.2f);
+                    Gizmos.DrawSphere(position, 0.1f);
                 }
             }
         }
-
-        // Draw boss room outside the grid
-        int bossRoomX = width / 2;
-        int bossRoomY = height; // One floor above the grid
-        Vector3 bossPosition = new Vector3(bossRoomX, bossRoomY, 0);
-        Gizmos.color = bossColor;
-        Gizmos.DrawSphere(bossPosition, 0.4f);
     }
 
-
-
-
-    private Color GetColorForRoomType(RoomType roomType)
+    private Color GetColorForRoomType(RoomType type)
     {
-        switch (roomType)
+        switch (type)
         {
             case RoomType.Monster: return monsterColor;
             case RoomType.Event: return eventColor;
