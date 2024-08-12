@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 7
-  height: 15
+  height: 16
   minPaths: 3
   maxPaths: 4
   monsterColor: {r: 1, g: 0, b: 0, a: 1}
