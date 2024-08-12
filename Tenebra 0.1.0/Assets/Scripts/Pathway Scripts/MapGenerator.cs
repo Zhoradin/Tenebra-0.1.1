@@ -66,6 +66,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private List<RoomTypeSprite> roomTypeSprites;
 
     [SerializeField] private bool showNullSpheres = false; // Reintroduced
+    [SerializeField] private float verticalOffset = 1f;
+
 
     private Room[,] grid;
     private System.Random random = new System.Random();
@@ -260,53 +262,54 @@ public class MapGenerator : MonoBehaviour
 
 
     private void AssignRoomSprites()
+{
+    foreach (Room room in grid)
     {
-        foreach (Room room in grid)
+        if (room != null && room.RoomType != RoomType.None)
         {
-            if (room != null && room.RoomType != RoomType.None)
+            RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == room.RoomType);
+            if (rts.sprite != null)
             {
-                RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == room.RoomType);
-                if (rts.sprite != null)
-                {
-                    GameObject roomObj = new GameObject($"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}");
-                    roomObj.transform.position = new Vector3(room.X, room.Y, 0);
-                    SpriteRenderer sr = roomObj.AddComponent<SpriteRenderer>();
-                    sr.sprite = rts.sprite;
-                    room.SpriteRenderer = sr;
-                }
+                GameObject roomObj = new GameObject($"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}");
+                roomObj.transform.position = new Vector3(room.X, room.Y * verticalOffset, 0);
+                SpriteRenderer sr = roomObj.AddComponent<SpriteRenderer>();
+                sr.sprite = rts.sprite;
+                room.SpriteRenderer = sr;
             }
         }
     }
+}
+
 
     private void OnDrawGizmos()
+{
+    if (grid == null) return;
+
+    for (int y = 0; y < extendedHeight; y++)
     {
-        if (grid == null) return;
-
-        for (int y = 0; y < extendedHeight; y++)
+        for (int x = 0; x < width; x++)
         {
-            for (int x = 0; x < width; x++)
+            Room room = grid[x, y];
+            Vector3 position = new Vector3(x, y * verticalOffset, 0);
+            Gizmos.color = room != null ? GetColorForRoomType(room.RoomType) : Color.grey;
+
+            if (room != null)
             {
-                Room room = grid[x, y];
-                Vector3 position = new Vector3(x, y, 0);
-                Gizmos.color = room != null ? GetColorForRoomType(room.RoomType) : Color.grey;
+                Gizmos.DrawSphere(position, 0.15f);
 
-                if (room != null)
+                foreach (Room connection in room.Connections)
                 {
-                    Gizmos.DrawSphere(position, 0.15f);
-
-                    foreach (Room connection in room.Connections)
-                    {
-                        Vector3 connectionPosition = new Vector3(connection.X, connection.Y, 0);
-                        Gizmos.DrawLine(position, connectionPosition);
-                    }
+                    Vector3 connectionPosition = new Vector3(connection.X, connection.Y * verticalOffset, 0);
+                    Gizmos.DrawLine(position, connectionPosition);
                 }
-                else if (showNullSpheres)
-                {
-                    Gizmos.DrawSphere(position, 0.1f);
-                }
+            }
+            else if (showNullSpheres)
+            {
+                Gizmos.DrawSphere(position, 0.1f);
             }
         }
     }
+}
 
     private Color GetColorForRoomType(RoomType type)
     {
