@@ -50,7 +50,7 @@ public struct RoomTypeSprite
 public class MapGenerator : MonoBehaviour
 {
     [SerializeField] private int width = 7;
-    [SerializeField] private int height = 15;
+    [SerializeField] private int height = 16;
     [SerializeField] private int minPaths = 3;
     [SerializeField] private int maxPaths = 4;
 
