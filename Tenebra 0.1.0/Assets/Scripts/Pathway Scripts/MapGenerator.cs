@@ -116,25 +116,35 @@ public class MapGenerator : MonoBehaviour
     }
 
     private void ConnectToNextFloor(Room room, int currentFloor)
+{
+    if (currentFloor >= extendedHeight - 1)
+        return;
+
+    int nextFloor = currentFloor + 1;
+
+    // Ensure that only the boss room is on floor 16
+    if (nextFloor == extendedHeight - 1) // This is the boss floor
     {
-        if (currentFloor >= extendedHeight - 1)
-            return;
-
-        int nextFloor = currentFloor + 1;
-        List<Room> possibleConnections = new List<Room>();
-        for (int dx = -1; dx <= 1; dx++)
-        {
-            int nx = room.X + dx;
-            if (nx >= 0 && nx < width)
-            {
-                possibleConnections.Add(grid[nx, nextFloor]);
-            }
-        }
-
-        Room nextRoom = possibleConnections[random.Next(possibleConnections.Count)];
-        room.Connect(nextRoom);
-        ConnectToNextFloor(nextRoom, nextFloor);
+        Room bossRoom = grid[width / 2, nextFloor]; // Assuming the boss room is always centered
+        room.Connect(bossRoom);
+        return; // Stop further connections for the boss room
     }
+
+    List<Room> possibleConnections = new List<Room>();
+    for (int dx = -1; dx <= 1; dx++)
+    {
+        int nx = room.X + dx;
+        if (nx >= 0 && nx < width)
+        {
+            possibleConnections.Add(grid[nx, nextFloor]);
+        }
+    }
+
+    Room nextRoom = possibleConnections[random.Next(possibleConnections.Count)];
+    room.Connect(nextRoom);
+    ConnectToNextFloor(nextRoom, nextFloor);
+}
+
 
     private void AssignRoomLocations()
     {
