@@ -258,7 +258,7 @@ public class MapGenerator : MonoBehaviour
                 RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == room.RoomType);
                 if (rts.sprite != null)
                 {
-                    GameObject roomObj = new GameObject($"Room_{room.X}_{room.Y}_{room.RoomType}");
+                    GameObject roomObj = new GameObject($"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}");
                     roomObj.transform.position = new Vector3(room.X, room.Y, 0);
                     SpriteRenderer sr = roomObj.AddComponent<SpriteRenderer>();
                     sr.sprite = rts.sprite;
