@@ -151,7 +151,7 @@ public class MapGenerator : MonoBehaviour
         // Assign predefined locations
         foreach (Room room in GetRoomsOnFloor(0)) { room.RoomType = RoomType.Monster; }
         foreach (Room room in GetRoomsOnFloor(8)) { room.RoomType = RoomType.Treasure; }
-        foreach (Room room in GetRoomsOnFloor(14)) { room.RoomType = RoomType.RestSite; }
+        foreach (Room room in GetRoomsOnFloor(15)) { room.RoomType = RoomType.RestSite; }
 
         // Randomly assign remaining rooms
         for (int y = 0; y < height; y++)
