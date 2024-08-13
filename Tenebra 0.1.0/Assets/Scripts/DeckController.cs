@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DeckController : MonoBehaviour
+public class DeckController : MonoBehaviour, IDataPersistence
 {
     public static DeckController instance;
 
@@ -23,17 +23,22 @@ public class DeckController : MonoBehaviour
 
     void Start()
     {
-        
+        InitializeDrawDeck();
     }
 
     private void Update()
     {
-        
+
     }
 
     public void InitializeDrawDeck()
     {
-        drawDeck = new List<CardSO>(deckToUse);
+        // drawDeck listesini temizleyip deckToUse listesinden kart ekliyoruz
+        drawDeck.Clear();
+        deckToUse.Clear();
+        deckToUse.AddRange(FindObjectOfType<DataCarrier>().deckToUse);
+        drawDeck.AddRange(deckToUse);
+        DrawPileController.instance.SetDrawPile();
         UIController.instance.ShowDrawPileCount();
         UIController.instance.ShowDiscardPileCount();
     }
@@ -76,7 +81,7 @@ public class DeckController : MonoBehaviour
         {
             DrawCardToHand();
             BattleController.instance.SpendPlayerEssence(drawCardCost);
-            if(drawDeck.Count == 0)
+            if (drawDeck.Count == 0)
             {
                 DiscardPileController.instance.DiscardToDraw();
                 DrawDeckRedeck();
@@ -108,5 +113,17 @@ public class DeckController : MonoBehaviour
                 Debug.Log("Kart Listesi Boş!");
             }
         }
+    }
+
+    public void LoadData(PlayerData data)
+    {
+        deckToUse.Clear();
+        deckToUse.AddRange(data.deck);
+    }
+
+    public void SaveData(PlayerData data)
+    {
+        data.deck.Clear();
+        data.deck.AddRange(deckToUse);
     }
 }

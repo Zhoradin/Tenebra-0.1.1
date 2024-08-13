@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TestUIController : MonoBehaviour
 {
@@ -19,13 +17,15 @@ public class TestUIController : MonoBehaviour
         instance = this;
     }
 
-    public TMP_Text playerHealth, playerCoin;
+    public TMP_Text playerMaxHealth, playerCoin;
 
     public int testPlayerCoin = 99;
 
     // Start is called before the first frame update
     void Start()
     {
+        testPlayerCoin = DataCarrier.instance.playerCoin;
+
         SetPlayerHealth();
         SetPlayerCoin();
 
@@ -52,13 +52,19 @@ public class TestUIController : MonoBehaviour
         }
     }
 
+    public void OnLeaveClicked()
+    {
+        SceneManager.LoadScene("Hub");
+    }
+
     public void SetPlayerHealth()
     {
-        playerHealth.text = BattleController.instance.playerHealth.ToString();
+        playerMaxHealth.text = DataCarrier.instance.playerMaxHealth.ToString();
     }
 
     public void SetPlayerCoin()
     {
         playerCoin.text = testPlayerCoin.ToString();
+        DataCarrier.instance.playerCoin = testPlayerCoin;
     }
 }

@@ -20,7 +20,6 @@ MonoBehaviour:
   characterSprite: {fileID: 21300000, guid: 317094b1973a8a044bd3ca4618eeb7ba, type: 3}
   bgSprite: {fileID: 21300000, guid: 9f502dfcc9a14df43a9acb1679e34453, type: 3}
   moonPhaseSprite: {fileID: 21300000, guid: 3df023b0b79547b4e8f6010ea3f4a6dc, type: 3}
-  abilities:
-  - {fileID: 11400000, guid: 0613a3520e03dd84ea67cafcea26f2fe, type: 2}
+  abilities: []
   moonPhase: 4
   cardType: 6

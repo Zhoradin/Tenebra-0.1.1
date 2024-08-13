@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1847484654848966781
+--- !u!1 &132130535596427839
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,44 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6264422114212818192}
-  - component: {fileID: 9028345149227173416}
+  - component: {fileID: 156796993557626903}
+  - component: {fileID: 2631120184387768624}
   m_Layer: 0
-  m_Name: Deck Controller
+  m_Name: Game Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6264422114212818192
+--- !u!4 &156796993557626903
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1847484654848966781}
+  m_GameObject: {fileID: 132130535596427839}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -7.62, y: -2.21, z: -2}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &9028345149227173416
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2631120184387768624
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1847484654848966781}
+  m_GameObject: {fileID: 132130535596427839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d03079014f1b1a48b8d4273f40c1692, type: 3}
+  m_Script: {fileID: 11500000, guid: d4e182368c234dc44bc50474bcefc754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckToUse: []
-  drawDeck: []
-  cardToSpawn: {fileID: 1243885134900030152, guid: 514223ae58f5e7840bbf3561feb33fc3, type: 3}
-  drawCardCost: 1
-  waitBetweenDrawingCards: 0.25
