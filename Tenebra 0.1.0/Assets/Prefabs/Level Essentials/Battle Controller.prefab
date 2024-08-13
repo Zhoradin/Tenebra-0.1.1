@@ -87,9 +87,9 @@ MonoBehaviour:
   moonPhaseCount: 0
   discardPoint: {fileID: 8420260223434285748}
   playerHealth: 100
-  enemyHealth: 100
+  enemyHealth: 5
   battleEnded: 0
   resultScreenDelayTime: 1
-  playerFirstChance: 1
+  playerFirstChance: 0
   playerCardPoints: []
   enemyCardPoints: []

@@ -114,54 +114,57 @@ public class MoonPhaseController : MonoBehaviour
 
     public void AdvanceMoonPhase()
     {
-        if (BattleController.instance.moonPhaseCount == 0)
+        switch (BattleController.instance.moonPhaseCount)
         {
-            BattleController.instance.currentMoonPhase = MoonPhase.NewMoon;
-            moonPhaseTillNextRound = 1;
-        }
-        else if (BattleController.instance.moonPhaseCount <= 3)
-        {
-            BattleController.instance.currentMoonPhase = MoonPhase.WaningCrescent;
-            moonPhaseTillNextRound = 4 - BattleController.instance.moonPhaseCount;
-        }
-        else if (BattleController.instance.moonPhaseCount == 4)
-        {
-            BattleController.instance.currentMoonPhase = MoonPhase.FirstQuarter;
-            moonPhaseTillNextRound = 1;
-        }
-        else if (BattleController.instance.moonPhaseCount <= 7)
-        {
-            BattleController.instance.currentMoonPhase = MoonPhase.WaxingGibbous;
-            moonPhaseTillNextRound = 8 - BattleController.instance.moonPhaseCount;
-        }
-        else if (BattleController.instance.moonPhaseCount == 8)
-        {
-            BattleController.instance.currentMoonPhase = MoonPhase.FullMoon;
-            moonPhaseTillNextRound = 1; // Example value
-        }
-        else if (BattleController.instance.moonPhaseCount <= 11)
-        {
-            BattleController.instance.currentMoonPhase = MoonPhase.WaningGibbous;
-            moonPhaseTillNextRound = 12 - BattleController.instance.moonPhaseCount;
-        }
-        else if (BattleController.instance.moonPhaseCount == 12)
-        {
-            BattleController.instance.currentMoonPhase = MoonPhase.LastQuarter;
-            moonPhaseTillNextRound = 1;
-        }
-        else if (BattleController.instance.moonPhaseCount <= 15)
-        {
-            BattleController.instance.currentMoonPhase = MoonPhase.WaningCrescent;
-            moonPhaseTillNextRound = 16 - BattleController.instance.moonPhaseCount;
-        }
-        else
-        {
-            Debug.Log("Returning to New Moon");
-            moonPhaseTillNextRound = 0; // Reset for new cycle
+            case 0:
+                BattleController.instance.currentMoonPhase = MoonPhase.NewMoon;
+                moonPhaseTillNextRound = 1;
+                break;
+
+            case int count when (count >= 1 && count <= 3):
+                BattleController.instance.currentMoonPhase = MoonPhase.WaxingCrescent;
+                moonPhaseTillNextRound = 4 - count;
+                break;
+
+            case 4:
+                BattleController.instance.currentMoonPhase = MoonPhase.FirstQuarter;
+                moonPhaseTillNextRound = 1;
+                break;
+
+            case int count when (count >= 5 && count <= 7):
+                BattleController.instance.currentMoonPhase = MoonPhase.WaxingGibbous;
+                moonPhaseTillNextRound = 8 - count;
+                break;
+
+            case 8:
+                BattleController.instance.currentMoonPhase = MoonPhase.FullMoon;
+                moonPhaseTillNextRound = 1;
+                break;
+
+            case int count when (count >= 9 && count <= 11):
+                BattleController.instance.currentMoonPhase = MoonPhase.WaningGibbous;
+                moonPhaseTillNextRound = 12 - count;
+                break;
+
+            case 12:
+                BattleController.instance.currentMoonPhase = MoonPhase.LastQuarter;
+                moonPhaseTillNextRound = 1;
+                break;
+
+            case int count when (count >= 13 && count <= 15):
+                BattleController.instance.currentMoonPhase = MoonPhase.WaningCrescent;
+                moonPhaseTillNextRound = 16 - count;
+                break;
+
+            default:
+                Debug.Log("Returning to New Moon");
+                moonPhaseTillNextRound = 0; // Reset for new cycle
+                break;
         }
 
         SetMoonPhaseText();
     }
+
 
     public void SetMoonPhaseText()
     {

@@ -51,6 +51,8 @@ public class Item : MonoBehaviour
             TestUIController.instance.testPlayerCoin -= itemSO.itemCost;
             TestUIController.instance.SetPlayerCoin();
             CheckItemSkill();
+            FindObjectOfType<GameController>().SaveGame();
+            DataCarrier.instance.possessedItems.Add(itemSO);
             Destroy(gameObject);
         }
     }
@@ -60,7 +62,8 @@ public class Item : MonoBehaviour
         switch (itemSO.itemSkill)
         {
             case ItemSO.ItemSkill.Heal:
-                BattleController.instance.playerHealth += itemSO.effectAmount;
+                DataCarrier.instance.playerMaxHealth += itemSO.effectAmount;
+                DataCarrier.instance.playerHealth += itemSO.effectAmount;
                 TestUIController.instance.SetPlayerHealth();
                 break;
         }

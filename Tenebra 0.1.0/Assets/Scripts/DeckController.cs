@@ -23,7 +23,6 @@ public class DeckController : MonoBehaviour, IDataPersistence
 
     void Start()
     {
-        // Oyunun başlangıcında drawDeck listesini başlatıyoruz
         InitializeDrawDeck();
     }
 
@@ -36,7 +35,10 @@ public class DeckController : MonoBehaviour, IDataPersistence
     {
         // drawDeck listesini temizleyip deckToUse listesinden kart ekliyoruz
         drawDeck.Clear();
+        deckToUse.Clear();
+        deckToUse.AddRange(FindObjectOfType<DataCarrier>().deckToUse);
         drawDeck.AddRange(deckToUse);
+        DrawPileController.instance.SetDrawPile();
         UIController.instance.ShowDrawPileCount();
         UIController.instance.ShowDiscardPileCount();
     }
@@ -112,7 +114,7 @@ public class DeckController : MonoBehaviour, IDataPersistence
             }
         }
     }
-    
+
     public void LoadData(PlayerData data)
     {
         deckToUse.Clear();

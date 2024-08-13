@@ -1,29 +1,80 @@
-using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class SaveLoadSystem : MonoBehaviour
 {
-    private string saveFilePath;
+    public static SaveLoadSystem instance;
+
+    public int currentSlot; // Seçilen slot numarasý
 
     private void Awake()
     {
-        saveFilePath = Application.persistentDataPath + "/savefile.json";
+        // Eðer bir baþka SaveLoadSystem instance'ý varsa bu nesneyi yok et
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            // Bu nesneyi koru ve Singleton yap
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    private string GetSavePath(int slotNumber)
+    {
+        return Path.Combine(Application.persistentDataPath, "savegame_slot" + slotNumber + ".json");
     }
 
     public void SaveGame(PlayerData playerData)
     {
-        string jsonData = JsonUtility.ToJson(playerData);
-        System.IO.File.WriteAllText(saveFilePath, jsonData);
+        string savePath = GetSavePath(currentSlot);
+        string json = JsonUtility.ToJson(playerData);
+        File.WriteAllText(savePath, json);
     }
 
     public PlayerData LoadGame()
     {
-        if (System.IO.File.Exists(saveFilePath))
+        string savePath = GetSavePath(currentSlot);
+        if (File.Exists(savePath))
         {
-            string jsonData = System.IO.File.ReadAllText(saveFilePath);
-            PlayerData loadedData = JsonUtility.FromJson<PlayerData>(jsonData);
-            return loadedData;
+            string json = File.ReadAllText(savePath);
+            PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
+            Time.timeScale = 1f;
+            return playerData;
         }
-        return null;
+        else
+        {
+            Debug.Log("Save file not found.");
+            return null;
+        }
+    }
+
+    public bool SaveFileExists(int slotNumber)
+    {
+        return File.Exists(GetSavePath(slotNumber));
+    }
+
+    public int GetMostRecentSaveSlot()
+    {
+        int mostRecentSlot = -1;
+        System.DateTime mostRecentTime = System.DateTime.MinValue;
+
+        for (int i = 1; i <= 3; i++)
+        {
+            string path = GetSavePath(i);
+            if (File.Exists(path))
+            {
+                System.DateTime creationTime = File.GetLastWriteTime(path);
+                if (creationTime > mostRecentTime)
+                {
+                    mostRecentTime = creationTime;
+                    mostRecentSlot = i;
+                }
+            }
+        }
+
+        return mostRecentSlot;
     }
 }

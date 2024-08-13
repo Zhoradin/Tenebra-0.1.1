@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleController : MonoBehaviour, IDataPersistence
+public class BattleController : MonoBehaviour
 {
     public static BattleController instance;
 
@@ -41,6 +41,13 @@ public class BattleController : MonoBehaviour, IDataPersistence
 
     void Start()
     {
+        // Verileri DataCarrier'dan al
+        if (DataCarrier.instance != null)
+        {
+            playerHealth = DataCarrier.instance.playerHealth;
+            playerEssence = DataCarrier.instance.playerEssence;
+        }
+
         FillPlayerEssence();
         FillEnemyEssence();
 
@@ -130,7 +137,7 @@ public class BattleController : MonoBehaviour, IDataPersistence
 
     public void EnemyGainEssence(int essenceAmount)
     {
-        Debug.Log("artt�");
+        Debug.Log("arttı");
         enemyEssence += essenceAmount;
         UIController.instance.SetEnemyEssenceText(enemyEssence);
     }
@@ -316,34 +323,56 @@ public class BattleController : MonoBehaviour, IDataPersistence
 
         yield return new WaitForSeconds(resultScreenDelayTime);
 
-        if (UIController.instance.drawPileOpen)
+        if (UIController.instance.drawPilePanel.activeInHierarchy == true)
         {
             UIController.instance.OpenDrawPile();
         }
 
-        if (UIController.instance.discardPileOpen)
+        if (UIController.instance.discardPilePanel.activeInHierarchy == true)
         {
             UIController.instance.OpenDiscardPile();
         }
 
-        UIController.instance.coins.SetActive(false);
-
         UIController.instance.battleEndedScreen.SetActive(true);
+
+        // Verileri DataCarrier'a kaydet
+        if (DataCarrier.instance != null)
+        {
+            DataCarrier.instance.UpdatePlayerEssence(playerEssence);
+            DataCarrier.instance.UpdatePlayerHealth(playerHealth);
+        }
+    }
+
+    public void SetPlayerHealth(int health)
+    {
+        DataCarrier.instance.UpdatePlayerHealth(health);
+    }
+
+    public void SetPlayerEssence(int essence)
+    {
+        DataCarrier.instance.UpdatePlayerEssence(essence);
+    }
+
+    public void UpdateDataCarrier()
+    {
+        if (DataCarrier.instance != null)
+        {
+            DataCarrier.instance.UpdatePlayerHealth(playerHealth);
+            DataCarrier.instance.UpdatePlayerEssence(playerEssence);
+        }
     }
 
     public void LoadData(PlayerData data)
     {
-        playerHealth = data.health;
-        playerEssence = data.essence;
-        UIController.instance.SetPlayerEssenceText(playerEssence);
-        UIController.instance.SetEnemyHealthText(playerHealth);
-        // Daha fazla veri y�kleme i�lemi burada yap�labilir
+        // Mevcut health ve essence'ı güncelle
+        SetPlayerHealth(data.health);
+        SetPlayerEssence(data.essence);
     }
 
     public void SaveData(PlayerData data)
     {
-        data.health = playerHealth;
-        data.essence = playerEssence;
-        // Daha fazla veri kaydetme i�lemi burada yap�labilir
+        // DataCarrier'dan health ve essence'ı al
+        data.health = DataCarrier.instance.playerHealth;
+        data.essence = DataCarrier.instance.playerEssence;
     }
 }

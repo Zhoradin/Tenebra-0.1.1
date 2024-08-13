@@ -19,6 +19,11 @@ public class DrawPileController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    public void SetDrawPile()
+    {
         drawPile.AddRange(DeckController.instance.deckToUse);
         CreateDrawPileCardSlots();
     }

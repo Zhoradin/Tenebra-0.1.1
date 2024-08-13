@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class UIController : MonoBehaviour
+public class UIController : MonoBehaviour, IDataPersistence
 {
     public static UIController instance;
 
@@ -27,7 +27,7 @@ public class UIController : MonoBehaviour
     public GameObject battleEndedScreen;
     public TMP_Text battleResultText;
 
-    public string mainMenuScene, battleSelectScene;
+    public string mainMenuScene;
 
     public GameObject pauseScreen, areYouSurePanel;
 
@@ -45,11 +45,11 @@ public class UIController : MonoBehaviour
 
     void Start()
     {
+        coinAmount = DataCarrier.instance.playerCoin;
+        UpdateCoinAmountText();
+
         drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileClosedPosition;
         discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileClosedPosition;
-
-        coinAmount = 0;
-        UpdateCoinAmountText();
     }
 
     void Update()
@@ -116,20 +116,20 @@ public class UIController : MonoBehaviour
         {
             areYouSurePanel.SetActive(false);
         }
-        Time.timeScale = 1f;
     }
 
-    public void MainMenuYes()
+    public void SaveQuitYes()
     {
-        SceneManager.LoadScene(mainMenuScene);
+        BattleController.instance.UpdateDataCarrier();
+        DataCarrier.instance.playerCoin = coinAmount;
         FindObjectOfType<GameController>().SaveGame();
+        SceneManager.LoadScene("Hub");
         Time.timeScale = 1f;
     }
 
-    public void MainMenuNo()
+    public void SaveQuitCancel()
     {
-        SceneManager.LoadScene(mainMenuScene);
-        Time.timeScale = 1f;
+        areYouSurePanel.SetActive(false);
     }
 
     public void RestartLevel()
@@ -140,7 +140,7 @@ public class UIController : MonoBehaviour
 
     public void ChooseNewBattle()
     {
-        SceneManager.LoadScene(battleSelectScene);
+        SceneManager.LoadScene("Hub");
         Time.timeScale = 1f;
     }
 
@@ -219,11 +219,23 @@ public class UIController : MonoBehaviour
 
     public void OnSaveButtonClick()
     {
-        FindObjectOfType<GameController>().SaveGame();
+        if (areYouSurePanel.activeSelf == false)
+        {
+            areYouSurePanel.SetActive(true);
+        }
+        else
+        {
+            areYouSurePanel.SetActive(false);
+        }
     }
 
-    public void OnLoadButtonClick()
+    public void LoadData(PlayerData data)
     {
-        FindObjectOfType<GameController>().LoadGame();
+        coinAmount = DataCarrier.instance.playerCoin;
+    }
+
+    public void SaveData(PlayerData data)
+    {
+        data.money = DataCarrier.instance.playerCoin;
     }
 }

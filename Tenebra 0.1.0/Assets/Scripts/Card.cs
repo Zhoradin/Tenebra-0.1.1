@@ -512,103 +512,107 @@ public class Card : MonoBehaviour
     {
         if (cardSO.moonPhase == BattleController.instance.currentMoonPhase)
         {
-            if (cardSO.moonPhase == MoonPhase.NewMoon)
+            switch (cardSO.moonPhase)
             {
+                case MoonPhase.NewMoon:
+                    // No effect for NewMoon
+                    break;
 
-            }
-            else if (cardSO.moonPhase == MoonPhase.WaxingCrescent)
-            {
-                //increase health and attackPower by .33
-                currentHealth += Mathf.RoundToInt(currentHealth * .33f);
-                attackPower += Mathf.RoundToInt(attackPower * .33f);
-                UpdateCardDisplay();
-            }
-            else if (cardSO.moonPhase == MoonPhase.FirstQuarter)
-            {
-                //insta kill
-                instaKill = true;
-            }
-            else if (cardSO.moonPhase == MoonPhase.WaxingGibbous)
-            {
-                //decrease essence cost to half
-                essenceCost /= 2;
-                UpdateCardDisplay();
-            }
-            else if (cardSO.moonPhase == MoonPhase.FullMoon)
-            {
-                //reflect the damage
-            }
-            else if (cardSO.moonPhase == MoonPhase.WaningGibbous)
-            {
-                //increase overall essence by 1
-                if (isActive)
-                {
-                    if (isPlayer)
+                case MoonPhase.WaxingCrescent:
+                    // Increase health and attackPower by .33
+                    currentHealth += Mathf.RoundToInt(currentHealth * .33f);
+                    attackPower += Mathf.RoundToInt(attackPower * .33f);
+                    UpdateCardDisplay();
+                    break;
+
+                case MoonPhase.FirstQuarter:
+                    // Insta kill
+                    instaKill = true;
+                    break;
+
+                case MoonPhase.WaxingGibbous:
+                    // Decrease essence cost to half
+                    essenceCost /= 2;
+                    UpdateCardDisplay();
+                    break;
+
+                case MoonPhase.FullMoon:
+                    // Reflect the damage
+                    break;
+
+                case MoonPhase.WaningGibbous:
+                    // Increase overall essence by 1
+                    if (isActive)
                     {
-                        BattleController.instance.PlayerGainEssence(1);
+                        if (isPlayer)
+                        {
+                            BattleController.instance.PlayerGainEssence(1);
+                        }
+                        else
+                        {
+                            BattleController.instance.EnemyGainEssence(1);
+                        }
                     }
-                    else
-                    {  
-                        BattleController.instance.EnemyGainEssence(1);
-                    } 
-                }
-            }
-            else if (cardSO.moonPhase == MoonPhase.LastQuarter)
-            {
-                //attack 3 opponents
-                multipleHit = true;
-            }
-            else if (cardSO.moonPhase == MoonPhase.WaningCrescent)
-            {
-                //steal 1 health
-            }
-            else
-            {
-                Debug.Log("Eşleşen bir moon phase yok.");
+                    break;
+
+                case MoonPhase.LastQuarter:
+                    // Attack 3 opponents
+                    multipleHit = true;
+                    break;
+
+                case MoonPhase.WaningCrescent:
+                    // Steal 1 health
+                    break;
+
+                default:
+                    Debug.Log("Eşleşen bir moon phase yok.");
+                    break;
             }
         }
-        else if (cardSO.moonPhase != BattleController.instance.currentMoonPhase)
+        else
         {
-            if (cardSO.moonPhase == MoonPhase.NewMoon)
+            switch (cardSO.moonPhase)
             {
+                case MoonPhase.NewMoon:
+                    // No effect for NewMoon
+                    break;
 
-            }
-            else if (cardSO.moonPhase == MoonPhase.WaxingCrescent)
-            {
-                //convert health and attack to its original
-                currentHealth = originalHealth;
-                attackPower = originalAttack;
-                UpdateCardDisplay();
-            }
-            else if (cardSO.moonPhase == MoonPhase.FirstQuarter)
-            {
-                //no effect
-                instaKill = false;
-            }
-            else if (cardSO.moonPhase == MoonPhase.WaxingGibbous)
-            {
-                essenceCost = originalEssence;
-                UpdateCardDisplay();
-            }
-            else if (cardSO.moonPhase == MoonPhase.FullMoon)
-            {
-                //no effect
-            }
-            else if (cardSO.moonPhase == MoonPhase.WaningGibbous)
-            {
-                //no effect
-            }
-            else if (cardSO.moonPhase == MoonPhase.LastQuarter)
-            {
-                multipleHit = false;
-            }
-            else if (cardSO.moonPhase == MoonPhase.WaningCrescent)
-            {
-                //no effect
-            }
-            else
-            {
-                Debug.Log("Eşleşen bir moon phase yok.");
+                case MoonPhase.WaxingCrescent:
+                    // Convert health and attack to its original
+                    currentHealth = originalHealth;
+                    attackPower = originalAttack;
+                    UpdateCardDisplay();
+                    break;
+
+                case MoonPhase.FirstQuarter:
+                    // No effect
+                    instaKill = false;
+                    break;
+
+                case MoonPhase.WaxingGibbous:
+                    essenceCost = originalEssence;
+                    UpdateCardDisplay();
+                    break;
+
+                case MoonPhase.FullMoon:
+                    // No effect
+                    break;
+
+                case MoonPhase.WaningGibbous:
+                    // No effect
+                    break;
+
+                case MoonPhase.LastQuarter:
+                    multipleHit = false;
+                    break;
+
+                case MoonPhase.WaningCrescent:
+                    // No effect
+                    break;
+
+                default:
+                    Debug.Log("Eşleşen bir moon phase yok.");
+                    break;
             }
         }
     }
