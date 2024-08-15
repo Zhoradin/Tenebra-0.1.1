@@ -30,6 +30,8 @@ public class Card : MonoBehaviour
 
     public CardType cardType;
 
+    public CardKind cardKind;
+
     private Vector3 targetPoint;
     private Quaternion targetRot;
     public float moveSpeed = 5f, rotateSpeed = 540f;
@@ -133,7 +135,7 @@ public class Card : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, whatIsPlacement);
 
-                if (hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive)
+                if (hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Field)
                 {
                     CardPlacePoint selectedPoint = hit.collider.GetComponent<CardPlacePoint>();
                     if (selectedPoint.activeCard == null && selectedPoint.isPlayerPoint)
