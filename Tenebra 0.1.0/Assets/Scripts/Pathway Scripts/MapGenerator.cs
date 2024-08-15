@@ -66,7 +66,25 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private List<RoomTypeSprite> roomTypeSprites;
 
     [SerializeField] private bool showNullSpheres = false; // Reintroduced
+
+    // For development 1f is ideal
+    // For actual gameplay 3-4f seems optimal for now
     [SerializeField] private float verticalOffset = 1f;
+
+
+    public static MapGenerator Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
 
     private Room[,] grid;
@@ -74,14 +92,14 @@ public class MapGenerator : MonoBehaviour
     private int extendedHeight;
 
     void Start()
-{
-    extendedHeight = height + 1; // Add extra floor for boss room
-    GenerateMap();
-    AssignRoomLocations();
-    RemoveUnconnectedRooms(); // Ensure rooms are cleaned up before boss room allocation
-    AllocateBossRoom();      // Allocate and connect boss room
-    AssignRoomSprites();
-}
+    {
+        extendedHeight = height + 1; // Add extra floor for boss room
+        GenerateMap();
+        AssignRoomLocations();
+        RemoveUnconnectedRooms(); // Ensure rooms are cleaned up before boss room allocation
+        AllocateBossRoom();      // Allocate and connect boss room
+        AssignRoomSprites();
+    }
 
 
     private void GenerateMap()
@@ -118,34 +136,34 @@ public class MapGenerator : MonoBehaviour
     }
 
     private void ConnectToNextFloor(Room room, int currentFloor)
-{
-    if (currentFloor >= extendedHeight - 1)
-        return;
-
-    int nextFloor = currentFloor + 1;
-
-    // Ensure that only the boss room is on floor 16
-    if (nextFloor == extendedHeight - 1) // This is the boss floor
     {
-        Room bossRoom = grid[width / 2, nextFloor]; // Assuming the boss room is always centered
-        room.Connect(bossRoom);
-        return; // Stop further connections for the boss room
-    }
+        if (currentFloor >= extendedHeight - 1)
+            return;
 
-    List<Room> possibleConnections = new List<Room>();
-    for (int dx = -1; dx <= 1; dx++)
-    {
-        int nx = room.X + dx;
-        if (nx >= 0 && nx < width)
+        int nextFloor = currentFloor + 1;
+
+        // Ensure that only the boss room is on floor 16
+        if (nextFloor == extendedHeight - 1) // This is the boss floor
         {
-            possibleConnections.Add(grid[nx, nextFloor]);
+            Room bossRoom = grid[width / 2, nextFloor]; // Assuming the boss room is always centered
+            room.Connect(bossRoom);
+            return; // Stop further connections for the boss room
         }
-    }
 
-    Room nextRoom = possibleConnections[random.Next(possibleConnections.Count)];
-    room.Connect(nextRoom);
-    ConnectToNextFloor(nextRoom, nextFloor);
-}
+        List<Room> possibleConnections = new List<Room>();
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            int nx = room.X + dx;
+            if (nx >= 0 && nx < width)
+            {
+                possibleConnections.Add(grid[nx, nextFloor]);
+            }
+        }
+
+        Room nextRoom = possibleConnections[random.Next(possibleConnections.Count)];
+        room.Connect(nextRoom);
+        ConnectToNextFloor(nextRoom, nextFloor);
+    }
 
 
     private void AssignRoomLocations()
@@ -217,99 +235,111 @@ public class MapGenerator : MonoBehaviour
     }
 
    private void RemoveUnconnectedRooms()
-{
-    for (int y = 0; y < extendedHeight; y++)
     {
-        for (int x = 0; x < width; x++)
+        for (int y = 0; y < extendedHeight; y++)
         {
-            Room room = grid[x, y];
-            if (room != null)
+            for (int x = 0; x < width; x++)
             {
-                if (y == extendedHeight - 2) // Check rooms on the floor below the boss room
+                Room room = grid[x, y];
+                if (room != null)
                 {
-                    bool hasConnectionToLowerFloor = false;
-                    bool hasConnectionToBossRoom = false;
-
-                    // Check if the room has a connection to the lower floor (floor 13)
-                    foreach (Room connection in room.Connections)
+                    if (y == extendedHeight - 2) // Check rooms on the floor below the boss room
                     {
-                        if (connection.Y == extendedHeight - 3) // Floor 13
+                        bool hasConnectionToLowerFloor = false;
+                        bool hasConnectionToBossRoom = false;
+
+                        // Check if the room has a connection to the lower floor (floor 13)
+                        foreach (Room connection in room.Connections)
                         {
-                            hasConnectionToLowerFloor = true;
-                            break;
+                            if (connection.Y == extendedHeight - 3) // Floor 13
+                            {
+                                hasConnectionToLowerFloor = true;
+                                break;
+                            }
+                        }
+
+                        // Check if the room has a connection to the boss room
+                        if (room.Connections.Exists(r => r.Y == extendedHeight - 1)) // Boss room
+                        {
+                            hasConnectionToBossRoom = true;
+                        }
+
+                        if (!hasConnectionToLowerFloor || !hasConnectionToBossRoom)
+                        {
+                            grid[x, y] = null;
                         }
                     }
-
-                    // Check if the room has a connection to the boss room
-                    if (room.Connections.Exists(r => r.Y == extendedHeight - 1)) // Boss room
-                    {
-                        hasConnectionToBossRoom = true;
-                    }
-
-                    if (!hasConnectionToLowerFloor || !hasConnectionToBossRoom)
+                    else if (room.Connections.Count == 0)
                     {
                         grid[x, y] = null;
                     }
                 }
-                else if (room.Connections.Count == 0)
-                {
-                    grid[x, y] = null;
-                }
             }
         }
     }
-}
 
 
     private void AssignRoomSprites()
-{
-    foreach (Room room in grid)
     {
-        if (room != null && room.RoomType != RoomType.None)
+        foreach (Room room in grid)
         {
-            RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == room.RoomType);
-            if (rts.sprite != null)
+            if (room != null && room.RoomType != RoomType.None)
             {
-                GameObject roomObj = new GameObject($"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}");
-                roomObj.transform.position = new Vector3(room.X, room.Y * verticalOffset, 0);
-                SpriteRenderer sr = roomObj.AddComponent<SpriteRenderer>();
-                sr.sprite = rts.sprite;
-                room.SpriteRenderer = sr;
+                RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == room.RoomType);
+                if (rts.sprite != null)
+                {
+                    GameObject roomObj = new GameObject($"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}");
+                    roomObj.transform.position = new Vector3(room.X, verticalOffset * room.Y, 0);
+
+                    SpriteRenderer sr = roomObj.AddComponent<SpriteRenderer>();
+                    sr.sprite = rts.sprite;
+
+                    // Add RoomInteraction script and initialize the room
+                    RoomInteraction roomInteraction = roomObj.AddComponent<RoomInteraction>();
+                    roomInteraction.InitializeRoom(room);
+
+                    // Add a BoxCollider2D to make the room clickable
+                    BoxCollider2D boxCollider = roomObj.AddComponent<BoxCollider2D>();
+                    boxCollider.isTrigger = true;
+
+                    room.SpriteRenderer = sr;
+                }
             }
         }
     }
-}
+
+
 
 
     private void OnDrawGizmos()
-{
-    if (grid == null) return;
-
-    for (int y = 0; y < extendedHeight; y++)
     {
-        for (int x = 0; x < width; x++)
+        if (grid == null) return;
+
+        for (int y = 0; y < extendedHeight; y++)
         {
-            Room room = grid[x, y];
-            Vector3 position = new Vector3(x, y * verticalOffset, 0);
-            Gizmos.color = room != null ? GetColorForRoomType(room.RoomType) : Color.grey;
-
-            if (room != null)
+            for (int x = 0; x < width; x++)
             {
-                Gizmos.DrawSphere(position, 0.15f);
+                Room room = grid[x, y];
+                Vector3 position = new Vector3(x, y * verticalOffset, 0);
+                Gizmos.color = room != null ? GetColorForRoomType(room.RoomType) : Color.grey;
 
-                foreach (Room connection in room.Connections)
+                if (room != null)
                 {
-                    Vector3 connectionPosition = new Vector3(connection.X, connection.Y * verticalOffset, 0);
-                    Gizmos.DrawLine(position, connectionPosition);
+                    Gizmos.DrawSphere(position, 0.15f);
+
+                    foreach (Room connection in room.Connections)
+                    {
+                        Vector3 connectionPosition = new Vector3(connection.X, connection.Y * verticalOffset, 0);
+                        Gizmos.DrawLine(position, connectionPosition);
+                    }
                 }
-            }
-            else if (showNullSpheres)
-            {
-                Gizmos.DrawSphere(position, 0.1f);
+                else if (showNullSpheres)
+                {
+                    Gizmos.DrawSphere(position, 0.1f);
+                }
             }
         }
     }
-}
 
     private Color GetColorForRoomType(RoomType type)
     {
@@ -325,4 +355,39 @@ public class MapGenerator : MonoBehaviour
             default: return defaultColor;
         }
     }
+
+
+    // Methods for RoomInteractions script
+
+    private Room currentRoom;
+
+    public void SetAllRoomsUnclickable()
+    {
+        foreach (Room room in grid)
+        {
+            if (room != null && room.RoomType != RoomType.None)
+            {
+                GameObject roomObj = GetRoomGameObject(room);
+                roomObj.GetComponent<RoomInteraction>().SetClickable(false);
+            }
+        }
+    }
+
+    public void SetCurrentRoom(Room room)
+    {
+        currentRoom = room;
+    }
+
+    public GameObject GetRoomGameObject(Room room)
+    {
+        return GameObject.Find($"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}");
+    }
+
+    public void OnRoomClicked(RoomInteraction clickedRoom)
+    {
+        // Implement logic to handle what happens when a room is clicked
+        // For example, you can set the clicked room as the current room, etc.
+        Debug.Log("A room got clicked!" + clickedRoom);
+    }
+
 }
