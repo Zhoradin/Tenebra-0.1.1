@@ -1,87 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomInteraction : MonoBehaviour
 {
+    public Room Room { get; private set; }
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
-    private Room associatedRoom;
-    private bool isCurrentRoom;
+    private bool isClickable;
 
     public void InitializeRoom(Room room)
     {
-        associatedRoom = room;
+        Room = room;
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        if (spriteRenderer == null)
-        {
-            Debug.LogError("SpriteRenderer not found on the GameObject.");
-            return;
-        }
-
         originalColor = spriteRenderer.color;
-        SetClickable(false); // Initialize as non-clickable
+        SetClickable(false);  // Initially, set all rooms to not clickable
+
+        Debug.Log("Room initialized: " + Room.X + ", " + Room.Y);
     }
 
     public void SetClickable(bool value)
     {
-        if (spriteRenderer == null)
-        {
-            Debug.LogError("SpriteRenderer is null in SetClickable.");
-            return;
-        }
-
+        isClickable = value;
         spriteRenderer.color = value ? Color.yellow : originalColor;
-
-        if (value)
-        {
-            // Add BoxCollider2D if it doesn't already exist
-            if (GetComponent<BoxCollider2D>() == null)
-            {
-                gameObject.AddComponent<BoxCollider2D>();
-            }
-        }
-        else
-        {
-            // Remove BoxCollider2D if it exists
-            BoxCollider2D collider = GetComponent<BoxCollider2D>();
-            if (collider != null)
-            {
-                Destroy(collider);
-            }
-        }
     }
 
     private void OnMouseDown()
     {
-        if (!isCurrentRoom && associatedRoom != null)
+        Debug.Log($"Room at ({Room.X}, {Room.Y}) clicked!");
+        MapGenerator.Instance.OnRoomClicked(this);
+        
+        if (isClickable)
         {
-            MapGenerator.Instance.OnRoomClicked(this);
+            Debug.Log("Room clicked: " + Room.X + ", " + Room.Y);
+
+            MapGenerator mapGenerator = FindObjectOfType<MapGenerator>();
+            if (mapGenerator != null)
+            {
+                Debug.Log("MapGenerator found, calling OnRoomClicked.");
+                mapGenerator.OnRoomClicked(this);
+            }
+            else
+            {
+                Debug.LogError("MapGenerator not found in the scene.");
+            }
         }
     }
 
-    public void SetAsCurrentRoom()
+    public void BlinkSprite()
     {
-        isCurrentRoom = true;
-        StartCoroutine(BlinkSprite());
-    }
-
-    public void SetAsNonCurrentRoom()
-    {
-        isCurrentRoom = false;
-        StopAllCoroutines();
-        spriteRenderer.color = originalColor;
-    }
-
-    private IEnumerator BlinkSprite()
-    {
-        while (isCurrentRoom)
-        {
-            spriteRenderer.color = Color.red;
-            yield return new WaitForSeconds(0.5f);
-            spriteRenderer.color = originalColor;
-            yield return new WaitForSeconds(0.5f);
-        }
+        // Implement blinking effect for visual feedback (optional)
+        Debug.Log("Blinking room: " + Room.X + ", " + Room.Y);
     }
 }

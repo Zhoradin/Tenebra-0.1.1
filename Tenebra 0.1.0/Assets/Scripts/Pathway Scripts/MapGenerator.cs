@@ -71,6 +71,9 @@ public class MapGenerator : MonoBehaviour
     // For actual gameplay 3-4f seems optimal for now
     [SerializeField] private float verticalOffset = 1f;
 
+    public RoomInteraction CurrentRoom { get; private set; }
+
+
 
     public static MapGenerator Instance { get; private set; }
 
@@ -359,35 +362,65 @@ public class MapGenerator : MonoBehaviour
 
     // Methods for RoomInteractions script
 
-    private Room currentRoom;
+    private RoomInteraction currentRoom;
 
-    public void SetAllRoomsUnclickable()
+    public void OnRoomClicked(RoomInteraction clickedRoom)
     {
-        foreach (Room room in grid)
+        Debug.Log("OnRoomClicked method called.");
+
+        // Set the clicked room as the current room
+        SetCurrentRoom(clickedRoom);
+
+        // Set all other rooms unclickable
+        SetAllRoomsUnclickable();
+
+        // Allow moving only to connected rooms on higher floors
+        foreach (var connection in clickedRoom.Room.Connections)
         {
-            if (room != null && room.RoomType != RoomType.None)
+            if (connection.Y > clickedRoom.Room.Y)  // Ensure movement is only upwards
             {
-                GameObject roomObj = GetRoomGameObject(room);
-                roomObj.GetComponent<RoomInteraction>().SetClickable(false);
+                RoomInteraction nextRoom = GetRoomInteraction(connection);
+                if (nextRoom != null)
+                {
+                    nextRoom.SetClickable(true);
+                }
             }
         }
     }
 
-    public void SetCurrentRoom(Room room)
+    private void SetCurrentRoom(RoomInteraction clickedRoom)
     {
-        currentRoom = room;
+        if (currentRoom != null)
+        {
+            currentRoom.SetClickable(false);  // Disable clickability of the previous room
+        }
+
+        currentRoom = clickedRoom;
+        currentRoom.BlinkSprite();
+        Debug.Log("Current room set to: " + currentRoom.Room.X + ", " + currentRoom.Room.Y);
     }
 
-    public GameObject GetRoomGameObject(Room room)
+    private void SetAllRoomsUnclickable()
     {
-        return GameObject.Find($"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}");
+        RoomInteraction[] allRooms = FindObjectsOfType<RoomInteraction>();
+        foreach (var room in allRooms)
+        {
+            room.SetClickable(false);
+        }
+        Debug.Log("All rooms set to unclickable.");
     }
 
-    public void OnRoomClicked(RoomInteraction clickedRoom)
+    private RoomInteraction GetRoomInteraction(Room room)
     {
-        // Implement logic to handle what happens when a room is clicked
-        // For example, you can set the clicked room as the current room, etc.
-        Debug.Log("A room got clicked!" + clickedRoom);
+        foreach (var interaction in FindObjectsOfType<RoomInteraction>())
+        {
+            if (interaction.Room == room)
+            {
+                return interaction;
+            }
+        }
+        return null;
     }
+
 
 }
