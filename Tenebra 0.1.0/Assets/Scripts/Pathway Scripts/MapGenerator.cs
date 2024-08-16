@@ -49,6 +49,16 @@ public struct RoomTypeSprite
 
 public class MapGenerator : MonoBehaviour
 {
+    public GameObject monsterRoomPrefab;
+    public GameObject eventRoomPrefab;
+    public GameObject eliteMonsterRoomPrefab;
+    public GameObject restSiteRoomPrefab;
+    public GameObject merchantRoomPrefab;
+    public GameObject treasureRoomPrefab;
+    public GameObject bossRoomPrefab;
+
+
+
     [SerializeField] private int width = 7;
     [SerializeField] private int height = 16;
     [SerializeField] private int minPaths = 3;
@@ -63,7 +73,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color bossColor = Color.black;
     [SerializeField] private Color defaultColor = Color.white;
 
-    [SerializeField] private List<RoomTypeSprite> roomTypeSprites;
+    //[SerializeField] private List<RoomTypeSprite> roomTypeSprites;
 
     [SerializeField] private bool showNullSpheres = false; // Reintroduced
 
@@ -288,30 +298,60 @@ public class MapGenerator : MonoBehaviour
     {
         if (room != null && room.RoomType != RoomType.None)
         {
-            RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == room.RoomType);
-            if (rts.sprite != null)
+            // Instantiate the prefab for the room
+            GameObject roomObj = Instantiate(GetRoomPrefab(room.RoomType), new Vector3(room.X, verticalOffset * room.Y, 0), Quaternion.identity);
+            roomObj.name = $"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}";
+
+            // Get the RoomInteraction component and initialize it
+            RoomInteraction roomInteraction = roomObj.GetComponent<RoomInteraction>();
+            roomInteraction.InitializeRoom(room);
+
+            // Get the SpriteRenderer component
+            SpriteRenderer spriteRenderer = roomObj.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
             {
-                GameObject roomObj = new GameObject($"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}");
-                roomObj.transform.position = new Vector3(room.X, verticalOffset * room.Y, 0);
-
-                SpriteRenderer sr = roomObj.AddComponent<SpriteRenderer>();
-                sr.sprite = rts.sprite;
-
-                // Add RoomInteraction script and initialize the room
-                RoomInteraction roomInteraction = roomObj.AddComponent<RoomInteraction>();
-                roomInteraction.InitializeRoom(room);
-
-                // Add a BoxCollider2D to make the room clickable
-                BoxCollider2D boxCollider = roomObj.AddComponent<BoxCollider2D>();
-                boxCollider.isTrigger = true;
-
-                room.SpriteRenderer = sr;
+                // Adjust the BoxCollider2D size to match the sprite size
+                BoxCollider2D boxCollider = roomObj.GetComponent<BoxCollider2D>();
+                if (boxCollider != null)
+                {
+                    // Set the BoxCollider2D size to match the sprite size
+                    Vector2 spriteSize = spriteRenderer.bounds.size;
+                    boxCollider.size = spriteSize;
+                }
             }
+
+            // Assign the SpriteRenderer to the Room object
+            room.SpriteRenderer = spriteRenderer;
         }
     }
-
-    DrawConnectionLines(); // Call the new method to draw lines between rooms
 }
+
+
+private GameObject GetRoomPrefab(RoomType roomType)
+{
+    switch (roomType)
+    {
+        case RoomType.Monster:
+            return monsterRoomPrefab;
+        case RoomType.Event:
+            return eventRoomPrefab;
+        case RoomType.EliteMonster:
+            return eliteMonsterRoomPrefab;
+        case RoomType.RestSite:
+            return restSiteRoomPrefab;
+        case RoomType.Merchant:
+            return merchantRoomPrefab;
+        case RoomType.Treasure:
+            return treasureRoomPrefab;
+        case RoomType.Boss:
+            return bossRoomPrefab;
+        default:
+            return null;
+    }
+}
+
+
+
 
 private void DrawConnectionLines()
 {

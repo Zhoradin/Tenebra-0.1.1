@@ -22,6 +22,7 @@ public class RoomInteraction : MonoBehaviour
     {
         isClickable = value;
         spriteRenderer.color = value ? Color.yellow : originalColor;
+        Debug.Log($"Room at ({Room.X}, {Room.Y}) isClickable set to: {isClickable}");
     }
 
     private void OnMouseDown()

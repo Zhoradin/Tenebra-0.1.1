@@ -151,6 +151,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17deb89cb7d9acf4da19d8293d6449e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monsterRoomPrefab: {fileID: 8894233808831673585, guid: 8c7b715483f5d584fb801c6c75a689cc, type: 3}
+  eventRoomPrefab: {fileID: 8894233808831673585, guid: a1a1e161a837f114496b352a1662e1d3, type: 3}
+  eliteMonsterRoomPrefab: {fileID: 8894233808831673585, guid: 6d6b7eaca0d8f2e4cb5dba1438aff036, type: 3}
+  restSiteRoomPrefab: {fileID: 8894233808831673585, guid: abe0c2ab3ec9bf940a54f78f08c2fc8b, type: 3}
+  merchantRoomPrefab: {fileID: 8894233808831673585, guid: 6953ea5fe6da6f04e8509b21c5c1959b, type: 3}
+  treasureRoomPrefab: {fileID: 8894233808831673585, guid: bfeb31aed9e14a448a161a706ef53301, type: 3}
+  bossRoomPrefab: {fileID: 8894233808831673585, guid: ea4f15d63bde8be44a117448085c17db, type: 3}
   width: 7
   height: 16
   minPaths: 3
@@ -163,21 +170,6 @@ MonoBehaviour:
   treasureColor: {r: 0, g: 1, b: 1, a: 1}
   bossColor: {r: 0, g: 0, b: 0, a: 1}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  roomTypeSprites:
-  - roomType: 1
-    sprite: {fileID: 21300000, guid: d898a4fad93be7046bedd56dfc28786e, type: 3}
-  - roomType: 2
-    sprite: {fileID: 21300000, guid: e504ad5fb7d49384c87feae625e1e70f, type: 3}
-  - roomType: 3
-    sprite: {fileID: 21300000, guid: f972962ee1934044b872ab2d7cd61415, type: 3}
-  - roomType: 4
-    sprite: {fileID: 21300000, guid: bf29c5cb7dfd861448a69b50a9a3125e, type: 3}
-  - roomType: 5
-    sprite: {fileID: 21300000, guid: f3e69ffbfdbd8fd45bd1cc31ac0e8945, type: 3}
-  - roomType: 6
-    sprite: {fileID: 21300000, guid: e8d4dd50ac916ed4d9cded516dcb1351, type: 3}
-  - roomType: 7
-    sprite: {fileID: 21300000, guid: f4d452a7d9b8cfe4197f54b721009ef0, type: 3}
   showNullSpheres: 1
   verticalOffset: 1
 --- !u!4 &337811194
