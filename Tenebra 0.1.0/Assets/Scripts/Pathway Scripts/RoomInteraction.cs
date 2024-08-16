@@ -1,55 +1,63 @@
+using System.Collections;
 using UnityEngine;
 
 public class RoomInteraction : MonoBehaviour
 {
-    public Room Room { get; private set; }
-    private SpriteRenderer spriteRenderer;
-    private Color originalColor;
-    [SerializeField] private bool isClickable;
+    public bool IsClickable; // Public property for accessibility
+    public Room Room { get; set; }
+    public SpriteRenderer SpriteRenderer { get; private set; }
 
-    public void InitializeRoom(Room room)
+    private void Awake()
     {
-        Room = room;
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        originalColor = spriteRenderer.color;
-        SetClickable(false);  // Initially, set all rooms to not clickable
-
-        //Debug.Log("Room initialized: " + Room.X + ", " + Room.Y);
-        
-    }
-
-    public void SetClickable(bool value)
-    {
-        isClickable = value;
-        spriteRenderer.color = value ? Color.yellow : originalColor;
-        Debug.Log($"Room at ({Room.X}, {Room.Y}) isClickable set to: {isClickable}");
+        // Initialize SpriteRenderer
+        SpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnMouseDown()
     {
-        Debug.Log($"Room at ({Room.X}, {Room.Y}) clicked!");
-        MapGenerator.Instance.OnRoomClicked(this);
-        
-        if (isClickable)
+        if (IsClickable)
         {
-            Debug.Log("Room clicked: " + Room.X + ", " + Room.Y);
+            // Notify MapGenerator that this room was clicked
+            MapGenerator.Instance.OnRoomClicked(this);
+        }
+    }
 
-            MapGenerator mapGenerator = FindObjectOfType<MapGenerator>();
-            if (mapGenerator != null)
-            {
-                Debug.Log("MapGenerator found, calling OnRoomClicked.");
-                mapGenerator.OnRoomClicked(this);
-            }
-            else
-            {
-                Debug.LogError("MapGenerator not found in the scene.");
-            }
+    public void InitializeRoom(Room room)
+    {
+        Room = room;
+        // Initialize other properties as needed
+        UpdateClickableVisuals(); // Ensure visuals reflect the initial clickability state
+    }
+
+    public void SetClickable(bool clickable)
+    {
+        IsClickable = clickable;
+        UpdateClickableVisuals();
+    }
+
+    private void UpdateClickableVisuals()
+    {
+        if (SpriteRenderer != null)
+        {
+            // Change color or add a visual indicator to show whether the room is clickable
+            SpriteRenderer.color = IsClickable ? Color.green : Color.red; // Example: green for clickable, red for not clickable
         }
     }
 
     public void BlinkSprite()
     {
-        // Implement blinking effect for visual feedback (optional)
-        Debug.Log("Blinking room: " + Room.X + ", " + Room.Y);
+        // Implement sprite blinking effect, e.g., changing color briefly
+        StartCoroutine(BlinkCoroutine());
+    }
+
+    private IEnumerator BlinkCoroutine()
+    {
+        if (SpriteRenderer != null)
+        {
+            Color originalColor = SpriteRenderer.color;
+            SpriteRenderer.color = Color.yellow; // Example: yellow blink color
+            yield return new WaitForSeconds(0.2f); // Blink duration
+            SpriteRenderer.color = originalColor; // Reset to original color
+        }
     }
 }

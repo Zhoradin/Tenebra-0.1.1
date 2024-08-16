@@ -57,8 +57,6 @@ public class MapGenerator : MonoBehaviour
     public GameObject treasureRoomPrefab;
     public GameObject bossRoomPrefab;
 
-
-
     [SerializeField] private int width = 7;
     [SerializeField] private int height = 16;
     [SerializeField] private int minPaths = 3;
@@ -73,19 +71,17 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color bossColor = Color.black;
     [SerializeField] private Color defaultColor = Color.white;
 
-    //[SerializeField] private List<RoomTypeSprite> roomTypeSprites;
-
     [SerializeField] private bool showNullSpheres = false; // Reintroduced
 
-    // For development 1f is ideal
-    // For actual gameplay 3-4f seems optimal for now
     [SerializeField] private float verticalOffset = 1f;
 
-    public RoomInteraction CurrentRoom { get; private set; }
-
-
+    private RoomInteraction currentRoom;
 
     public static MapGenerator Instance { get; private set; }
+
+    private Room[,] grid;
+    private System.Random random = new System.Random();
+    private int extendedHeight;
 
     private void Awake()
     {
@@ -99,12 +95,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-
-    private Room[,] grid;
-    private System.Random random = new System.Random();
-    private int extendedHeight;
-
-    void Start()
+    private void Start()
     {
         extendedHeight = height + 1; // Add extra floor for boss room
         GenerateMap();
@@ -113,7 +104,6 @@ public class MapGenerator : MonoBehaviour
         AllocateBossRoom();      // Allocate and connect boss room
         AssignRoomSprites();
     }
-
 
     private void GenerateMap()
     {
@@ -177,7 +167,6 @@ public class MapGenerator : MonoBehaviour
         room.Connect(nextRoom);
         ConnectToNextFloor(nextRoom, nextFloor);
     }
-
 
     private void AssignRoomLocations()
     {
@@ -247,7 +236,7 @@ public class MapGenerator : MonoBehaviour
         return rooms;
     }
 
-   private void RemoveUnconnectedRooms()
+    private void RemoveUnconnectedRooms()
     {
         for (int y = 0; y < extendedHeight; y++)
         {
@@ -291,132 +280,53 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-
     private void AssignRoomSprites()
-{
-    foreach (Room room in grid)
     {
-        if (room != null && room.RoomType != RoomType.None)
+        foreach (Room room in grid)
         {
-            // Instantiate the prefab for the room
-            GameObject roomObj = Instantiate(GetRoomPrefab(room.RoomType), new Vector3(room.X, verticalOffset * room.Y, 0), Quaternion.identity);
-            roomObj.name = $"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}";
-
-            // Get the RoomInteraction component and initialize it
-            RoomInteraction roomInteraction = roomObj.GetComponent<RoomInteraction>();
-            roomInteraction.InitializeRoom(room);
-
-            // Get the SpriteRenderer component
-            SpriteRenderer spriteRenderer = roomObj.GetComponent<SpriteRenderer>();
-            if (spriteRenderer != null)
+            if (room != null && room.RoomType != RoomType.None)
             {
-                // Adjust the BoxCollider2D size to match the sprite size
+                // Instantiate the prefab for the room
+                GameObject roomObj = Instantiate(GetRoomPrefab(room.RoomType), new Vector3(room.X, verticalOffset * room.Y, 0), Quaternion.identity);
+                roomObj.name = $"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}";
+
+                // Get the RoomInteraction component and initialize it
+                RoomInteraction roomInteraction = roomObj.GetComponent<RoomInteraction>();
+                if (roomInteraction != null)
+                {
+                    roomInteraction.IsClickable = room.Y == 0; // Only starting rooms are clickable
+                    roomInteraction.Room = room;
+                }
+
+                // Adjust BoxCollider2D size to fit the sprite bounds
+                SpriteRenderer spriteRenderer = roomObj.GetComponent<SpriteRenderer>();
                 BoxCollider2D boxCollider = roomObj.GetComponent<BoxCollider2D>();
-                if (boxCollider != null)
+                if (spriteRenderer != null && boxCollider != null)
                 {
-                    // Set the BoxCollider2D size to match the sprite size
-                    Vector2 spriteSize = spriteRenderer.bounds.size;
-                    boxCollider.size = spriteSize;
+                    boxCollider.size = spriteRenderer.bounds.size;
                 }
-            }
 
-            // Assign the SpriteRenderer to the Room object
-            room.SpriteRenderer = spriteRenderer;
-        }
-    }
-}
-
-
-private GameObject GetRoomPrefab(RoomType roomType)
-{
-    switch (roomType)
-    {
-        case RoomType.Monster:
-            return monsterRoomPrefab;
-        case RoomType.Event:
-            return eventRoomPrefab;
-        case RoomType.EliteMonster:
-            return eliteMonsterRoomPrefab;
-        case RoomType.RestSite:
-            return restSiteRoomPrefab;
-        case RoomType.Merchant:
-            return merchantRoomPrefab;
-        case RoomType.Treasure:
-            return treasureRoomPrefab;
-        case RoomType.Boss:
-            return bossRoomPrefab;
-        default:
-            return null;
-    }
-}
-
-
-
-
-private void DrawConnectionLines()
-{
-    foreach (Room room in grid)
-    {
-        if (room != null && room.RoomType != RoomType.None)
-        {
-            foreach (Room connectedRoom in room.Connections)
-            {
-                // Draw a line only if the connected room is on a higher floor
-                if (connectedRoom.Y > room.Y)
+                // Set sprite color based on RoomType
+                if (spriteRenderer != null)
                 {
-                    GameObject lineObj = new GameObject("ConnectionLine");
-                    LineRenderer lr = lineObj.AddComponent<LineRenderer>();
-                    
-                    lr.startWidth = 0.05f;
-                    lr.endWidth = 0.05f;
-                    lr.positionCount = 2;
-                    lr.SetPosition(0, new Vector3(room.X, room.Y * verticalOffset, 0));
-                    lr.SetPosition(1, new Vector3(connectedRoom.X, connectedRoom.Y * verticalOffset, 0));
-
-                    // Set the color of the line based on the room type
-                    lr.startColor = GetColorForRoomType(room.RoomType);
-                    lr.endColor = GetColorForRoomType(room.RoomType);
-
-                    // Use a simple unlit material for the line
-                    lr.material = new Material(Shader.Find("Sprites/Default"));
+                    spriteRenderer.color = GetColorForRoomType(room.RoomType);
                 }
             }
         }
     }
-}
 
-
-
-
-
-
-    private void OnDrawGizmos()
+    private GameObject GetRoomPrefab(RoomType type)
     {
-        if (grid == null) return;
-
-        for (int y = 0; y < extendedHeight; y++)
+        switch (type)
         {
-            for (int x = 0; x < width; x++)
-            {
-                Room room = grid[x, y];
-                Vector3 position = new Vector3(x, y * verticalOffset, 0);
-                Gizmos.color = room != null ? GetColorForRoomType(room.RoomType) : Color.grey;
-
-                if (room != null)
-                {
-                    Gizmos.DrawSphere(position, 0.15f);
-
-                    foreach (Room connection in room.Connections)
-                    {
-                        Vector3 connectionPosition = new Vector3(connection.X, connection.Y * verticalOffset, 0);
-                        Gizmos.DrawLine(position, connectionPosition);
-                    }
-                }
-                else if (showNullSpheres)
-                {
-                    Gizmos.DrawSphere(position, 0.1f);
-                }
-            }
+            case RoomType.Monster: return monsterRoomPrefab;
+            case RoomType.Event: return eventRoomPrefab;
+            case RoomType.EliteMonster: return eliteMonsterRoomPrefab;
+            case RoomType.RestSite: return restSiteRoomPrefab;
+            case RoomType.Merchant: return merchantRoomPrefab;
+            case RoomType.Treasure: return treasureRoomPrefab;
+            case RoomType.Boss: return bossRoomPrefab;
+            default: return null;
         }
     }
 
@@ -436,67 +346,63 @@ private void DrawConnectionLines()
     }
 
 
-    // Methods for RoomInteractions script
-
-    private RoomInteraction currentRoom;
-
     public void OnRoomClicked(RoomInteraction clickedRoom)
+{
+    Debug.Log("OnRoomClicked method called.");
+
+    // Set the clicked room as the current room
+    SetCurrentRoom(clickedRoom);
+
+    // Set all other rooms unclickable
+    SetAllRoomsUnclickable();
+
+    // Allow moving only to connected rooms on higher floors
+    foreach (var connection in clickedRoom.Room.Connections)
     {
-        Debug.Log("OnRoomClicked method called.");
-
-        // Set the clicked room as the current room
-        SetCurrentRoom(clickedRoom);
-
-        // Set all other rooms unclickable
-        SetAllRoomsUnclickable();
-
-        // Allow moving only to connected rooms on higher floors
-        foreach (var connection in clickedRoom.Room.Connections)
+        if (connection.Y > clickedRoom.Room.Y)  // Ensure movement is only upwards
         {
-            if (connection.Y > clickedRoom.Room.Y)  // Ensure movement is only upwards
+            RoomInteraction nextRoom = GetRoomInteraction(connection);
+            if (nextRoom != null)
             {
-                RoomInteraction nextRoom = GetRoomInteraction(connection);
-                if (nextRoom != null)
-                {
-                    nextRoom.SetClickable(true);
-                }
+                nextRoom.SetClickable(true);
             }
         }
     }
+}
 
-    private void SetCurrentRoom(RoomInteraction clickedRoom)
+private RoomInteraction GetRoomInteraction(Room room)
+{
+    foreach (var interaction in FindObjectsOfType<RoomInteraction>())
     {
-        if (currentRoom != null)
+        if (interaction.Room == room)
         {
-            currentRoom.SetClickable(false);  // Disable clickability of the previous room
+            return interaction;
         }
+    }
+    return null;
+}
 
-        currentRoom = clickedRoom;
-        currentRoom.BlinkSprite();
-        Debug.Log("Current room set to: " + currentRoom.Room.X + ", " + currentRoom.Room.Y);
+private void SetCurrentRoom(RoomInteraction clickedRoom)
+{
+    if (currentRoom != null)
+    {
+        currentRoom.SetClickable(false);  // Disable clickability of the previous room
     }
 
-    private void SetAllRoomsUnclickable()
-    {
-        RoomInteraction[] allRooms = FindObjectsOfType<RoomInteraction>();
-        foreach (var room in allRooms)
-        {
-            room.SetClickable(false);
-        }
-        Debug.Log("All rooms set to unclickable.");
-    }
+    currentRoom = clickedRoom;
+    currentRoom.BlinkSprite();
+    Debug.Log("Current room set to: " + currentRoom.Room.X + ", " + currentRoom.Room.Y);
+}
 
-    private RoomInteraction GetRoomInteraction(Room room)
+private void SetAllRoomsUnclickable()
+{
+    RoomInteraction[] allRooms = FindObjectsOfType<RoomInteraction>();
+    foreach (var room in allRooms)
     {
-        foreach (var interaction in FindObjectsOfType<RoomInteraction>())
-        {
-            if (interaction.Room == room)
-            {
-                return interaction;
-            }
-        }
-        return null;
+        room.SetClickable(false);
     }
+    Debug.Log("All rooms set to unclickable.");
+}
 
 
 }
