@@ -283,33 +283,69 @@ public class MapGenerator : MonoBehaviour
 
 
     private void AssignRoomSprites()
+{
+    foreach (Room room in grid)
     {
-        foreach (Room room in grid)
+        if (room != null && room.RoomType != RoomType.None)
         {
-            if (room != null && room.RoomType != RoomType.None)
+            RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == room.RoomType);
+            if (rts.sprite != null)
             {
-                RoomTypeSprite rts = roomTypeSprites.Find(r => r.roomType == room.RoomType);
-                if (rts.sprite != null)
+                GameObject roomObj = new GameObject($"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}");
+                roomObj.transform.position = new Vector3(room.X, verticalOffset * room.Y, 0);
+
+                SpriteRenderer sr = roomObj.AddComponent<SpriteRenderer>();
+                sr.sprite = rts.sprite;
+
+                // Add RoomInteraction script and initialize the room
+                RoomInteraction roomInteraction = roomObj.AddComponent<RoomInteraction>();
+                roomInteraction.InitializeRoom(room);
+
+                // Add a BoxCollider2D to make the room clickable
+                BoxCollider2D boxCollider = roomObj.AddComponent<BoxCollider2D>();
+                boxCollider.isTrigger = true;
+
+                room.SpriteRenderer = sr;
+            }
+        }
+    }
+
+    DrawConnectionLines(); // Call the new method to draw lines between rooms
+}
+
+private void DrawConnectionLines()
+{
+    foreach (Room room in grid)
+    {
+        if (room != null && room.RoomType != RoomType.None)
+        {
+            foreach (Room connectedRoom in room.Connections)
+            {
+                // Draw a line only if the connected room is on a higher floor
+                if (connectedRoom.Y > room.Y)
                 {
-                    GameObject roomObj = new GameObject($"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}");
-                    roomObj.transform.position = new Vector3(room.X, verticalOffset * room.Y, 0);
+                    GameObject lineObj = new GameObject("ConnectionLine");
+                    LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+                    
+                    lr.startWidth = 0.05f;
+                    lr.endWidth = 0.05f;
+                    lr.positionCount = 2;
+                    lr.SetPosition(0, new Vector3(room.X, room.Y * verticalOffset, 0));
+                    lr.SetPosition(1, new Vector3(connectedRoom.X, connectedRoom.Y * verticalOffset, 0));
 
-                    SpriteRenderer sr = roomObj.AddComponent<SpriteRenderer>();
-                    sr.sprite = rts.sprite;
+                    // Set the color of the line based on the room type
+                    lr.startColor = GetColorForRoomType(room.RoomType);
+                    lr.endColor = GetColorForRoomType(room.RoomType);
 
-                    // Add RoomInteraction script and initialize the room
-                    RoomInteraction roomInteraction = roomObj.AddComponent<RoomInteraction>();
-                    roomInteraction.InitializeRoom(room);
-
-                    // Add a BoxCollider2D to make the room clickable
-                    BoxCollider2D boxCollider = roomObj.AddComponent<BoxCollider2D>();
-                    boxCollider.isTrigger = true;
-
-                    room.SpriteRenderer = sr;
+                    // Use a simple unlit material for the line
+                    lr.material = new Material(Shader.Find("Sprites/Default"));
                 }
             }
         }
     }
+}
+
+
 
 
 

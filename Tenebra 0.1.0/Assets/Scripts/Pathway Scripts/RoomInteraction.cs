@@ -5,7 +5,7 @@ public class RoomInteraction : MonoBehaviour
     public Room Room { get; private set; }
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
-    private bool isClickable;
+    [SerializeField] private bool isClickable;
 
     public void InitializeRoom(Room room)
     {
@@ -14,7 +14,8 @@ public class RoomInteraction : MonoBehaviour
         originalColor = spriteRenderer.color;
         SetClickable(false);  // Initially, set all rooms to not clickable
 
-        Debug.Log("Room initialized: " + Room.X + ", " + Room.Y);
+        //Debug.Log("Room initialized: " + Room.X + ", " + Room.Y);
+        
     }
 
     public void SetClickable(bool value)
