@@ -183,6 +183,14 @@ public class Card : MonoBehaviour
                         ReturnToHand();
                     }
                 }
+                else if(hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Field)
+                {
+                    CardPlacePoint selectedPoint = hit.collider.GetComponent<CardPlacePoint>();
+                    if (selectedPoint.activeCard == null && selectedPoint.isPlayerPoint)
+                    {
+
+                    }
+                }
                 else
                 {
                     ReturnToHand();
