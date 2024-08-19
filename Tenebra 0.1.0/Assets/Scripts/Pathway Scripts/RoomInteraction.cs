@@ -46,7 +46,19 @@ public class RoomInteraction : MonoBehaviour
         }
         else
         {
-            SpriteRenderer.color = Color.gray; // Gray for not clickable
+            // Example hex code
+            string hexColor = "#92B0DB"; // Replace this with your hex code
+
+            // Convert hex to Color
+            if (ColorUtility.TryParseHtmlString(hexColor, out Color color))
+            {
+                // Apply the color to a sprite's SpriteRenderer component
+                SpriteRenderer.color = color;
+            }
+            else
+            {
+                Debug.LogError("Invalid hex color code");
+            }
         }
 
         // Additional logic to visually indicate the room's current state

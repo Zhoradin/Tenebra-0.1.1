@@ -70,9 +70,6 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color treasureColor = Color.cyan;
     [SerializeField] private Color bossColor = Color.black;
     [SerializeField] private Color defaultColor = Color.white;
-
-    //[SerializeField] private bool showNullSpheres = false; // was used with gizmos
-
     [SerializeField] private float verticalOffset = 1f;
 
     private RoomInteraction currentRoom;
@@ -313,6 +310,40 @@ public class MapGenerator : MonoBehaviour
                 if (spriteRenderer != null)
                 {
                     spriteRenderer.color = GetColorForRoomType(room.RoomType);
+                }
+            }
+        }
+        DrawConnectionLines();
+    }
+
+    private void DrawConnectionLines()
+    {
+        foreach (Room room in grid)
+        {
+            if (room != null && room.RoomType != RoomType.None)
+            {
+                foreach (Room connectedRoom in room.Connections)
+                {
+                    // Draw a line only if the connected room is on a higher floor
+                    if (connectedRoom.Y > room.Y)
+                    {
+                        GameObject lineObj = new GameObject("ConnectionLine");
+                        LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+                        
+                        lr.sortingOrder = -1;
+                        lr.startWidth = 0.05f;
+                        lr.endWidth = 0.05f;
+                        lr.positionCount = 2;
+                        lr.SetPosition(0, new Vector3(room.X, room.Y * verticalOffset, 0));
+                        lr.SetPosition(1, new Vector3(connectedRoom.X, connectedRoom.Y * verticalOffset, 0));
+
+                        // Set the color of the line based on the room type
+                        lr.startColor = Color.black;
+                        lr.endColor = Color.black;
+
+                        // Use a simple unlit material for the line
+                        lr.material = new Material(Shader.Find("Sprites/Default"));
+                    }
                 }
             }
         }
