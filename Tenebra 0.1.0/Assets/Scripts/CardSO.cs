@@ -22,6 +22,8 @@ public class CardSO : ScriptableObject
     public MoonPhase moonPhase;
 
     public CardType cardType;
+
+    public CardKind cardKind;
 }
 public enum MoonPhase
 {
@@ -33,4 +35,10 @@ public enum MoonPhase
     WaningGibbous,
     LastQuarter,
     WaningCrescent
+}
+
+public enum CardKind
+{
+    Field,
+    Efect
 }

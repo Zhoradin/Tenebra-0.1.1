@@ -307,7 +307,7 @@ public class EnemyController : MonoBehaviour
         placePoint.activeCard = newCard;
         newCard.assignedPlace = placePoint;
 
-        Card.instance.ActivateAbility();
+        AbilityManager.instance.ActivateAbility(newCard);
         Card.instance.isActive = true;
         if (Card.instance.instaKill == true)
         {
