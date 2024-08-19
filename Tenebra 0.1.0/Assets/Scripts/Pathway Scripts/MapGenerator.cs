@@ -71,7 +71,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color bossColor = Color.black;
     [SerializeField] private Color defaultColor = Color.white;
 
-    [SerializeField] private bool showNullSpheres = false; // Reintroduced
+    //[SerializeField] private bool showNullSpheres = false; // was used with gizmos
 
     [SerializeField] private float verticalOffset = 1f;
 
@@ -294,8 +294,11 @@ public class MapGenerator : MonoBehaviour
                 RoomInteraction roomInteraction = roomObj.GetComponent<RoomInteraction>();
                 if (roomInteraction != null)
                 {
+                    // Initialize the room interaction with the room
+                    roomInteraction.InitializeRoom(room);
+                    
+                    // Set initial clickability
                     roomInteraction.IsClickable = room.Y == 0; // Only starting rooms are clickable
-                    roomInteraction.Room = room;
                 }
 
                 // Adjust BoxCollider2D size to fit the sprite bounds
@@ -314,6 +317,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
+
 
     private GameObject GetRoomPrefab(RoomType type)
     {
@@ -347,62 +351,67 @@ public class MapGenerator : MonoBehaviour
 
 
     public void OnRoomClicked(RoomInteraction clickedRoom)
-{
-    Debug.Log("OnRoomClicked method called.");
-
-    // Set the clicked room as the current room
-    SetCurrentRoom(clickedRoom);
-
-    // Set all other rooms unclickable
-    SetAllRoomsUnclickable();
-
-    // Allow moving only to connected rooms on higher floors
-    foreach (var connection in clickedRoom.Room.Connections)
     {
-        if (connection.Y > clickedRoom.Room.Y)  // Ensure movement is only upwards
+        Debug.Log("OnRoomClicked method called.");
+
+        // Set the clicked room as the current room
+        SetCurrentRoom(clickedRoom);
+
+        // Set all other rooms unclickable
+        SetAllRoomsUnclickable();
+
+        // Allow moving only to connected rooms on higher floors
+        foreach (var connection in clickedRoom.Room.Connections)
         {
-            RoomInteraction nextRoom = GetRoomInteraction(connection);
-            if (nextRoom != null)
+            if (connection.Y > clickedRoom.Room.Y)  // Ensure movement is only upwards
             {
-                nextRoom.SetClickable(true);
+                RoomInteraction nextRoom = GetRoomInteraction(connection);
+                if (nextRoom != null)
+                {
+                    nextRoom.SetClickable(true);
+                    nextRoom.UpdateClickableVisuals(); // Update visuals for clickable rooms
+                }
             }
         }
-    }
-}
 
-private RoomInteraction GetRoomInteraction(Room room)
-{
-    foreach (var interaction in FindObjectsOfType<RoomInteraction>())
+        // Update visuals for the clicked room as well
+        clickedRoom.UpdateClickableVisuals();
+    }
+
+
+    private RoomInteraction GetRoomInteraction(Room room)
     {
-        if (interaction.Room == room)
+        foreach (var interaction in FindObjectsOfType<RoomInteraction>())
         {
-            return interaction;
+            if (interaction.Room == room)
+            {
+                return interaction;
+            }
         }
+        return null;
     }
-    return null;
-}
 
-private void SetCurrentRoom(RoomInteraction clickedRoom)
-{
-    if (currentRoom != null)
+    private void SetCurrentRoom(RoomInteraction clickedRoom)
     {
-        currentRoom.SetClickable(false);  // Disable clickability of the previous room
+        if (currentRoom != null)
+        {
+            currentRoom.SetClickable(false);  // Disable clickability of the previous room
+        }
+
+        currentRoom = clickedRoom;
+        currentRoom.BlinkSprite();
+        Debug.Log("Current room set to: " + currentRoom.Room.X + ", " + currentRoom.Room.Y);
     }
 
-    currentRoom = clickedRoom;
-    currentRoom.BlinkSprite();
-    Debug.Log("Current room set to: " + currentRoom.Room.X + ", " + currentRoom.Room.Y);
-}
-
-private void SetAllRoomsUnclickable()
-{
-    RoomInteraction[] allRooms = FindObjectsOfType<RoomInteraction>();
-    foreach (var room in allRooms)
+    private void SetAllRoomsUnclickable()
     {
-        room.SetClickable(false);
+        RoomInteraction[] allRooms = FindObjectsOfType<RoomInteraction>();
+        foreach (var room in allRooms)
+        {
+            room.SetClickable(false);
+        }
+        Debug.Log("All rooms set to unclickable.");
     }
-    Debug.Log("All rooms set to unclickable.");
-}
 
 
 }

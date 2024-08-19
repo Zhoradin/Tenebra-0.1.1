@@ -35,14 +35,25 @@ public class RoomInteraction : MonoBehaviour
         UpdateClickableVisuals();
     }
 
-    private void UpdateClickableVisuals()
+    public void UpdateClickableVisuals()
+{
+    if (SpriteRenderer != null)
     {
-        if (SpriteRenderer != null)
+        // Change color or add a visual indicator to show whether the room is clickable
+        if (IsClickable)
         {
-            // Change color or add a visual indicator to show whether the room is clickable
-            SpriteRenderer.color = IsClickable ? Color.green : Color.red; // Example: green for clickable, red for not clickable
+            SpriteRenderer.color = Color.green; // Green for clickable
         }
+        else
+        {
+            SpriteRenderer.color = Color.gray; // Gray for not clickable
+        }
+
+        // Additional logic to visually indicate the room's current state
+        // This can include enabling/disabling a UI element, changing sprite, etc.
     }
+}
+
 
     public void BlinkSprite()
     {
@@ -55,9 +66,11 @@ public class RoomInteraction : MonoBehaviour
         if (SpriteRenderer != null)
         {
             Color originalColor = SpriteRenderer.color;
-            SpriteRenderer.color = Color.yellow; // Example: yellow blink color
-            yield return new WaitForSeconds(0.2f); // Blink duration
-            SpriteRenderer.color = originalColor; // Reset to original color
+            Color currentRoomColor = Color.magenta;
+            //SpriteRenderer.color = Color.cyan; // Example: yellow blink color
+            yield return new WaitForSeconds(0.1f); // Blink duration
+            SpriteRenderer.color = currentRoomColor;
+            //SpriteRenderer.color = originalColor; // Reset to original color
         }
     }
 }
