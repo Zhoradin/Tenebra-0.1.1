@@ -61,7 +61,7 @@ public class Card : MonoBehaviour
     public Vector3 selectedScale = new Vector3(1.2f, 1.2f, 1f);
 
     [HideInInspector]
-    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, multipleHit, mend, leech = false;
+    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, multipleHit, mend, leech, revelation = false;
 
     // Start is called before the first frame update
     void Start()
@@ -104,6 +104,7 @@ public class Card : MonoBehaviour
         bgArt.sprite = cardSO.bgSprite;
 
         cardType = cardSO.cardType;
+        cardKind = cardSO.cardKind;
 
         moonPhaseArt.sprite = cardSO.moonPhaseSprite;
 
@@ -123,7 +124,10 @@ public class Card : MonoBehaviour
             worldPosition.z = 0; // Ensure the card stays on the same z-plane
             MoveToPoint(worldPosition + new Vector3(0f, 2f, -4f), Quaternion.identity); // Resets rotation while moving
 
-            CheckForSuperEffectiveText();
+            if(cardKind == CardKind.Field)
+            {
+                CheckForSuperEffectiveText();
+            }
 
             if (Input.GetMouseButtonDown(1) && BattleController.instance.battleEnded == false)
             {
@@ -135,8 +139,11 @@ public class Card : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, whatIsPlacement);
 
+                //Check for Field Card
                 if (hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Field)
                 {
+                    Debug.Log("field card");
+
                     CardPlacePoint selectedPoint = hit.collider.GetComponent<CardPlacePoint>();
                     if (selectedPoint.activeCard == null && selectedPoint.isPlayerPoint)
                     {
@@ -156,7 +163,7 @@ public class Card : MonoBehaviour
 
                             theHC.RemoveCardFromHand(this);
 
-                            ActivateAbility();
+                            AbilityManager.instance.ActivateAbility(this);
 
                             if (instaKill == true)
                             {
@@ -183,12 +190,53 @@ public class Card : MonoBehaviour
                         ReturnToHand();
                     }
                 }
-                else if(hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Field)
+
+                //Check for Efect card
+                else if(hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Efect)
                 {
                     CardPlacePoint selectedPoint = hit.collider.GetComponent<CardPlacePoint>();
-                    if (selectedPoint.activeCard == null && selectedPoint.isPlayerPoint)
+                    if (selectedPoint.activeCard != null && selectedPoint.isPlayerPoint)
                     {
+                        if (BattleController.instance.playerEssence >= essenceCost)
+                        {
+                            Debug.Log("efect card");
 
+                            if (isPlayer)
+                            {
+                                DiscardPileController.instance.AddToDiscardPile(cardSO);
+                            }
+
+                            StartCoroutine(WaitJumpAfterDeadCo());
+
+                            inHand = false;
+
+                            isSelected = false;
+                            returningToHand = false;
+
+                            targetScale = originalScale;
+
+                            theHC.RemoveCardFromHand(this);
+
+                            AbilityManager.instance.ActivateAbility(this);
+
+                            BattleController.instance.SpendPlayerEssence(essenceCost);
+
+                            isActive = true;
+
+                            CheckMoonPhase();
+
+                            theCol.enabled = true;
+                        }
+                        else
+                        {
+                            ReturnToHand();
+
+                            UIController.instance.ShowEssenceWarning();
+                        }
+                    }
+                    else
+                    {
+                        ReturnToHand();
                     }
                 }
                 else
@@ -379,60 +427,42 @@ public class Card : MonoBehaviour
 
         anim.SetTrigger("Jump");
 
-
-
         yield return new WaitForSeconds(.5f);
 
+        // Kartı discardPoint'e taşı
         MoveToPoint(BattleController.instance.discardPoint.position, BattleController.instance.discardPoint.rotation);
 
-        Destroy(gameObject, 5f);
+        // Kartı discardPoint'e taşıdıktan sonra boyut küçültme işlemi
+        yield return StartCoroutine(ScaleDownCo());
+
+        Destroy(gameObject);
     }
+
+    // Boyut küçültme Coroutine'i
+    IEnumerator ScaleDownCo()
+    {
+        Vector3 originalScale = transform.localScale;
+        Vector3 targetScale = originalScale * 0.5f; // Kartın boyutunu yarıya indirmek için
+
+        float duration = 0.5f; // Küçülme süresi
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localScale = targetScale; // Son boyutu ayarla
+    }
+
 
     public void UpdateCardDisplay()
     {
         healthText.text = currentHealth.ToString();
         attackText.text = attackPower.ToString();
         costText.text = essenceCost.ToString();
-    }
-
-    public void ActivateAbility()
-    {
-        if (abilityDescription.activeSelf == true)
-        {
-            abilityDescription.SetActive(false);
-        }
-        if (abilityDescriptionToo.activeSelf == true)
-        {
-            abilityDescriptionToo.SetActive(false);
-        }
-
-        foreach (CardAbilitySO ability in cardSO.abilities)
-        {
-            switch (ability.abilityType)
-            {
-                case CardAbilitySO.AbilityType.Heal:
-                    Heal(ability.value);
-                    break;
-                case CardAbilitySO.AbilityType.DirectHit:
-                    DirectHit();
-                    break;
-                case CardAbilitySO.AbilityType.DoubleTap:
-                    DoubleTap();
-                    break;
-                case CardAbilitySO.AbilityType.QuickAttack:
-                    StartCoroutine(QuickAttackCoroutine());
-                    break;
-                case CardAbilitySO.AbilityType.GlassCannon:
-                    GlassCannon();
-                    break;
-                case CardAbilitySO.AbilityType.Mend:
-                    Mend();
-                    break;
-                case CardAbilitySO.AbilityType.Leech:
-                    Leech();
-                    break;
-            }
-        }
     }
 
     private void UpdateAbilityDescription()
@@ -466,40 +496,6 @@ public class Card : MonoBehaviour
         }
 
         return newAbilityName.ToString();
-    }
-
-
-    private void Heal(int healAmount)
-    {
-        currentHealth += healAmount;
-
-        UpdateCardDisplay();
-    }
-
-
-    private void DirectHit()
-    {
-        directHit = true;
-    }
-
-    private void DoubleTap()
-    {
-        doubleTap = true;
-    }
-
-    private void GlassCannon()
-    {
-        glassCannon = true;
-    }
-
-    private void Mend()
-    {
-        mend = true;
-    }
-
-    private void Leech()
-    {
-        leech = true;
     }
 
     public IEnumerator QuickAttackCoroutine()
@@ -625,10 +621,5 @@ public class Card : MonoBehaviour
                     break;
             }
         }
-    }
-
-    public void StealHealth(int stealAmount)
-    {
-        Heal(stealAmount);
     }
 }

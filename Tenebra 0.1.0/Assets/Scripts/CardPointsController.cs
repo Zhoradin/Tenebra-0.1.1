@@ -131,7 +131,7 @@ public class CardPointsController : MonoBehaviour
             {
                 if (attacker.activeCard.cardSO.moonPhase == MoonPhase.WaningCrescent)
                 {
-                    attacker.activeCard.StealHealth(1);
+                    AbilityManager.instance.Heal(attacker.activeCard ,1);
                 }
                 else if (attacker.activeCard.cardSO.moonPhase == MoonPhase.FirstQuarter)
                 {

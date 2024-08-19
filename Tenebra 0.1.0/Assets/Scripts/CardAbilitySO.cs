@@ -11,7 +11,8 @@ public class CardAbilitySO : ScriptableObject
         QuickAttack,
         GlassCannon,
         Mend,
-        Leech
+        Leech,
+        Revelation
     }
 
     public AbilityType abilityType;
