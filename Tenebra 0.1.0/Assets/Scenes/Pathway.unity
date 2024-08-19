@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17deb89cb7d9acf4da19d8293d6449e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FramePrefab: {fileID: 1014934853059428972, guid: 8c2efc74ffa822744ab209622f1fd678, type: 3}
   monsterRoomPrefab: {fileID: 8894233808831673585, guid: 8c7b715483f5d584fb801c6c75a689cc, type: 3}
   eventRoomPrefab: {fileID: 8894233808831673585, guid: a1a1e161a837f114496b352a1662e1d3, type: 3}
   eliteMonsterRoomPrefab: {fileID: 8894233808831673585, guid: 6d6b7eaca0d8f2e4cb5dba1438aff036, type: 3}

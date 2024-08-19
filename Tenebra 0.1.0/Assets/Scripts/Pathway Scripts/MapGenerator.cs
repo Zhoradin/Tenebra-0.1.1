@@ -49,6 +49,7 @@ public struct RoomTypeSprite
 
 public class MapGenerator : MonoBehaviour
 {
+    public GameObject FramePrefab;
     public GameObject monsterRoomPrefab;
     public GameObject eventRoomPrefab;
     public GameObject eliteMonsterRoomPrefab;
@@ -287,6 +288,18 @@ public class MapGenerator : MonoBehaviour
                 GameObject roomObj = Instantiate(GetRoomPrefab(room.RoomType), new Vector3(room.X, verticalOffset * room.Y, 0), Quaternion.identity);
                 roomObj.name = $"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}";
 
+                // Instantiate the frame behind the sprite
+                GameObject frameObj = Instantiate(FramePrefab, roomObj.transform.position, Quaternion.identity);
+                frameObj.name = $"Frame {room.X} Floor {room.Y}";
+                frameObj.transform.parent = roomObj.transform; // Parent it to the room for better organization
+
+                // Set the frame's sorting order
+                SpriteRenderer frameRenderer = frameObj.GetComponent<SpriteRenderer>();
+                if (frameRenderer != null)
+                {
+                    frameRenderer.sortingOrder = -1; // Behind the sprite
+                }
+
                 // Get the RoomInteraction component and initialize it
                 RoomInteraction roomInteraction = roomObj.GetComponent<RoomInteraction>();
                 if (roomInteraction != null)
@@ -310,6 +323,8 @@ public class MapGenerator : MonoBehaviour
                 if (spriteRenderer != null)
                 {
                     spriteRenderer.color = GetColorForRoomType(room.RoomType);
+                    // Ensure the sprite is on top of the frame
+                    spriteRenderer.sortingOrder = 0;
                 }
             }
         }
@@ -330,7 +345,6 @@ public class MapGenerator : MonoBehaviour
                         GameObject lineObj = new GameObject("ConnectionLine");
                         LineRenderer lr = lineObj.AddComponent<LineRenderer>();
                         
-                        lr.sortingOrder = -1;
                         lr.startWidth = 0.05f;
                         lr.endWidth = 0.05f;
                         lr.positionCount = 2;
@@ -343,11 +357,15 @@ public class MapGenerator : MonoBehaviour
 
                         // Use a simple unlit material for the line
                         lr.material = new Material(Shader.Find("Sprites/Default"));
+
+                        // Set the sorting order to be behind the frames
+                        lr.sortingOrder = -2;
                     }
                 }
             }
         }
     }
+
 
 
     private GameObject GetRoomPrefab(RoomType type)
