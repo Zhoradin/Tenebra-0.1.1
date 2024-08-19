@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Test Aqua
   m_EditorClassIdentifier: 
   cardName: Test Aqua
+  isGraveyard: 1
   cardDescription: 
   currentHealth: 3
   attackPower: 2

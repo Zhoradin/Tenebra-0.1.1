@@ -17,6 +17,7 @@ public class Card : MonoBehaviour
     public CardSO cardSO;
 
     public bool isPlayer;
+    public bool isGraveyard;
 
     public int currentHealth, attackPower, essenceCost;
 
@@ -107,6 +108,8 @@ public class Card : MonoBehaviour
         cardKind = cardSO.cardKind;
 
         moonPhaseArt.sprite = cardSO.moonPhaseSprite;
+
+        isGraveyard = cardSO.isGraveyard;
 
         UpdateAbilityDescription();
 
@@ -203,7 +206,14 @@ public class Card : MonoBehaviour
 
                             if (isPlayer)
                             {
-                                DiscardPileController.instance.AddToDiscardPile(cardSO);
+                                if (isGraveyard)
+                                {
+                                    GraveyardPileController.instance.AddToGraveyardPile(cardSO);
+                                }
+                                else
+                                {
+                                    DiscardPileController.instance.AddToDiscardPile(cardSO);
+                                }   
                             }
 
                             StartCoroutine(WaitJumpAfterDeadCo());
@@ -409,7 +419,14 @@ public class Card : MonoBehaviour
 
             if (isPlayer)
             {
-                DiscardPileController.instance.AddToDiscardPile(cardSO);
+                if (isGraveyard)
+                {
+                    GraveyardPileController.instance.AddToGraveyardPile(cardSO);
+                }
+                else
+                {
+                    DiscardPileController.instance.AddToDiscardPile(cardSO);
+                }
             }
 
             StartCoroutine(WaitJumpAfterDeadCo());
@@ -429,8 +446,14 @@ public class Card : MonoBehaviour
 
         yield return new WaitForSeconds(.5f);
 
-        // Kartı discardPoint'e taşı
-        MoveToPoint(BattleController.instance.discardPoint.position, BattleController.instance.discardPoint.rotation);
+        if (isGraveyard)
+        {
+            MoveToPoint(BattleController.instance.graveyardPoint.position, BattleController.instance.graveyardPoint.rotation);
+        }
+        else
+        {
+            MoveToPoint(BattleController.instance.discardPoint.position, BattleController.instance.discardPoint.rotation);
+        }
 
         // Kartı discardPoint'e taşıdıktan sonra boyut küçültme işlemi
         yield return StartCoroutine(ScaleDownCo());
@@ -438,11 +461,10 @@ public class Card : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Boyut küçültme Coroutine'i
-    IEnumerator ScaleDownCo()
+    public IEnumerator ScaleDownCo()
     {
         Vector3 originalScale = transform.localScale;
-        Vector3 targetScale = originalScale * 0.5f; // Kartın boyutunu yarıya indirmek için
+        Vector3 targetScale = originalScale * 0.3f;
 
         float duration = 0.5f; // Küçülme süresi
         float elapsedTime = 0f;

@@ -23,7 +23,7 @@ public class BattleController : MonoBehaviour
     public MoonPhase currentMoonPhase;
     public int moonPhaseCount = 0;
 
-    public Transform discardPoint;
+    public Transform discardPoint, graveyardPoint;
 
     public int playerHealth, enemyHealth;
 
