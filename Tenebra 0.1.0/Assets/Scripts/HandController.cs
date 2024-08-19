@@ -127,8 +127,21 @@ public class HandController : MonoBehaviour
             {
                 DiscardPileController.instance.AddToDiscardPile(heldCard.cardSO);
             }
+
+            // Kartý discardPoint'e taþýdýktan sonra küçültme iþlemini baþlat ve sonra yok et
+            StartCoroutine(DestroyCardAfterMove(heldCard));
         }
 
         heldCards.Clear();
     }
+
+    private IEnumerator DestroyCardAfterMove(Card card)
+    {
+        // Kartýn hareketini tamamlamasýný beklemek için kýsa bir süre bekleyelim
+        yield return card.StartCoroutine(card.ScaleDownCo());
+
+        // Kartý discardPoint'e taþýdýktan sonra yok et
+        Destroy(card.gameObject);
+    }
+
 }

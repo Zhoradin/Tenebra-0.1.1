@@ -20,7 +20,7 @@ public class UIController : MonoBehaviour, IDataPersistence
     public float essenceWarningTime;
     private float essenceWarningCounter;
 
-    public GameObject drawCardButton, endTurnButton, drawPileButton, discardPileButton;
+    public GameObject drawCardButton, endTurnButton, drawPileButton, discardPileButton, graveyardPileButton;
 
     public UIDamageIndicator playerDamage, enemyDamage;
 
@@ -31,11 +31,12 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public GameObject pauseScreen, areYouSurePanel;
 
-    public GameObject drawPilePanel, discardPilePanel;
-    public bool drawPileOpen, discardPileOpen = false;
+    public GameObject drawPilePanel, discardPilePanel, graveyardPilePanel;
+    public bool drawPileOpen, discardPileOpen, graveyardPileOpen = false;
 
     public Vector2 drawPileOpenPosition, drawPileClosedPosition;
     public Vector2 discardPileOpenPosition, discardPileClosedPosition;
+    public Vector2 graveyardPileOpenPosition, graveyardPileClosedPosition;
 
     public TMP_Text drawPileCount, discardPileCount;
 
@@ -163,6 +164,7 @@ public class UIController : MonoBehaviour, IDataPersistence
         if (drawPileOpen == false)
         {
             drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileOpenPosition;
+            graveyardPileButton.GetComponent<Button>().interactable = false;
             drawPileButton.GetComponent<Button>().interactable = false;
             discardPileButton.GetComponent<Button>().interactable = false;
             drawPileOpen = true;
@@ -170,6 +172,7 @@ public class UIController : MonoBehaviour, IDataPersistence
         else
         {
             drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileClosedPosition;
+            graveyardPileButton.GetComponent<Button>().interactable = true;
             drawPileButton.GetComponent<Button>().interactable = true;
             discardPileButton.GetComponent<Button>().interactable = true;
             drawPileOpen = false;
@@ -181,6 +184,7 @@ public class UIController : MonoBehaviour, IDataPersistence
         if (discardPileOpen == false)
         {
             discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileOpenPosition;
+            graveyardPileButton.GetComponent<Button>().interactable = false;
             discardPileButton.GetComponent<Button>().interactable = false;
             drawPileButton.GetComponent<Button>().interactable = false;
             discardPileOpen = true;
@@ -188,9 +192,30 @@ public class UIController : MonoBehaviour, IDataPersistence
         else
         {
             discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileClosedPosition;
+            graveyardPileButton.GetComponent<Button>().interactable = true;
             discardPileButton.GetComponent<Button>().interactable = true;
             drawPileButton.GetComponent<Button>().interactable = true;
             discardPileOpen = false;
+        }
+    }
+
+    public void OpenGraveyardPile()
+    {
+        if (graveyardPileOpen == false)
+        {
+            graveyardPilePanel.GetComponent<RectTransform>().anchoredPosition = graveyardPileOpenPosition;
+            graveyardPileButton.GetComponent<Button>().interactable = false;
+            discardPileButton.GetComponent<Button>().interactable = false;
+            drawPileButton.GetComponent<Button>().interactable = false;
+            graveyardPileOpen = true;
+        }
+        else
+        {
+            graveyardPilePanel.GetComponent<RectTransform>().anchoredPosition = graveyardPileClosedPosition;
+            graveyardPileButton.GetComponent<Button>().interactable = true;
+            discardPileButton.GetComponent<Button>().interactable = true;
+            drawPileButton.GetComponent<Button>().interactable = true;
+            graveyardPileOpen = false;
         }
     }
 

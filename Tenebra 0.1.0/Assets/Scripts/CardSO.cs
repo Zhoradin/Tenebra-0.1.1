@@ -8,6 +8,8 @@ public class CardSO : ScriptableObject
 {
     public string cardName;
 
+    public bool isGraveyard;
+
     [TextArea]
     public string cardDescription;
 
