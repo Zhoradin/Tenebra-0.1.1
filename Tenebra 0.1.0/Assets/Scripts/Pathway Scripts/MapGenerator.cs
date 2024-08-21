@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum RoomType
 {
@@ -49,6 +50,7 @@ public struct RoomTypeSprite
 
 public class MapGenerator : MonoBehaviour
 {
+    public GameObject RoomButtonPrefab; // Reference to the button prefab
     public GameObject FramePrefab;
     public GameObject monsterRoomPrefab;
     public GameObject eventRoomPrefab;
@@ -72,6 +74,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color bossColor = Color.black;
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private float verticalOffset = 1f;
+    public Canvas canvas;
 
     private RoomInteraction currentRoom;
 
@@ -100,7 +103,7 @@ public class MapGenerator : MonoBehaviour
         AssignRoomLocations();
         RemoveUnconnectedRooms(); // Ensure rooms are cleaned up before boss room allocation
         AllocateBossRoom();      // Allocate and connect boss room
-        AssignRoomSprites();
+        AssignRoomButtons();
     }
 
     private void GenerateMap()
@@ -278,58 +281,42 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void AssignRoomSprites()
+    private void AssignRoomButtons()
+{
+    foreach (Room room in grid)
     {
-        foreach (Room room in grid)
+        if (room != null && room.RoomType != RoomType.None)
         {
-            if (room != null && room.RoomType != RoomType.None)
+            // Instantiate the button prefab for the room
+            GameObject buttonObj = Instantiate(RoomButtonPrefab, canvas.transform);
+
+            // Set the button's position on the canvas
+            RectTransform rectTransform = buttonObj.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = new Vector2(room.X * 100f, room.Y * 100f);
+            
+            buttonObj.name = $"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}";
+
+            // Get the RoomInteraction component and initialize it
+            RoomInteraction roomInteraction = buttonObj.GetComponent<RoomInteraction>();
+            if (roomInteraction != null)
             {
-                // Instantiate the prefab for the room
-                GameObject roomObj = Instantiate(GetRoomPrefab(room.RoomType), new Vector3(room.X, verticalOffset * room.Y, 0), Quaternion.identity);
-                roomObj.name = $"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}";
+                // Initialize the room interaction with the room
+                roomInteraction.InitializeRoom(room);
+                
+                // Set initial clickability
+                roomInteraction.IsClickable = room.Y == 0; // Only starting rooms are clickable
+            }
 
-                // Instantiate the frame behind the sprite
-                GameObject frameObj = Instantiate(FramePrefab, roomObj.transform.position, Quaternion.identity);
-                frameObj.name = $"Frame {room.X} Floor {room.Y}";
-                frameObj.transform.parent = roomObj.transform; // Parent it to the room for better organization
-
-                // Set the frame's sorting order
-                SpriteRenderer frameRenderer = frameObj.GetComponent<SpriteRenderer>();
-                if (frameRenderer != null)
-                {
-                    frameRenderer.sortingOrder = -1; // Behind the sprite
-                }
-
-                // Get the RoomInteraction component and initialize it
-                RoomInteraction roomInteraction = roomObj.GetComponent<RoomInteraction>();
-                if (roomInteraction != null)
-                {
-                    // Initialize the room interaction with the room
-                    roomInteraction.InitializeRoom(room);
-                    
-                    // Set initial clickability
-                    roomInteraction.IsClickable = room.Y == 0; // Only starting rooms are clickable
-                }
-
-                // Adjust BoxCollider2D size to fit the sprite bounds
-                SpriteRenderer spriteRenderer = roomObj.GetComponent<SpriteRenderer>();
-                BoxCollider2D boxCollider = roomObj.GetComponent<BoxCollider2D>();
-                if (spriteRenderer != null && boxCollider != null)
-                {
-                    boxCollider.size = spriteRenderer.bounds.size;
-                }
-
-                // Set sprite color based on RoomType
-                if (spriteRenderer != null)
-                {
-                    spriteRenderer.color = GetColorForRoomType(room.RoomType);
-                    // Ensure the sprite is on top of the frame
-                    spriteRenderer.sortingOrder = 0;
-                }
+            // Set the button image color based on RoomType
+            Image buttonImage = buttonObj.GetComponent<Image>();
+            if (buttonImage != null)
+            {
+                buttonImage.color = GetColorForRoomType(room.RoomType);
             }
         }
-        DrawConnectionLines();
     }
+}
+
 
     private void DrawConnectionLines()
     {
