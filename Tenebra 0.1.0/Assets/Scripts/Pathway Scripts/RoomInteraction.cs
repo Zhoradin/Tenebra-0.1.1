@@ -36,35 +36,35 @@ public class RoomInteraction : MonoBehaviour
     }
 
     public void UpdateClickableVisuals()
+{
+    if (SpriteRenderer != null)
     {
-        if (SpriteRenderer != null)
+        // Change color or add a visual indicator to show whether the room is clickable
+        if (IsClickable)
         {
-            // Change color or add a visual indicator to show whether the room is clickable
-            if (IsClickable)
+            SpriteRenderer.color = Color.green; // Green for clickable
+        }
+        else
+        {
+            // Example hex code
+            string hexColor = "#92B0DB"; // Replace this with your hex code
+
+            // Convert hex to Color
+            if (ColorUtility.TryParseHtmlString(hexColor, out Color color))
             {
-                SpriteRenderer.color = Color.green; // Green for clickable
+                // Apply the color to a sprite's SpriteRenderer component
+                SpriteRenderer.color = color;
             }
             else
             {
-                // Example hex code
-                string hexColor = "#92B0DB"; // Replace this with your hex code
-
-                // Convert hex to Color
-                if (ColorUtility.TryParseHtmlString(hexColor, out Color color))
-                {
-                    // Apply the color to a sprite's SpriteRenderer component
-                    SpriteRenderer.color = color;
-                }
-                else
-                {
-                    Debug.LogError("Invalid hex color code");
-                }
+                Debug.LogError("Invalid hex color code");
             }
-
-            // Additional logic to visually indicate the room's current state
-            // This can include enabling/disabling a UI element, changing sprite, etc.
         }
+
+        // Additional logic to visually indicate the room's current state
+        // This can include enabling/disabling a UI element, changing sprite, etc.
     }
+}
 
 
     public void BlinkSprite()

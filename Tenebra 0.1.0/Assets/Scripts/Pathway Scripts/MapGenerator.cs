@@ -50,8 +50,11 @@ public struct RoomTypeSprite
 
 public class MapGenerator : MonoBehaviour
 {
+<<<<<<< HEAD
     public GameObject RoomButtonPrefab; // Reference to the button prefab
     public GameObject FramePrefab;
+=======
+>>>>>>> parent of d41b7dc (Organized prefabs and added new)
     public GameObject monsterRoomPrefab;
     public GameObject eventRoomPrefab;
     public GameObject eliteMonsterRoomPrefab;
@@ -307,11 +310,38 @@ public class MapGenerator : MonoBehaviour
                 roomInteraction.IsClickable = room.Y == 0; // Only starting rooms are clickable
             }
 
+<<<<<<< HEAD
             // Set the button image color based on RoomType
             Image buttonImage = buttonObj.GetComponent<Image>();
             if (buttonImage != null)
             {
                 buttonImage.color = GetColorForRoomType(room.RoomType);
+=======
+                // Get the RoomInteraction component and initialize it
+                RoomInteraction roomInteraction = roomObj.GetComponent<RoomInteraction>();
+                if (roomInteraction != null)
+                {
+                    // Initialize the room interaction with the room
+                    roomInteraction.InitializeRoom(room);
+                    
+                    // Set initial clickability
+                    roomInteraction.IsClickable = room.Y == 0; // Only starting rooms are clickable
+                }
+
+                // Adjust BoxCollider2D size to fit the sprite bounds
+                SpriteRenderer spriteRenderer = roomObj.GetComponent<SpriteRenderer>();
+                BoxCollider2D boxCollider = roomObj.GetComponent<BoxCollider2D>();
+                if (spriteRenderer != null && boxCollider != null)
+                {
+                    boxCollider.size = spriteRenderer.bounds.size;
+                }
+
+                // Set sprite color based on RoomType
+                if (spriteRenderer != null)
+                {
+                    spriteRenderer.color = GetColorForRoomType(room.RoomType);
+                }
+>>>>>>> parent of d41b7dc (Organized prefabs and added new)
             }
         }
     }
@@ -332,6 +362,7 @@ public class MapGenerator : MonoBehaviour
                         GameObject lineObj = new GameObject("ConnectionLine");
                         LineRenderer lr = lineObj.AddComponent<LineRenderer>();
                         
+                        lr.sortingOrder = -1;
                         lr.startWidth = 0.05f;
                         lr.endWidth = 0.05f;
                         lr.positionCount = 2;
@@ -344,15 +375,11 @@ public class MapGenerator : MonoBehaviour
 
                         // Use a simple unlit material for the line
                         lr.material = new Material(Shader.Find("Sprites/Default"));
-
-                        // Set the sorting order to be behind the frames
-                        lr.sortingOrder = -2;
                     }
                 }
             }
         }
     }
-
 
 
     private GameObject GetRoomPrefab(RoomType type)

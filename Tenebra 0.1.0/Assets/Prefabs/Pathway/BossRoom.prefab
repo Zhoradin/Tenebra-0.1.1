@@ -143,4 +143,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 620dc53502a333f4fa7601f262f32baf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsClickable: 0
+  isClickable: 0
