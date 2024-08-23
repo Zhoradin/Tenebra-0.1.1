@@ -36,35 +36,35 @@ public class RoomInteraction : MonoBehaviour
     }
 
     public void UpdateClickableVisuals()
-{
-    if (SpriteRenderer != null)
     {
-        // Change color or add a visual indicator to show whether the room is clickable
-        if (IsClickable)
+        if (SpriteRenderer != null)
         {
-            SpriteRenderer.color = Color.green; // Green for clickable
-        }
-        else
-        {
-            // Example hex code
-            string hexColor = "#92B0DB"; // Replace this with your hex code
-
-            // Convert hex to Color
-            if (ColorUtility.TryParseHtmlString(hexColor, out Color color))
+            // Change color or add a visual indicator to show whether the room is clickable
+            if (IsClickable)
             {
-                // Apply the color to a sprite's SpriteRenderer component
-                SpriteRenderer.color = color;
+                SpriteRenderer.color = Color.green; // Green for clickable
             }
             else
             {
-                Debug.LogError("Invalid hex color code");
-            }
-        }
+                // Example hex code
+                string hexColor = "#92B0DB"; // Replace this with your hex code
 
-        // Additional logic to visually indicate the room's current state
-        // This can include enabling/disabling a UI element, changing sprite, etc.
+                // Convert hex to Color
+                if (ColorUtility.TryParseHtmlString(hexColor, out Color color))
+                {
+                    // Apply the color to a sprite's SpriteRenderer component
+                    SpriteRenderer.color = color;
+                }
+                else
+                {
+                    Debug.LogError("Invalid hex color code");
+                }
+            }
+
+            // Additional logic to visually indicate the room's current state
+            // This can include enabling/disabling a UI element, changing sprite, etc.
+        }
     }
-}
 
 
     public void BlinkSprite()

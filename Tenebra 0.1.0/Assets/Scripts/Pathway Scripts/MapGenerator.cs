@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public enum RoomType
 {
@@ -50,11 +49,7 @@ public struct RoomTypeSprite
 
 public class MapGenerator : MonoBehaviour
 {
-<<<<<<< HEAD
-    public GameObject RoomButtonPrefab; // Reference to the button prefab
     public GameObject FramePrefab;
-=======
->>>>>>> parent of d41b7dc (Organized prefabs and added new)
     public GameObject monsterRoomPrefab;
     public GameObject eventRoomPrefab;
     public GameObject eliteMonsterRoomPrefab;
@@ -77,7 +72,6 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color bossColor = Color.black;
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private float verticalOffset = 1f;
-    public Canvas canvas;
 
     private RoomInteraction currentRoom;
 
@@ -106,7 +100,7 @@ public class MapGenerator : MonoBehaviour
         AssignRoomLocations();
         RemoveUnconnectedRooms(); // Ensure rooms are cleaned up before boss room allocation
         AllocateBossRoom();      // Allocate and connect boss room
-        AssignRoomButtons();
+        AssignRoomSprites();
     }
 
     private void GenerateMap()
@@ -284,39 +278,28 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void AssignRoomButtons()
-{
-    foreach (Room room in grid)
+    private void AssignRoomSprites()
     {
-        if (room != null && room.RoomType != RoomType.None)
+        foreach (Room room in grid)
         {
-            // Instantiate the button prefab for the room
-            GameObject buttonObj = Instantiate(RoomButtonPrefab, canvas.transform);
-
-            // Set the button's position on the canvas
-            RectTransform rectTransform = buttonObj.GetComponent<RectTransform>();
-            rectTransform.anchoredPosition = new Vector2(room.X * 100f, room.Y * 100f);
-            
-            buttonObj.name = $"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}";
-
-            // Get the RoomInteraction component and initialize it
-            RoomInteraction roomInteraction = buttonObj.GetComponent<RoomInteraction>();
-            if (roomInteraction != null)
+            if (room != null && room.RoomType != RoomType.None)
             {
-                // Initialize the room interaction with the room
-                roomInteraction.InitializeRoom(room);
-                
-                // Set initial clickability
-                roomInteraction.IsClickable = room.Y == 0; // Only starting rooms are clickable
-            }
+                // Instantiate the prefab for the room
+                GameObject roomObj = Instantiate(GetRoomPrefab(room.RoomType), new Vector3(room.X, verticalOffset * room.Y, 0), Quaternion.identity);
+                roomObj.name = $"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}";
 
-<<<<<<< HEAD
-            // Set the button image color based on RoomType
-            Image buttonImage = buttonObj.GetComponent<Image>();
-            if (buttonImage != null)
-            {
-                buttonImage.color = GetColorForRoomType(room.RoomType);
-=======
+                // Instantiate the frame behind the sprite
+                GameObject frameObj = Instantiate(FramePrefab, roomObj.transform.position, Quaternion.identity);
+                frameObj.name = $"Frame {room.X} Floor {room.Y}";
+                frameObj.transform.parent = roomObj.transform; // Parent it to the room for better organization
+
+                // Set the frame's sorting order
+                SpriteRenderer frameRenderer = frameObj.GetComponent<SpriteRenderer>();
+                if (frameRenderer != null)
+                {
+                    frameRenderer.sortingOrder = -1; // Behind the sprite
+                }
+
                 // Get the RoomInteraction component and initialize it
                 RoomInteraction roomInteraction = roomObj.GetComponent<RoomInteraction>();
                 if (roomInteraction != null)
@@ -340,13 +323,13 @@ public class MapGenerator : MonoBehaviour
                 if (spriteRenderer != null)
                 {
                     spriteRenderer.color = GetColorForRoomType(room.RoomType);
+                    // Ensure the sprite is on top of the frame
+                    spriteRenderer.sortingOrder = 0;
                 }
->>>>>>> parent of d41b7dc (Organized prefabs and added new)
             }
         }
+        DrawConnectionLines();
     }
-}
-
 
     private void DrawConnectionLines()
     {
@@ -362,7 +345,6 @@ public class MapGenerator : MonoBehaviour
                         GameObject lineObj = new GameObject("ConnectionLine");
                         LineRenderer lr = lineObj.AddComponent<LineRenderer>();
                         
-                        lr.sortingOrder = -1;
                         lr.startWidth = 0.05f;
                         lr.endWidth = 0.05f;
                         lr.positionCount = 2;
@@ -375,11 +357,15 @@ public class MapGenerator : MonoBehaviour
 
                         // Use a simple unlit material for the line
                         lr.material = new Material(Shader.Find("Sprites/Default"));
+
+                        // Set the sorting order to be behind the frames
+                        lr.sortingOrder = -2;
                     }
                 }
             }
         }
     }
+
 
 
     private GameObject GetRoomPrefab(RoomType type)
