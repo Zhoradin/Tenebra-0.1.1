@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum RoomType
 {
@@ -20,7 +21,6 @@ public class Room
     public int Y { get; private set; }
     public RoomType RoomType { get; set; }
     public List<Room> Connections { get; private set; }
-    public SpriteRenderer SpriteRenderer { get; set; }
 
     public Room(int x, int y)
     {
@@ -40,67 +40,31 @@ public class Room
     }
 }
 
-[Serializable]
-public struct RoomTypeSprite
-{
-    public RoomType roomType;
-    public Sprite sprite;
-}
-
 public class MapGenerator : MonoBehaviour
 {
-    public GameObject FramePrefab;
-    public GameObject monsterRoomPrefab;
-    public GameObject eventRoomPrefab;
-    public GameObject eliteMonsterRoomPrefab;
-    public GameObject restSiteRoomPrefab;
-    public GameObject merchantRoomPrefab;
-    public GameObject treasureRoomPrefab;
-    public GameObject bossRoomPrefab;
+    public GameObject roomButtonPrefab; // The button prefab to use for rooms
+    public RectTransform contentTransform; // The content RectTransform inside the Scroll View
 
     [SerializeField] private int width = 7;
     [SerializeField] private int height = 16;
     [SerializeField] private int minPaths = 3;
     [SerializeField] private int maxPaths = 4;
 
-    [SerializeField] private Color monsterColor = Color.red;
-    [SerializeField] private Color eventColor = Color.blue;
-    [SerializeField] private Color eliteMonsterColor = Color.magenta;
-    [SerializeField] private Color restSiteColor = Color.green;
-    [SerializeField] private Color merchantColor = Color.yellow;
-    [SerializeField] private Color treasureColor = Color.cyan;
-    [SerializeField] private Color bossColor = Color.black;
-    [SerializeField] private Color defaultColor = Color.white;
-    [SerializeField] private float verticalOffset = 1f;
-
-    private RoomInteraction currentRoom;
-
-    public static MapGenerator Instance { get; private set; }
+    [SerializeField] private float verticalOffset = 100f; // Adjust this to control spacing
+    [SerializeField] private float horizontalOffset = 100f; // Adjust this to control spacing
 
     private Room[,] grid;
     private System.Random random = new System.Random();
     private int extendedHeight;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     private void Start()
     {
         extendedHeight = height + 1; // Add extra floor for boss room
         GenerateMap();
         AssignRoomLocations();
-        RemoveUnconnectedRooms(); // Ensure rooms are cleaned up before boss room allocation
-        AllocateBossRoom();      // Allocate and connect boss room
-        AssignRoomSprites();
+        RemoveUnconnectedRooms();
+        AllocateBossRoom();
+        GenerateRoomButtons();
     }
 
     private void GenerateMap()
@@ -143,12 +107,11 @@ public class MapGenerator : MonoBehaviour
 
         int nextFloor = currentFloor + 1;
 
-        // Ensure that only the boss room is on floor 16
-        if (nextFloor == extendedHeight - 1) // This is the boss floor
+        if (nextFloor == extendedHeight - 1)
         {
-            Room bossRoom = grid[width / 2, nextFloor]; // Assuming the boss room is always centered
+            Room bossRoom = grid[width / 2, nextFloor];
             room.Connect(bossRoom);
-            return; // Stop further connections for the boss room
+            return;
         }
 
         List<Room> possibleConnections = new List<Room>();
@@ -168,12 +131,10 @@ public class MapGenerator : MonoBehaviour
 
     private void AssignRoomLocations()
     {
-        // Assign predefined locations
         foreach (Room room in GetRoomsOnFloor(0)) { room.RoomType = RoomType.Monster; }
         foreach (Room room in GetRoomsOnFloor(8)) { room.RoomType = RoomType.Treasure; }
         foreach (Room room in GetRoomsOnFloor(15)) { room.RoomType = RoomType.RestSite; }
 
-        // Randomly assign remaining rooms
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
@@ -200,19 +161,16 @@ public class MapGenerator : MonoBehaviour
 
     private void AllocateBossRoom()
     {
-        // Determine the position of the boss room
         int bossRoomX = width / 2;
-        int bossRoomY = extendedHeight - 1; // One floor above the grid
+        int bossRoomY = extendedHeight - 1;
 
-        // Create and assign the boss room
         Room bossRoom = new Room(bossRoomX, bossRoomY)
         {
             RoomType = RoomType.Boss
         };
         grid[bossRoomX, bossRoomY] = bossRoom;
 
-        // Connect the boss room to all non-null rooms on the highest regular floor
-        foreach (Room room in GetRoomsOnFloor(extendedHeight - 2)) // Previous top floor before boss room
+        foreach (Room room in GetRoomsOnFloor(extendedHeight - 2))
         {
             if (room != null)
             {
@@ -243,23 +201,21 @@ public class MapGenerator : MonoBehaviour
                 Room room = grid[x, y];
                 if (room != null)
                 {
-                    if (y == extendedHeight - 2) // Check rooms on the floor below the boss room
+                    if (y == extendedHeight - 2)
                     {
                         bool hasConnectionToLowerFloor = false;
                         bool hasConnectionToBossRoom = false;
 
-                        // Check if the room has a connection to the lower floor (floor 13)
                         foreach (Room connection in room.Connections)
                         {
-                            if (connection.Y == extendedHeight - 3) // Floor 13
+                            if (connection.Y == extendedHeight - 3)
                             {
                                 hasConnectionToLowerFloor = true;
                                 break;
                             }
                         }
 
-                        // Check if the room has a connection to the boss room
-                        if (room.Connections.Exists(r => r.Y == extendedHeight - 1)) // Boss room
+                        if (room.Connections.Exists(r => r.Y == extendedHeight - 1))
                         {
                             hasConnectionToBossRoom = true;
                         }
@@ -278,53 +234,41 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void AssignRoomSprites()
+    private void GenerateRoomButtons()
     {
         foreach (Room room in grid)
         {
             if (room != null && room.RoomType != RoomType.None)
             {
-                // Instantiate the prefab for the room
-                GameObject roomObj = Instantiate(GetRoomPrefab(room.RoomType), new Vector3(room.X, verticalOffset * room.Y, 0), Quaternion.identity);
-                roomObj.name = $"Room {room.X} Floor {room.Y} Room Type: {room.RoomType}";
+                // Instantiate the button prefab
+                GameObject roomButton = Instantiate(roomButtonPrefab, contentTransform);
 
-                // Instantiate the frame behind the sprite
-                GameObject frameObj = Instantiate(FramePrefab, roomObj.transform.position, Quaternion.identity);
-                frameObj.name = $"Frame {room.X} Floor {room.Y}";
-                frameObj.transform.parent = roomObj.transform; // Parent it to the room for better organization
+                // Set the position of the button based on the grid
+                RectTransform buttonRect = roomButton.GetComponent<RectTransform>();
+                buttonRect.anchoredPosition = new Vector2(room.X * horizontalOffset, room.Y * verticalOffset);
 
-                // Set the frame's sorting order
-                SpriteRenderer frameRenderer = frameObj.GetComponent<SpriteRenderer>();
-                if (frameRenderer != null)
+                // Customize the button based on the room's properties
+                Image buttonImage = roomButton.GetComponent<Image>();
+                if (buttonImage != null)
                 {
-                    frameRenderer.sortingOrder = -1; // Behind the sprite
+                    buttonImage.color = GetColorForRoomType(room.RoomType);
                 }
 
-                // Get the RoomInteraction component and initialize it
-                RoomInteraction roomInteraction = roomObj.GetComponent<RoomInteraction>();
+                // Set the name of the button
+                roomButton.name = $"Room {room.X}, Floor {room.Y}, Type {room.RoomType}";
+
+                // Add interaction logic to the button
+                RoomInteraction roomInteraction = roomButton.GetComponent<RoomInteraction>();
                 if (roomInteraction != null)
                 {
-                    // Initialize the room interaction with the room
                     roomInteraction.InitializeRoom(room);
-                    
-                    // Set initial clickability
                     roomInteraction.IsClickable = room.Y == 0; // Only starting rooms are clickable
-                }
 
-                // Adjust BoxCollider2D size to fit the sprite bounds
-                SpriteRenderer spriteRenderer = roomObj.GetComponent<SpriteRenderer>();
-                BoxCollider2D boxCollider = roomObj.GetComponent<BoxCollider2D>();
-                if (spriteRenderer != null && boxCollider != null)
-                {
-                    boxCollider.size = spriteRenderer.bounds.size;
-                }
-
-                // Set sprite color based on RoomType
-                if (spriteRenderer != null)
-                {
-                    spriteRenderer.color = GetColorForRoomType(room.RoomType);
-                    // Ensure the sprite is on top of the frame
-                    spriteRenderer.sortingOrder = 0;
+                    Button button = roomButton.GetComponent<Button>();
+                    if (button != null)
+                    {
+                        button.onClick.AddListener(() => OnRoomClicked(roomInteraction));
+                    }
                 }
             }
         }
@@ -339,65 +283,64 @@ public class MapGenerator : MonoBehaviour
             {
                 foreach (Room connectedRoom in room.Connections)
                 {
-                    // Draw a line only if the connected room is on a higher floor
                     if (connectedRoom.Y > room.Y)
                     {
                         GameObject lineObj = new GameObject("ConnectionLine");
                         LineRenderer lr = lineObj.AddComponent<LineRenderer>();
-                        
+
                         lr.startWidth = 0.05f;
                         lr.endWidth = 0.05f;
                         lr.positionCount = 2;
-                        lr.SetPosition(0, new Vector3(room.X, room.Y * verticalOffset, 0));
-                        lr.SetPosition(1, new Vector3(connectedRoom.X, connectedRoom.Y * verticalOffset, 0));
+                        lr.SetPosition(0, new Vector3(room.X * horizontalOffset, room.Y * verticalOffset, 0));
+                        lr.SetPosition(1, new Vector3(connectedRoom.X * horizontalOffset, connectedRoom.Y * verticalOffset, 0));
 
-                        // Set the color of the line based on the room type
                         lr.startColor = Color.black;
                         lr.endColor = Color.black;
-
-                        // Use a simple unlit material for the line
                         lr.material = new Material(Shader.Find("Sprites/Default"));
-
-                        // Set the sorting order to be behind the frames
                         lr.sortingOrder = -2;
+
+                        lineObj.transform.SetParent(contentTransform, false);
                     }
                 }
             }
         }
     }
 
-
-
-    private GameObject GetRoomPrefab(RoomType type)
+    private Color GetColorForRoomType(RoomType roomType)
     {
-        switch (type)
+        switch (roomType)
         {
-            case RoomType.Monster: return monsterRoomPrefab;
-            case RoomType.Event: return eventRoomPrefab;
-            case RoomType.EliteMonster: return eliteMonsterRoomPrefab;
-            case RoomType.RestSite: return restSiteRoomPrefab;
-            case RoomType.Merchant: return merchantRoomPrefab;
-            case RoomType.Treasure: return treasureRoomPrefab;
-            case RoomType.Boss: return bossRoomPrefab;
-            default: return null;
+            case RoomType.Monster: return Color.red;
+            case RoomType.Event: return Color.green;
+            case RoomType.EliteMonster: return Color.magenta;
+            case RoomType.RestSite: return Color.blue;
+            case RoomType.Merchant: return Color.yellow;
+            case RoomType.Treasure: return Color.cyan;
+            case RoomType.Boss: return Color.black;
+            default: return Color.white;
         }
     }
 
-    private Color GetColorForRoomType(RoomType type)
+
+
+    // Add this variable to keep track of the currently selected room button
+    private Button currentRoomButton;
+
+    // Singleton instance
+    public static MapGenerator Instance { get; private set; }
+
+    private void Awake()
     {
-        switch (type)
+        // Ensure there's only one instance of MapGenerator
+        if (Instance != null && Instance != this)
         {
-            case RoomType.Monster: return monsterColor;
-            case RoomType.Event: return eventColor;
-            case RoomType.EliteMonster: return eliteMonsterColor;
-            case RoomType.RestSite: return restSiteColor;
-            case RoomType.Merchant: return merchantColor;
-            case RoomType.Treasure: return treasureColor;
-            case RoomType.Boss: return bossColor;
-            default: return defaultColor;
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
         }
     }
-
 
     public void OnRoomClicked(RoomInteraction clickedRoom)
     {
@@ -427,7 +370,6 @@ public class MapGenerator : MonoBehaviour
         clickedRoom.UpdateClickableVisuals();
     }
 
-
     private RoomInteraction GetRoomInteraction(Room room)
     {
         foreach (var interaction in FindObjectsOfType<RoomInteraction>())
@@ -442,25 +384,26 @@ public class MapGenerator : MonoBehaviour
 
     private void SetCurrentRoom(RoomInteraction clickedRoom)
     {
-        if (currentRoom != null)
+        if (currentRoomButton != null)
         {
-            currentRoom.SetClickable(false);  // Disable clickability of the previous room
+            currentRoomButton.interactable = false;  // Disable interaction for the previous room button
         }
 
-        currentRoom = clickedRoom;
-        currentRoom.BlinkSprite();
-        Debug.Log("Current room set to: " + currentRoom.Room.X + ", " + currentRoom.Room.Y);
+        // Update the current room button reference
+        currentRoomButton = clickedRoom.GetComponent<Button>();
+        currentRoomButton.interactable = true;  // Enable interaction for the current room button
+        currentRoomButton.GetComponent<RoomInteraction>().BlinkSprite(); // Trigger any visual effects if needed
+
+        Debug.Log("Current room set to: " + clickedRoom.Room.X + ", " + clickedRoom.Room.Y);
     }
 
     private void SetAllRoomsUnclickable()
     {
-        RoomInteraction[] allRooms = FindObjectsOfType<RoomInteraction>();
-        foreach (var room in allRooms)
+        Button[] allRooms = FindObjectsOfType<Button>();
+        foreach (var roomButton in allRooms)
         {
-            room.SetClickable(false);
+            roomButton.interactable = false;  // Disable interaction for all room buttons
         }
         Debug.Log("All rooms set to unclickable.");
     }
-
-
 }

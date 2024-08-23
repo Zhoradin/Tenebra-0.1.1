@@ -66,7 +66,6 @@ public class RoomInteraction : MonoBehaviour
         }
     }
 
-
     public void BlinkSprite()
     {
         // Implement sprite blinking effect, e.g., changing color briefly
