@@ -14,6 +14,8 @@ public class HandController : MonoBehaviour
     public List<Card> heldCards = new List<Card>();
 
     public Transform minPos, maxPos;
+    public Vector3 lockedPosition;
+    public Quaternion lockedRotation;
     public List<Vector3> cardPositions = new List<Vector3>();
     public List<Quaternion> cardRotations = new List<Quaternion>();
     public float curveHeight = 2f; // Kartlarýn y eksenindeki þiþkinlik miktarý
@@ -97,9 +99,16 @@ public class HandController : MonoBehaviour
 
     public void RemoveCardFromHand(Card cardToRemove)
     {
-        if (heldCards[cardToRemove.handPosition] == cardToRemove)
+        if (heldCards.Contains(cardToRemove))
         {
-            heldCards.RemoveAt(cardToRemove.handPosition);
+            if (heldCards[cardToRemove.handPosition] == cardToRemove)
+            {
+                heldCards.RemoveAt(cardToRemove.handPosition);
+            }
+        }
+        else if(cardToRemove.isLocked)
+        {
+            
         }
         else
         {

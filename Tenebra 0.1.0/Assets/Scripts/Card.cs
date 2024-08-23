@@ -16,16 +16,15 @@ public class Card : MonoBehaviour
 
     public CardSO cardSO;
 
-    public bool isPlayer;
-    public bool isGraveyard;
-
     public int currentHealth, attackPower, essenceCost;
-
     private int originalHealth, originalAttack, originalEssence;
 
     public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo, superEffectiveText, notEffectiveText;
 
     public Image characterArt, bgArt, moonPhaseArt;
+
+    public bool inHand, isActive, isSelected, returningToHand, justPressed, isPlayer, isGraveyard, isLocked;
+    public int handPosition;
 
     public GameObject abilityDescription, abilityDescriptionToo;
 
@@ -39,27 +38,20 @@ public class Card : MonoBehaviour
     public float selectedRotateSpeed = 720f;
     public float scaleSpeed = 5f;
 
-    public bool inHand;
-    public bool isActive;
-    public int handPosition;
-
-    private HandController theHC;
-
-    private bool isSelected;
-    private bool returningToHand;
-    private Collider2D theCol;
-
-    public LayerMask whatIsDesktop, whatIsPlacement;
-    private bool justPressed;
-
-    public CardPlacePoint assignedPlace;
-
-    public Animator anim;
-
     private Vector3 originalScale;
     private Vector3 targetScale;
     public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f);
     public Vector3 selectedScale = new Vector3(1.2f, 1.2f, 1f);
+
+    private HandController theHC;
+
+    private Collider2D theCol;
+
+    public LayerMask whatIsDesktop, whatIsPlacement;
+
+    public CardPlacePoint assignedPlace;
+
+    public Animator anim;
 
     [HideInInspector]
     public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, multipleHit, mend, leech, revelation = false;
@@ -145,10 +137,8 @@ public class Card : MonoBehaviour
                 //Check for Field Card
                 if (hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Field)
                 {
-                    Debug.Log("field card");
-
                     CardPlacePoint selectedPoint = hit.collider.GetComponent<CardPlacePoint>();
-                    if (selectedPoint.activeCard == null && selectedPoint.isPlayerPoint)
+                    if (selectedPoint.activeCard == null && selectedPoint.isPlayerPoint && selectedPoint.isFieldPoint)
                     {
                         if (BattleController.instance.playerEssence >= essenceCost)
                         {
@@ -158,10 +148,8 @@ public class Card : MonoBehaviour
                             MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 0.75f, 0f), Quaternion.identity);
 
                             inHand = false;
-
                             isSelected = false;
                             returningToHand = false;
-
                             targetScale = originalScale;
 
                             theHC.RemoveCardFromHand(this);
@@ -174,19 +162,30 @@ public class Card : MonoBehaviour
                             }
 
                             BattleController.instance.SpendPlayerEssence(essenceCost);
-
                             isActive = true;
-
                             CheckMoonPhase();
-
                             theCol.enabled = true;
                         }
                         else
                         {
                             ReturnToHand();
-
                             UIController.instance.ShowEssenceWarning();
                         }
+                    }
+                    //Check for Locking Down
+                    else if(selectedPoint.activeCard == null && selectedPoint.isPlayerPoint && !selectedPoint.isFieldPoint)
+                    {
+                        selectedPoint.activeCard = this;
+                        assignedPlace = selectedPoint;
+
+                        MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 1.5f, 0f), Quaternion.identity);
+
+                        isSelected = false;
+                        returningToHand = false;
+                        isLocked = true;
+                        targetScale = originalScale;
+                        theHC.RemoveCardFromHand(this);
+                        theCol.enabled = true;
                     }
                     else
                     {
@@ -198,7 +197,7 @@ public class Card : MonoBehaviour
                 else if(hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Efect)
                 {
                     CardPlacePoint selectedPoint = hit.collider.GetComponent<CardPlacePoint>();
-                    if (selectedPoint.activeCard != null && selectedPoint.isPlayerPoint)
+                    if (selectedPoint.activeCard != null && selectedPoint.isPlayerPoint && selectedPoint.isFieldPoint)
                     {
                         if (BattleController.instance.playerEssence >= essenceCost)
                         {
@@ -219,30 +218,35 @@ public class Card : MonoBehaviour
                             StartCoroutine(WaitJumpAfterDeadCo());
 
                             inHand = false;
-
                             isSelected = false;
                             returningToHand = false;
-
                             targetScale = originalScale;
-
                             theHC.RemoveCardFromHand(this);
-
                             AbilityManager.instance.ActivateAbility(this);
-
                             BattleController.instance.SpendPlayerEssence(essenceCost);
-
                             isActive = true;
-
                             CheckMoonPhase();
-
                             theCol.enabled = true;
                         }
                         else
                         {
                             ReturnToHand();
-
                             UIController.instance.ShowEssenceWarning();
                         }
+                    }
+                    else if (selectedPoint.activeCard == null && selectedPoint.isPlayerPoint && !selectedPoint.isFieldPoint)
+                    {
+                        selectedPoint.activeCard = this;
+                        assignedPlace = selectedPoint;
+
+                        MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 1.5f, 0f), Quaternion.identity);
+
+                        isSelected = false;
+                        returningToHand = false;
+                        isLocked = true;
+                        targetScale = originalScale;
+                        theHC.RemoveCardFromHand(this);
+                        theCol.enabled = true;
                     }
                     else
                     {
@@ -324,7 +328,6 @@ public class Card : MonoBehaviour
         }
     }
 
-
     public void MoveToPoint(Vector3 pointToMoveTo, Quaternion rotToMatch)
     {
         targetPoint = pointToMoveTo;
@@ -336,11 +339,21 @@ public class Card : MonoBehaviour
         if ((inHand || isActive) && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
             targetScale = hoverScale;
+
             if (inHand)
             {
-                Vector3 hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
+                Vector3 hoverPosition;
+
+                if (isLocked)
+                {
+                    hoverPosition = theHC.lockedPosition + new Vector3(0f, 1f, -2f);
+                }
+                else
+                {
+                    hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
+                    theHC.SpreadCards(handPosition, 1f); 
+                }
                 MoveToPoint(hoverPosition, targetRot);
-                theHC.SpreadCards(handPosition, 1f);
             }
 
             if (isActive)
@@ -360,13 +373,20 @@ public class Card : MonoBehaviour
         }
     }
 
-
     private void OnMouseExit()
     {
+        targetScale = originalScale;
         if ((inHand && !isActive) && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
-            targetScale = originalScale;
-            MoveToPoint(theHC.cardPositions[handPosition], targetRot);
+            if (isLocked)
+            {
+                targetScale = originalScale / 1.75f;
+                MoveToPoint(theHC.lockedPosition + new Vector3(0f, .4f, -2f), targetRot);
+            }
+            else
+            {
+                MoveToPoint(theHC.cardPositions[handPosition] , targetRot);
+            }
 
             abilityDescription.SetActive(false);
             abilityDescriptionToo.SetActive(false);
@@ -375,8 +395,6 @@ public class Card : MonoBehaviour
         }
         else if (isActive && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
-            targetScale = originalScale;
-
             abilityDescription.SetActive(false);
             abilityDescriptionToo.SetActive(false);
         }
@@ -387,7 +405,8 @@ public class Card : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (inHand && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && isPlayer && BattleController.instance.battleEnded == false && Time.timeScale != 0f && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
+        if (inHand && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && isPlayer && BattleController.instance.battleEnded == false && Time.timeScale != 0f
+            && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false && UIController.instance.graveyardPileOpen == false)
         {
             isSelected = true;
             theCol.enabled = false;
@@ -395,6 +414,11 @@ public class Card : MonoBehaviour
             targetScale = selectedScale;
 
             justPressed = true;
+            if (isLocked)
+            {
+                assignedPlace.activeCard = null;
+                assignedPlace = null;
+            }
         }
     }
 
@@ -403,8 +427,26 @@ public class Card : MonoBehaviour
         isSelected = false;
         returningToHand = true;
         theCol.enabled = true;
-        targetRot = theHC.cardRotations[handPosition];
-        MoveToPoint(theHC.cardPositions[handPosition], targetRot);
+
+        if (isLocked)
+        {
+            // assignedPlace'i boşalt
+            if (assignedPlace != null)
+            {
+                assignedPlace.activeCard = null;
+                assignedPlace = null;
+            }
+
+            isLocked = false;
+            theHC.AddCardToHand(this);
+            targetRot = theHC.cardRotations[handPosition];
+            MoveToPoint(theHC.cardPositions[handPosition], targetRot);
+        }
+        else
+        {
+            targetRot = theHC.cardRotations[handPosition];
+            MoveToPoint(theHC.cardPositions[handPosition], targetRot);
+        }
         targetScale = originalScale;
     }
 

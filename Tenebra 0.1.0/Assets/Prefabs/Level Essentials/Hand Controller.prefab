@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 3370784792016158111}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.08715578, w: 0.9961947}
-  m_LocalPosition: {x: -4.25, y: -2.9, z: -1}
+  m_LocalPosition: {x: -3.5, y: -3.65, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 5805187399031988518}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.08715578, w: 0.9961947}
-  m_LocalPosition: {x: 5.75, y: -2.9, z: 1}
+  m_LocalPosition: {x: 5, y: -3.65, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -111,6 +111,8 @@ MonoBehaviour:
   heldCards: []
   minPos: {fileID: 5017210442921389406}
   maxPos: {fileID: 7291910520922546009}
+  lockedPosition: {x: -6, y: -3.267, z: 0.1}
+  lockedRotation: {x: 0, y: 0, z: 0, w: 0}
   cardPositions: []
   cardRotations: []
   curveHeight: 0.3

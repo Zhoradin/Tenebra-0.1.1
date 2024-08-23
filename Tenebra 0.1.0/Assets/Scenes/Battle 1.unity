@@ -914,13 +914,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card Points Controller
       objectReference: {fileID: 0}
+    - target: {fileID: 7782888113561759372, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8561523123564238825, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.26866502
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8561523123564238825, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.360145
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8561523123564238825, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -969,11 +973,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4890279050083172375, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.7584532
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4890279050083172375, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7521692
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4890279050083172375, guid: 3337d740d32a1db4480e3545692c666a, type: 3}
       propertyPath: m_LocalPosition.z

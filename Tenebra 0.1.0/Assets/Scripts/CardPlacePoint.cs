@@ -5,5 +5,6 @@ using UnityEngine;
 public class CardPlacePoint : MonoBehaviour
 {
     public Card activeCard;
+    public bool isFieldPoint;
     public bool isPlayerPoint;
 }
