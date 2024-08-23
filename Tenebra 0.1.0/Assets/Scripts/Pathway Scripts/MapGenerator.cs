@@ -235,75 +235,88 @@ public class MapGenerator : MonoBehaviour
     }
 
     private void GenerateRoomButtons()
+{
+    // Calculate map center offset
+    float mapWidth = width * horizontalOffset;
+    float mapHeight = height * verticalOffset;
+
+    float contentWidth = contentTransform.rect.width;
+    float contentHeight = contentTransform.rect.height;
+
+    float horizontalCenterOffset = (contentWidth - mapWidth) / 2;
+    float verticalCenterOffset = (contentHeight - mapHeight) / 2;
+
+    foreach (Room room in grid)
     {
-        foreach (Room room in grid)
+        if (room != null && room.RoomType != RoomType.None)
         {
-            if (room != null && room.RoomType != RoomType.None)
+            // Instantiate the button prefab
+            GameObject roomButton = Instantiate(roomButtonPrefab, contentTransform);
+
+            // Set the position of the button based on the grid
+            RectTransform buttonRect = roomButton.GetComponent<RectTransform>();
+            buttonRect.anchoredPosition = new Vector2(
+                room.X * horizontalOffset + horizontalCenterOffset, 
+                room.Y * verticalOffset + verticalCenterOffset
+            );
+
+            // Customize the button based on the room's properties
+            Image buttonImage = roomButton.GetComponent<Image>();
+            if (buttonImage != null)
             {
-                // Instantiate the button prefab
-                GameObject roomButton = Instantiate(roomButtonPrefab, contentTransform);
+                buttonImage.color = GetColorForRoomType(room.RoomType);
+            }
 
-                // Set the position of the button based on the grid
-                RectTransform buttonRect = roomButton.GetComponent<RectTransform>();
-                buttonRect.anchoredPosition = new Vector2(room.X * horizontalOffset, room.Y * verticalOffset);
+            // Set the name of the button
+            roomButton.name = $"Room {room.X}, Floor {room.Y}, Type {room.RoomType}";
 
-                // Customize the button based on the room's properties
-                Image buttonImage = roomButton.GetComponent<Image>();
-                if (buttonImage != null)
+            // Add interaction logic to the button
+            RoomInteraction roomInteraction = roomButton.GetComponent<RoomInteraction>();
+            if (roomInteraction != null)
+            {
+                roomInteraction.InitializeRoom(room);
+                roomInteraction.IsClickable = room.Y == 0; // Only starting rooms are clickable
+
+                Button button = roomButton.GetComponent<Button>();
+                if (button != null)
                 {
-                    buttonImage.color = GetColorForRoomType(room.RoomType);
-                }
-
-                // Set the name of the button
-                roomButton.name = $"Room {room.X}, Floor {room.Y}, Type {room.RoomType}";
-
-                // Add interaction logic to the button
-                RoomInteraction roomInteraction = roomButton.GetComponent<RoomInteraction>();
-                if (roomInteraction != null)
-                {
-                    roomInteraction.InitializeRoom(room);
-                    roomInteraction.IsClickable = room.Y == 0; // Only starting rooms are clickable
-
-                    Button button = roomButton.GetComponent<Button>();
-                    if (button != null)
-                    {
-                        button.onClick.AddListener(() => OnRoomClicked(roomInteraction));
-                    }
+                    button.onClick.AddListener(() => OnRoomClicked(roomInteraction));
                 }
             }
         }
-        DrawConnectionLines();
     }
+}
+
 
     private void DrawConnectionLines()
     {
-        foreach (Room room in grid)
-        {
-            if (room != null && room.RoomType != RoomType.None)
-            {
-                foreach (Room connectedRoom in room.Connections)
-                {
-                    if (connectedRoom.Y > room.Y)
-                    {
-                        GameObject lineObj = new GameObject("ConnectionLine");
-                        LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+        // foreach (Room room in grid)
+        // {
+        //     if (room != null && room.RoomType != RoomType.None)
+        //     {
+        //         foreach (Room connectedRoom in room.Connections)
+        //         {
+        //             if (connectedRoom.Y > room.Y)
+        //             {
+        //                 GameObject lineObj = new GameObject("ConnectionLine");
+        //                 LineRenderer lr = lineObj.AddComponent<LineRenderer>();
 
-                        lr.startWidth = 0.05f;
-                        lr.endWidth = 0.05f;
-                        lr.positionCount = 2;
-                        lr.SetPosition(0, new Vector3(room.X * horizontalOffset, room.Y * verticalOffset, 0));
-                        lr.SetPosition(1, new Vector3(connectedRoom.X * horizontalOffset, connectedRoom.Y * verticalOffset, 0));
+        //                 lr.startWidth = 0.05f;
+        //                 lr.endWidth = 0.05f;
+        //                 lr.positionCount = 2;
+        //                 lr.SetPosition(0, new Vector3(room.X * horizontalOffset, room.Y * verticalOffset, 0));
+        //                 lr.SetPosition(1, new Vector3(connectedRoom.X * horizontalOffset, connectedRoom.Y * verticalOffset, 0));
 
-                        lr.startColor = Color.black;
-                        lr.endColor = Color.black;
-                        lr.material = new Material(Shader.Find("Sprites/Default"));
-                        lr.sortingOrder = -2;
+        //                 lr.startColor = Color.black;
+        //                 lr.endColor = Color.black;
+        //                 lr.material = new Material(Shader.Find("Sprites/Default"));
+        //                 lr.sortingOrder = -2;
 
-                        lineObj.transform.SetParent(contentTransform, false);
-                    }
-                }
-            }
-        }
+        //                 lineObj.transform.SetParent(contentTransform, false);
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     private Color GetColorForRoomType(RoomType roomType)
