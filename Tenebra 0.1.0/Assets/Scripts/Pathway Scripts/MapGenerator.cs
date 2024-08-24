@@ -275,7 +275,7 @@ public class MapGenerator : MonoBehaviour
             if (roomInteraction != null)
             {
                 roomInteraction.InitializeRoom(room);
-                roomInteraction.IsClickable = room.Y == 0; // Only starting rooms are clickable
+                roomInteraction.button.interactable = room.Y == 0; // Only starting rooms are clickable
 
                 Button button = roomButton.GetComponent<Button>();
                 if (button != null)
