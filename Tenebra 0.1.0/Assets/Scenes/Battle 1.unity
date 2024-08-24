@@ -141,6 +141,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
+      propertyPath: possessedItems.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
+      propertyPath: possessedItems.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 80fb8fedb9086df48ab4dcd0ac320a06, type: 2}
+    - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
+      propertyPath: possessedItems.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 156b2f2824f0f3c458697d5198932d5b, type: 2}
     - target: {fileID: 2727439233793707573, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: m_Name
       value: Data Carrier
@@ -711,6 +723,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4603093744805479610, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6317028388865145671, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
