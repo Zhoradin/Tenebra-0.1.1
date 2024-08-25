@@ -45,6 +45,7 @@ public class MapGenerator : MonoBehaviour
     public GameObject roomButtonPrefab; // The button prefab to use for rooms
     public RectTransform contentTransform; // The content RectTransform inside the Scroll View
 
+    public GameObject lineSegmentPrefab;
     [SerializeField] private int width = 7;
     [SerializeField] private int height = 16;
     [SerializeField] private int minPaths = 3;
@@ -285,39 +286,79 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
+    DrawConnectionLines();
 }
 
 
     private void DrawConnectionLines()
+{
+    Debug.Log("DrawConnectionLines: Method called.");
+
+    foreach (Room room in grid)
     {
-        // foreach (Room room in grid)
-        // {
-        //     if (room != null && room.RoomType != RoomType.None)
-        //     {
-        //         foreach (Room connectedRoom in room.Connections)
-        //         {
-        //             if (connectedRoom.Y > room.Y)
-        //             {
-        //                 GameObject lineObj = new GameObject("ConnectionLine");
-        //                 LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+        if (room != null && room.RoomType != RoomType.None)
+        {
+            foreach (Room connectedRoom in room.Connections)
+            {
+                if (connectedRoom.Y > room.Y)
+                {
+                    // Find the start and end room buttons
+                    Transform startButtonTransform = contentTransform.Find($"Room {room.X}, Floor {room.Y}, Type {room.RoomType}");
+                    Transform endButtonTransform = contentTransform.Find($"Room {connectedRoom.X}, Floor {connectedRoom.Y}, Type {connectedRoom.RoomType}");
 
-        //                 lr.startWidth = 0.05f;
-        //                 lr.endWidth = 0.05f;
-        //                 lr.positionCount = 2;
-        //                 lr.SetPosition(0, new Vector3(room.X * horizontalOffset, room.Y * verticalOffset, 0));
-        //                 lr.SetPosition(1, new Vector3(connectedRoom.X * horizontalOffset, connectedRoom.Y * verticalOffset, 0));
-
-        //                 lr.startColor = Color.black;
-        //                 lr.endColor = Color.black;
-        //                 lr.material = new Material(Shader.Find("Sprites/Default"));
-        //                 lr.sortingOrder = -2;
-
-        //                 lineObj.transform.SetParent(contentTransform, false);
-        //             }
-        //         }
-        //     }
-        // }
+                    if (startButtonTransform != null && endButtonTransform != null)
+                    {
+                        // Call method to draw a line between the rooms
+                        DrawLineBetweenRooms(startButtonTransform, endButtonTransform);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"DrawConnectionLines: Could not find transforms for Room {room.X}, Floor {room.Y} or Room {connectedRoom.X}, Floor {connectedRoom.Y}");
+                    }
+                }
+            }
+        }
     }
+}
+
+
+
+
+    private void DrawLineBetweenRooms(Transform startRoom, Transform endRoom)
+{
+    // Create a new line segment
+    GameObject lineObj = Instantiate(lineSegmentPrefab, contentTransform);
+
+    // Get the LineRenderer component
+    LineRenderer lr = lineObj.GetComponent<LineRenderer>();
+
+    if (lr != null)
+    {
+        // Set line width to match prefab settings
+        lr.startWidth = 0.05f; // Example width, adjust as needed
+        lr.endWidth = 0.05f;   // Example width, adjust as needed
+
+        // Set line positions based on button RectTransforms
+        Vector3 startPosition = startRoom.position;
+        Vector3 endPosition = endRoom.position;
+
+        lr.positionCount = 2;
+        lr.SetPosition(0, startPosition);
+        lr.SetPosition(1, endPosition);
+
+        // Set color and material
+        lr.startColor = Color.black;
+        lr.endColor = Color.black;
+        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.sortingOrder = -1; // Ensure lines are rendered below buttons
+    }
+    else
+    {
+        Debug.LogError("DrawLineBetweenRooms: LineRenderer component missing on line segment prefab.");
+    }
+}
+
+
 
     private Color GetColorForRoomType(RoomType roomType)
     {

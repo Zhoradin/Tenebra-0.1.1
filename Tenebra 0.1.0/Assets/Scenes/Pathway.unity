@@ -292,6 +292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomButtonPrefab: {fileID: 2593106787070587972, guid: b4f4fe2f6dafe0448be1292edf209f4a, type: 3}
   contentTransform: {fileID: 101469835}
+  lineSegmentPrefab: {fileID: 3129046570042070998, guid: 609aca62bba69964a8a454a36ec8af03, type: 3}
   width: 7
   height: 16
   minPaths: 3
