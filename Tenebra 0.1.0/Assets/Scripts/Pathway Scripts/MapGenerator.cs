@@ -236,129 +236,95 @@ public class MapGenerator : MonoBehaviour
     }
 
     private void GenerateRoomButtons()
-{
-    // Calculate map center offset
-    float mapWidth = width * horizontalOffset;
-    float mapHeight = height * verticalOffset;
-
-    float contentWidth = contentTransform.rect.width;
-    float contentHeight = contentTransform.rect.height;
-
-    float horizontalCenterOffset = (contentWidth - mapWidth) / 2;
-    float verticalCenterOffset = (contentHeight - mapHeight) / 2;
-
-    foreach (Room room in grid)
     {
-        if (room != null && room.RoomType != RoomType.None)
+        float mapWidth = width * horizontalOffset;
+        float mapHeight = height * verticalOffset;
+
+        float contentWidth = contentTransform.rect.width;
+        float contentHeight = contentTransform.rect.height;
+
+        float horizontalCenterOffset = (contentWidth - mapWidth) / 2;
+        float verticalCenterOffset = (contentHeight - mapHeight) / 2;
+
+        foreach (Room room in grid)
         {
-            // Instantiate the button prefab
-            GameObject roomButton = Instantiate(roomButtonPrefab, contentTransform);
-
-            // Set the position of the button based on the grid
-            RectTransform buttonRect = roomButton.GetComponent<RectTransform>();
-            buttonRect.anchoredPosition = new Vector2(
-                room.X * horizontalOffset + horizontalCenterOffset, 
-                room.Y * verticalOffset + verticalCenterOffset
-            );
-
-            // Customize the button based on the room's properties
-            Image buttonImage = roomButton.GetComponent<Image>();
-            if (buttonImage != null)
+            if (room != null && room.RoomType != RoomType.None)
             {
-                buttonImage.color = GetColorForRoomType(room.RoomType);
-            }
+                GameObject roomButton = Instantiate(roomButtonPrefab, contentTransform);
 
-            // Set the name of the button
-            roomButton.name = $"Room {room.X}, Floor {room.Y}, Type {room.RoomType}";
+                RectTransform buttonRect = roomButton.GetComponent<RectTransform>();
+                buttonRect.anchoredPosition = new Vector2(
+                    room.X * horizontalOffset + horizontalCenterOffset,
+                    room.Y * verticalOffset + verticalCenterOffset
+                );
 
-            // Add interaction logic to the button
-            RoomInteraction roomInteraction = roomButton.GetComponent<RoomInteraction>();
-            if (roomInteraction != null)
-            {
-                roomInteraction.InitializeRoom(room);
-                roomInteraction.button.interactable = room.Y == 0; // Only starting rooms are clickable
-
-                Button button = roomButton.GetComponent<Button>();
-                if (button != null)
+                Image buttonImage = roomButton.GetComponent<Image>();
+                if (buttonImage != null)
                 {
-                    button.onClick.AddListener(() => OnRoomClicked(roomInteraction));
+                    buttonImage.color = GetColorForRoomType(room.RoomType);
+                }
+
+                roomButton.name = $"Room {room.X}, Floor {room.Y}, Type {room.RoomType}";
+
+                RoomInteraction roomInteraction = roomButton.GetComponent<RoomInteraction>();
+                if (roomInteraction != null)
+                {
+                    roomInteraction.InitializeRoom(room);
+                    roomInteraction.button.interactable = room.Y == 0;
+
+                    Button button = roomButton.GetComponent<Button>();
+                    if (button != null)
+                    {
+                        button.onClick.AddListener(() => OnRoomClicked(roomInteraction));
+                    }
+                }
+
+                // Çizgileri oluþtur
+                CreateConnections(room, buttonRect);
+            }
+        }
+    }
+
+    private void CreateConnections(Room room, RectTransform roomButtonRect)
+    {
+        foreach (Room connection in room.Connections)
+        {
+            if (connection != null)
+            {
+                RoomInteraction connectedRoomInteraction = GetRoomInteraction(connection);
+
+                if (connectedRoomInteraction != null)
+                {
+                    RectTransform connectedRoomRect = connectedRoomInteraction.GetComponent<RectTransform>();
+
+                    // Çizgiyi oluþtur
+                    GameObject lineSegment = Instantiate(lineSegmentPrefab, contentTransform);
+                    RectTransform lineRect = lineSegment.GetComponent<RectTransform>();
+
+                    // Ýki oda arasýndaki farký hesapla
+                    Vector2 direction = connectedRoomRect.anchoredPosition - roomButtonRect.anchoredPosition;
+                    float distance = direction.magnitude;
+
+                    // Çizginin ortasýna yerleþtir
+                    lineRect.anchoredPosition = roomButtonRect.anchoredPosition + direction / 2;
+
+                    // Çizginin geniþliðini ayarla
+                    lineRect.sizeDelta = new Vector2(distance, 2f); // Yükseklik olarak 2f deðerini kullanarak kalýnlýðý düþürüyoruz
+
+                    // Çizgiyi doðru yöne döndür
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    lineRect.rotation = Quaternion.Euler(0, 0, angle);
+
+                    // Çizgi rengini ayarlamak isterseniz
+                    Image lineImage = lineSegment.GetComponent<Image>();
+                    if (lineImage != null)
+                    {
+                        lineImage.color = Color.gray; // Renk tercihinizi burada ayarlayabilirsiniz
+                    }
                 }
             }
         }
     }
-    DrawConnectionLines();
-}
-
-
-    private void DrawConnectionLines()
-{
-    Debug.Log("DrawConnectionLines: Method called.");
-
-    foreach (Room room in grid)
-    {
-        if (room != null && room.RoomType != RoomType.None)
-        {
-            foreach (Room connectedRoom in room.Connections)
-            {
-                if (connectedRoom.Y > room.Y)
-                {
-                    // Find the start and end room buttons
-                    Transform startButtonTransform = contentTransform.Find($"Room {room.X}, Floor {room.Y}, Type {room.RoomType}");
-                    Transform endButtonTransform = contentTransform.Find($"Room {connectedRoom.X}, Floor {connectedRoom.Y}, Type {connectedRoom.RoomType}");
-
-                    if (startButtonTransform != null && endButtonTransform != null)
-                    {
-                        // Call method to draw a line between the rooms
-                        DrawLineBetweenRooms(startButtonTransform, endButtonTransform);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"DrawConnectionLines: Could not find transforms for Room {room.X}, Floor {room.Y} or Room {connectedRoom.X}, Floor {connectedRoom.Y}");
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-
-
-    private void DrawLineBetweenRooms(Transform startRoom, Transform endRoom)
-{
-    // Create a new line segment
-    GameObject lineObj = Instantiate(lineSegmentPrefab, contentTransform);
-
-    // Get the LineRenderer component
-    LineRenderer lr = lineObj.GetComponent<LineRenderer>();
-
-    if (lr != null)
-    {
-        // Set line width to match prefab settings
-        lr.startWidth = 0.05f; // Example width, adjust as needed
-        lr.endWidth = 0.05f;   // Example width, adjust as needed
-
-        // Set line positions based on button RectTransforms
-        Vector3 startPosition = startRoom.position;
-        Vector3 endPosition = endRoom.position;
-
-        lr.positionCount = 2;
-        lr.SetPosition(0, startPosition);
-        lr.SetPosition(1, endPosition);
-
-        // Set color and material
-        lr.startColor = Color.black;
-        lr.endColor = Color.black;
-        lr.material = new Material(Shader.Find("Sprites/Default"));
-        lr.sortingOrder = -1; // Ensure lines are rendered below buttons
-    }
-    else
-    {
-        Debug.LogError("DrawLineBetweenRooms: LineRenderer component missing on line segment prefab.");
-    }
-}
-
-
 
     private Color GetColorForRoomType(RoomType roomType)
     {
