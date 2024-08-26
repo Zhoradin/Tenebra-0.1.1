@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
+  m_Name: Test Encyclopedia
+  m_EditorClassIdentifier: 
+  cardName: Encyclopedia
+  isGraveyard: 0
+  cardDescription: Encyclopedia Test
+  currentHealth: 5
+  attackPower: 10
+  essenceCost: 15
+  characterSprite: {fileID: 21300000, guid: 424d28bd6e37ce64ab6e2749e1e2bf0e, type: 3}
+  bgSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  moonPhaseSprite: {fileID: 21300000, guid: 86fdf100d0bc5cb4c8bfd87919fb0d93, type: 3}
+  abilities: []
+  moonPhase: 0
+  cardType: 0
+  cardKind: 0

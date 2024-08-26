@@ -48,7 +48,9 @@ MonoBehaviour:
   playerHealth: 50
   playerEssence: 4
   playerCoin: 150
-  possessedItems: []
+  possessedItems:
+  - {fileID: 11400000, guid: 80fb8fedb9086df48ab4dcd0ac320a06, type: 2}
+  - {fileID: 11400000, guid: 156b2f2824f0f3c458697d5198932d5b, type: 2}
   deckToUse:
   - {fileID: 11400000, guid: 75869764fe1a8b14db9a3f8913e0e80b, type: 2}
   - {fileID: 11400000, guid: 9bd58c0bdaee74348a8b41088f0f3246, type: 2}
