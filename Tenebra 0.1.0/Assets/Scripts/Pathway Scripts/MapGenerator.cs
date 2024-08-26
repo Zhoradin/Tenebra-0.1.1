@@ -58,6 +58,9 @@ public class MapGenerator : MonoBehaviour
     private System.Random random = new System.Random();
     private int extendedHeight;
 
+    // Listeyi ekleyin
+    public List<Room> remainingRooms = new List<Room>();
+
     private void Start()
     {
         extendedHeight = height + 1; // Add extra floor for boss room
@@ -195,6 +198,8 @@ public class MapGenerator : MonoBehaviour
 
     private void RemoveUnconnectedRooms()
     {
+        remainingRooms.Clear(); // Listeyi temizle
+
         for (int y = 0; y < extendedHeight; y++)
         {
             for (int x = 0; x < width; x++)
@@ -225,13 +230,29 @@ public class MapGenerator : MonoBehaviour
                         {
                             grid[x, y] = null;
                         }
+                        else
+                        {
+                            remainingRooms.Add(room); // Listeye ekle
+                        }
                     }
                     else if (room.Connections.Count == 0)
                     {
                         grid[x, y] = null;
                     }
+                    else
+                    {
+                        remainingRooms.Add(room); // Listeye ekle
+                    }
                 }
             }
+        }
+
+         // Debug log: kalan odaları yazdır
+        Debug.Log($"Kalan odalar: {remainingRooms.Count}");
+
+        foreach (var room in remainingRooms)
+        {
+            Debug.Log($"Oda Konum: ({room.X}, {room.Y}), Tür: {room.RoomType}");
         }
     }
 
