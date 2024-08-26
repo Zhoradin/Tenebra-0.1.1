@@ -16,9 +16,17 @@ public class EncyclopediaController : MonoBehaviour
 
     // TMP Sprite Asset for replacing type names with sprites in text
     public TMP_SpriteAsset typeSpriteAsset;
+    public CardSlot cardSlotPrefab;
+    public Transform cardSlotContainer;
+
+    private DataCarrier dataCarrier;
 
     void Start()
     {
+        dataCarrier = FindObjectOfType<DataCarrier>();
+
+        CheckCardButtons();
+
         ActivateTypeInfo(TypeList[0]);
         ActivateGodInfo(GodsList[0]);
 
@@ -27,7 +35,6 @@ public class EncyclopediaController : MonoBehaviour
             cardInfo.button.onClick.AddListener(() => OnCardButtonClicked(cardInfo));
         }
 
-        // Oyun baþladýðýnda CardList'in ilk elemanýný aktif hale getir
         if (CardsList.Count > 0)
         {
             OnCardButtonClicked(CardsList[0]);
@@ -80,10 +87,47 @@ public class EncyclopediaController : MonoBehaviour
         return text;
     }
 
+    private void CheckCardButtons()
+    {
+        foreach (var cardInfo in CardsList)
+        {
+            if (dataCarrier.deckToUse.Contains(cardInfo.cardSO))
+            {
+                cardInfo.button.interactable = true;
+                cardInfo.buttonImage.color = Color.white; // Butonun rengi normal beyaz olarak ayarlanýr
+                cardInfo.buttonText.text = cardInfo.cardName; // Orijinal kart ismi gösterilir
+                cardInfo.buttonText.color = Color.black; // Orijinal text rengi siyah olarak ayarlanýr
+            }
+            else
+            {
+                cardInfo.button.interactable = false;
+                cardInfo.buttonImage.color = Color.black; // Butonun rengi siyah olarak ayarlanýr
+                cardInfo.buttonText.text = "???"; // ??? metni gösterilir
+                cardInfo.buttonText.color = Color.white; // Metin rengi beyaz olarak ayarlanýr
+            }
+        }
+    }
+
     public void OnCardButtonClicked(CardInfo cardInfo)
     {
         cardTitle.text = cardInfo.cardName;
         cardInfoDescription.text = cardInfo.description;
+
+        // Instantiate a new CardSlot for the selected card
+        InstantiateCardSlot(cardInfo.cardSO);
+    }
+
+    private void InstantiateCardSlot(CardSO cardSO)
+    {
+        // Clear previous slots
+        foreach (Transform child in cardSlotContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Instantiate new CardSlot
+        CardSlot newCardSlot = Instantiate(cardSlotPrefab, cardSlotContainer);
+        newCardSlot.SetupCardSlot(cardSO);
     }
 
     public void ActivateGodInfo(GodInfo godInfo)
@@ -206,18 +250,23 @@ public class GodInfo
 [System.Serializable]
 public class CardInfo
 {
-    public string cardName; // Kart ismi
+    public string cardName;
     public CardSO cardSO;
     public Button button;
+    public Image buttonImage; // Butonun Image bileþeni
+    public TMP_Text buttonText; // Butonun Text bileþeni
     [TextArea]
     public string description;
 
-    public CardInfo(string cardName, CardSO cardSO, Button button, string description)
+    public CardInfo(string cardName, CardSO cardSO, Button button, Image buttonImage, TMP_Text buttonText, string description)
     {
         this.cardName = cardName;
         this.cardSO = cardSO;
         this.button = button;
+        this.buttonImage = buttonImage;
+        this.buttonText = buttonText;
         this.description = description;
     }
 }
+
 

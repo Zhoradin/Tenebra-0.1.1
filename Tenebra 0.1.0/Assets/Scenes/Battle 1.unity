@@ -287,6 +287,7 @@ RectTransform:
   m_Children:
   - {fileID: 1158717784}
   - {fileID: 1810978734}
+  - {fileID: 1568891187}
   m_Father: {fileID: 686513621}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1190,6 +1191,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
+      propertyPath: deckToUse.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 35583191ae9e696469026924218ec6b5, type: 2}
+    - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
+      propertyPath: deckToUse.Array.data[11]
+      value: 
+      objectReference: {fileID: 11400000, guid: 35583191ae9e696469026924218ec6b5, type: 2}
     - target: {fileID: 2727439233793707573, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: m_Name
       value: Data Carrier
@@ -9379,12 +9388,16 @@ MonoBehaviour:
     godDescription: Abor'or Description
   CardsList:
   - cardName: Abuzer
-    cardSO: {fileID: 0}
+    cardSO: {fileID: 11400000, guid: 75869764fe1a8b14db9a3f8913e0e80b, type: 2}
     button: {fileID: 872643191}
+    buttonImage: {fileID: 872643192}
+    buttonText: {fileID: 1293742175}
     description: Abuzer Description
   - cardName: Istemi Yabgu
-    cardSO: {fileID: 0}
+    cardSO: {fileID: 11400000, guid: dc117b14d362678429eb0869264f0966, type: 2}
     button: {fileID: 1904449679}
+    buttonImage: {fileID: 1904449680}
+    buttonText: {fileID: 890059900}
     description: Istemi Yabgu Description
   typeTitle: {fileID: 1682073046}
   typeInfoDescription: {fileID: 1959977028}
@@ -9397,6 +9410,43 @@ MonoBehaviour:
   cardInfoPanel: {fileID: 686513618}
   godsPanel: {fileID: 1834028353}
   typeSpriteAsset: {fileID: 11400000, guid: dc8e92805d3eee447a43f61e3b6571f2, type: 2}
+  cardSlotPrefab: {fileID: 3782138958717551289, guid: 7e29d57d2c602724a9d470114c96a7c6, type: 3}
+  cardSlotContainer: {fileID: 1568891187}
+--- !u!1 &1568891186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1568891187}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1568891187
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568891186}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 123566283}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 207, y: -58}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1584699378
 GameObject:
   m_ObjectHideFlags: 0
