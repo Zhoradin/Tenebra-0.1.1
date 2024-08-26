@@ -279,7 +279,7 @@ public class MapGenerator : MonoBehaviour
                     }
                 }
 
-                // Çizgileri oluþtur
+                // ï¿½izgileri oluï¿½tur
                 CreateConnections(room, buttonRect);
             }
         }
@@ -297,25 +297,28 @@ public class MapGenerator : MonoBehaviour
                 {
                     RectTransform connectedRoomRect = connectedRoomInteraction.GetComponent<RectTransform>();
 
-                    // Çizgiyi oluþtur
+                    // ï¿½izgiyi oluï¿½tur
                     GameObject lineSegment = Instantiate(lineSegmentPrefab, contentTransform);
                     RectTransform lineRect = lineSegment.GetComponent<RectTransform>();
 
-                    // Ýki oda arasýndaki farký hesapla
+                    // Ã‡izgiyi hiyerarÅŸide geriye taÅŸÄ±
+                    lineSegment.transform.SetSiblingIndex(0);
+
+                    // ï¿½ki oda arasï¿½ndaki farkï¿½ hesapla
                     Vector2 direction = connectedRoomRect.anchoredPosition - roomButtonRect.anchoredPosition;
                     float distance = direction.magnitude;
 
-                    // Çizginin ortasýna yerleþtir
+                    // ï¿½izginin ortasï¿½na yerleï¿½tir
                     lineRect.anchoredPosition = roomButtonRect.anchoredPosition + direction / 2;
 
-                    // Çizginin geniþliðini ayarla
-                    lineRect.sizeDelta = new Vector2(distance, 2f); // Yükseklik olarak 2f deðerini kullanarak kalýnlýðý düþürüyoruz
+                    // ï¿½izginin geniï¿½liï¿½ini ayarla
+                    lineRect.sizeDelta = new Vector2(distance, 2f); // Yï¿½kseklik olarak 2f deï¿½erini kullanarak kalï¿½nlï¿½ï¿½ï¿½ dï¿½ï¿½ï¿½rï¿½yoruz
 
-                    // Çizgiyi doðru yöne döndür
+                    // ï¿½izgiyi doï¿½ru yï¿½ne dï¿½ndï¿½r
                     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                     lineRect.rotation = Quaternion.Euler(0, 0, angle);
 
-                    // Çizgi rengini ayarlamak isterseniz
+                    // ï¿½izgi rengini ayarlamak isterseniz
                     Image lineImage = lineSegment.GetComponent<Image>();
                     if (lineImage != null)
                     {
