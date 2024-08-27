@@ -1,4 +1,4 @@
-using System.IO;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -59,7 +59,8 @@ public class MapGenerator : MonoBehaviour
     private int extendedHeight;
 
     // Listeyi ekleyin
-    public List<Room> remainingRooms = new List<Room>(); // Room list for saving
+    [SerializeField] private List<Room> remainingRooms = new List<Room>();
+
 
     private void Start()
     {
@@ -72,13 +73,9 @@ public class MapGenerator : MonoBehaviour
     }
 
     private void GenerateMap()
-{
-    LoadRemainingRooms(); // Daha önceki remainingRooms listesini yükle
-
-    grid = new Room[width, extendedHeight];
-
-    if (remainingRooms.Count == 0)
     {
+        grid = new Room[width, extendedHeight];
+
         // Create rooms
         for (int x = 0; x < width; x++)
         {
@@ -105,80 +102,6 @@ public class MapGenerator : MonoBehaviour
         foreach (Room startRoom in startingRooms)
         {
             ConnectToNextFloor(startRoom, 0);
-        }
-    }
-    else
-    {
-        // remainingRooms listesine göre odaları oluştur
-        foreach (var room in remainingRooms)
-        {
-            if (room != null)
-            {
-                int x = room.X;
-                int y = room.Y;
-                grid[x, y] = room; // Odayı grid'e ekleyin
-
-                // Odanın RoomType'ını ayarlayın
-                if (room.RoomType != RoomType.None)
-                {
-                    // Oda türünü ayarlamak için gerekli kodları ekleyebilirsiniz
-                }
-            }
-        }
-
-        // Bağlantıları yeniden oluşturun
-        foreach (var room in remainingRooms)
-        {
-            if (room != null)
-            {
-                foreach (var connection in room.Connections)
-                {
-                    if (connection != null)
-                    {
-                        room.Connect(connection); // Oda bağlantılarını kurun
-                    }
-                }
-            }
-        }
-    }
-
-    // Oda butonlarını oluştur
-    GenerateRoomButtons();
-}
-
-
-    public void SaveRemainingRooms()
-    {
-        string path = Application.persistentDataPath + "/remainingRooms.json";
-        string json = JsonUtility.ToJson(new RoomListWrapper(remainingRooms));
-
-        File.WriteAllText(path, json);
-    }
-
-    public void LoadRemainingRooms()
-    {
-        string path = Application.persistentDataPath + "/remainingRooms.json";
-
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            RoomListWrapper roomListWrapper = JsonUtility.FromJson<RoomListWrapper>(json);
-            remainingRooms = roomListWrapper.rooms;
-        }
-        else
-        {
-            remainingRooms = new List<Room>(); // Eğer dosya yoksa boş listeyle başla
-        }
-    }
-
-    [System.Serializable]
-    public class RoomListWrapper
-    {
-        public List<Room> rooms;
-
-        public RoomListWrapper(List<Room> rooms)
-        {
-            this.rooms = rooms;
         }
     }
 
@@ -516,7 +439,7 @@ public class MapGenerator : MonoBehaviour
         currentRoomButton.interactable = true;  // Enable interaction for the current room button
         currentRoomButton.GetComponent<RoomInteraction>().BlinkSprite(); // Trigger any visual effects if needed
 
-        Debug.Log("Current room set to: " + clickedRoom.Room.X + ", " + clickedRoom.Room.Y + "Room Type: " + clickedRoom.Room.RoomType);
+        Debug.Log("Current room set to: " + clickedRoom.Room.X + ", " + clickedRoom.Room.Y);
     }
 
     private void SetAllRoomsUnclickable()
