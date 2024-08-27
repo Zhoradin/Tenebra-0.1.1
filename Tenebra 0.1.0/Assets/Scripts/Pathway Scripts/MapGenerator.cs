@@ -15,35 +15,43 @@ public enum RoomType
     Boss
 }
 
+public class RoomConnection
+{
+    public Room RoomA { get; private set; }
+    public Room RoomB { get; private set; }
+
+    public RoomConnection(Room roomA, Room roomB)
+    {
+        RoomA = roomA;
+        RoomB = roomB;
+    }
+}
+
+
+[Serializable]
 public class Room
 {
     public int X { get; private set; }
     public int Y { get; private set; }
     public RoomType RoomType { get; set; }
-    public List<Room> Connections { get; private set; }
+    public int Id { get; private set; } // Oda için benzersiz ID
+    public string Name;
 
-    public Room(int x, int y)
+    public Room(int x, int y, int id, string name)
     {
         X = x;
         Y = y;
+        this.Name = name;
         RoomType = RoomType.None;
-        Connections = new List<Room>();
-    }
-
-    public void Connect(Room other)
-    {
-        if (!Connections.Contains(other))
-        {
-            Connections.Add(other);
-            other.Connect(this); // Ensure bidirectional connection
-        }
+        Id = id;
     }
 }
 
+
 public class MapGenerator : MonoBehaviour
 {
-    public GameObject roomButtonPrefab; // The button prefab to use for rooms
-    public RectTransform contentTransform; // The content RectTransform inside the Scroll View
+    public GameObject roomButtonPrefab;
+    public RectTransform contentTransform;
 
     public GameObject lineSegmentPrefab;
     [SerializeField] private int width = 7;
@@ -51,20 +59,20 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private int minPaths = 3;
     [SerializeField] private int maxPaths = 4;
 
-    [SerializeField] private float verticalOffset = 100f; // Adjust this to control spacing
-    [SerializeField] private float horizontalOffset = 100f; // Adjust this to control spacing
+    [SerializeField] private float verticalOffset = 100f;
+    [SerializeField] private float horizontalOffset = 100f;
 
+    private RoomManager roomManager;
     private Room[,] grid;
     private System.Random random = new System.Random();
     private int extendedHeight;
 
-    // Listeyi ekleyin
-    [SerializeField] private List<Room> remainingRooms = new List<Room>();
-
+     public List<Room> remainingRooms = new List<Room>();
 
     private void Start()
     {
-        extendedHeight = height + 1; // Add extra floor for boss room
+        roomManager = new RoomManager(); // RoomManager'ı başlat
+        extendedHeight = height + 1;
         GenerateMap();
         AssignRoomLocations();
         RemoveUnconnectedRooms();
@@ -73,37 +81,40 @@ public class MapGenerator : MonoBehaviour
     }
 
     private void GenerateMap()
+{
+    grid = new Room[width, extendedHeight];
+
+    // Create rooms
+    for (int x = 0; x < width; x++)
     {
-        grid = new Room[width, extendedHeight];
-
-        // Create rooms
-        for (int x = 0; x < width; x++)
+        for (int y = 0; y < extendedHeight; y++)
         {
-            for (int y = 0; y < extendedHeight; y++)
-            {
-                grid[x, y] = new Room(x, y);
-            }
-        }
-
-        // Generate starting paths
-        int pathCount = random.Next(minPaths, maxPaths + 1);
-        List<Room> startingRooms = new List<Room>();
-        for (int i = 0; i < pathCount; i++)
-        {
-            Room startRoom;
-            do
-            {
-                startRoom = grid[random.Next(width), 0];
-            } while (startingRooms.Contains(startRoom));
-            startingRooms.Add(startRoom);
-        }
-
-        // Connect starting rooms to next floor
-        foreach (Room startRoom in startingRooms)
-        {
-            ConnectToNextFloor(startRoom, 0);
+            string name = $"Room_{x}_{y}";
+            var room = new Room(x, y, x + y * width, name); // ID ve Name oluştur
+            grid[x, y] = room;
+            roomManager.AddRoom(room); // Odayı yöneticisine ekle
         }
     }
+
+    // Generate starting paths
+    int pathCount = random.Next(minPaths, maxPaths + 1);
+    List<Room> startingRooms = new List<Room>();
+    for (int i = 0; i < pathCount; i++)
+    {
+        Room startRoom;
+        do
+        {
+            startRoom = grid[random.Next(width), 0];
+        } while (startingRooms.Contains(startRoom));
+        startingRooms.Add(startRoom);
+    }
+
+    // Connect starting rooms to next floor
+    foreach (Room startRoom in startingRooms)
+    {
+        ConnectToNextFloor(startRoom, 0);
+    }
+}
 
     private void ConnectToNextFloor(Room room, int currentFloor)
     {
@@ -115,7 +126,7 @@ public class MapGenerator : MonoBehaviour
         if (nextFloor == extendedHeight - 1)
         {
             Room bossRoom = grid[width / 2, nextFloor];
-            room.Connect(bossRoom);
+            roomManager.AddConnection(room, bossRoom);
             return;
         }
 
@@ -130,7 +141,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         Room nextRoom = possibleConnections[random.Next(possibleConnections.Count)];
-        room.Connect(nextRoom);
+        roomManager.AddConnection(room, nextRoom);
         ConnectToNextFloor(nextRoom, nextFloor);
     }
 
@@ -165,24 +176,27 @@ public class MapGenerator : MonoBehaviour
     }
 
     private void AllocateBossRoom()
+{
+    int bossRoomX = width / 2;
+    int bossRoomY = extendedHeight - 1;
+
+    string name = $"Room_{bossRoomX}_{bossRoomY}";
+    Room bossRoom = new Room(bossRoomX, bossRoomY, bossRoomX + bossRoomY * width, name)
     {
-        int bossRoomX = width / 2;
-        int bossRoomY = extendedHeight - 1;
+        RoomType = RoomType.Boss
+    };
+    grid[bossRoomX, bossRoomY] = bossRoom;
 
-        Room bossRoom = new Room(bossRoomX, bossRoomY)
-        {
-            RoomType = RoomType.Boss
-        };
-        grid[bossRoomX, bossRoomY] = bossRoom;
+    roomManager.AddRoom(bossRoom); // Boss odasını yöneticisine ekle
 
-        foreach (Room room in GetRoomsOnFloor(extendedHeight - 2))
+    foreach (Room room in GetRoomsOnFloor(extendedHeight - 2))
+    {
+        if (room != null)
         {
-            if (room != null)
-            {
-                room.Connect(bossRoom);
-            }
+            roomManager.AddConnection(room, bossRoom);
         }
     }
+}
 
     private List<Room> GetRoomsOnFloor(int floor)
     {
@@ -199,7 +213,8 @@ public class MapGenerator : MonoBehaviour
 
     private void RemoveUnconnectedRooms()
     {
-        remainingRooms.Clear(); // Listeyi temizle
+        // Kalan odaları yöneticiden al
+       
 
         for (int y = 0; y < extendedHeight; y++)
         {
@@ -213,18 +228,24 @@ public class MapGenerator : MonoBehaviour
                         bool hasConnectionToLowerFloor = false;
                         bool hasConnectionToBossRoom = false;
 
-                        foreach (Room connection in room.Connections)
+                        foreach (RoomConnection connection in roomManager.GetConnections())
                         {
-                            if (connection.Y == extendedHeight - 3)
+                            if (connection.RoomA == room && connection.RoomB.Y == extendedHeight - 3)
                             {
                                 hasConnectionToLowerFloor = true;
-                                break;
                             }
-                        }
-
-                        if (room.Connections.Exists(r => r.Y == extendedHeight - 1))
-                        {
-                            hasConnectionToBossRoom = true;
+                            if (connection.RoomB == room && connection.RoomA.Y == extendedHeight - 3)
+                            {
+                                hasConnectionToLowerFloor = true;
+                            }
+                            if (connection.RoomA == room && connection.RoomB.Y == extendedHeight - 1)
+                            {
+                                hasConnectionToBossRoom = true;
+                            }
+                            if (connection.RoomB == room && connection.RoomA.Y == extendedHeight - 1)
+                            {
+                                hasConnectionToBossRoom = true;
+                            }
                         }
 
                         if (!hasConnectionToLowerFloor || !hasConnectionToBossRoom)
@@ -233,22 +254,22 @@ public class MapGenerator : MonoBehaviour
                         }
                         else
                         {
-                            remainingRooms.Add(room); // Listeye ekle
+                            remainingRooms.Add(room);
                         }
                     }
-                    else if (room.Connections.Count == 0)
+                    else if (roomManager.GetConnections().FindAll(c => c.RoomA == room || c.RoomB == room).Count == 0)
                     {
                         grid[x, y] = null;
                     }
                     else
                     {
-                        remainingRooms.Add(room); // Listeye ekle
+                        remainingRooms.Add(room);
                     }
                 }
             }
         }
 
-         // Debug log: kalan odaları yazdır
+        // Debug log: kalan odaları yazdır
         Debug.Log($"Kalan odalar: {remainingRooms.Count}");
 
         foreach (var room in remainingRooms)
@@ -301,7 +322,7 @@ public class MapGenerator : MonoBehaviour
                     }
                 }
 
-                // �izgileri olu�tur
+                // Çizgileri oluştur
                 CreateConnections(room, buttonRect);
             }
         }
@@ -309,42 +330,46 @@ public class MapGenerator : MonoBehaviour
 
     private void CreateConnections(Room room, RectTransform roomButtonRect)
     {
-        foreach (Room connection in room.Connections)
+        foreach (RoomConnection connection in roomManager.GetConnections())
         {
-            if (connection != null)
+            if (connection.RoomA == room || connection.RoomB == room)
             {
-                RoomInteraction connectedRoomInteraction = GetRoomInteraction(connection);
-
-                if (connectedRoomInteraction != null)
+                Room connectedRoom = connection.RoomA == room ? connection.RoomB : connection.RoomA;
+                if (connectedRoom != null)
                 {
-                    RectTransform connectedRoomRect = connectedRoomInteraction.GetComponent<RectTransform>();
+                    RoomInteraction connectedRoomInteraction = GetRoomInteraction(connectedRoom);
 
-                    // �izgiyi olu�tur
-                    GameObject lineSegment = Instantiate(lineSegmentPrefab, contentTransform);
-                    RectTransform lineRect = lineSegment.GetComponent<RectTransform>();
-
-                    // Çizgiyi hiyerarşide geriye taşı
-                    lineSegment.transform.SetSiblingIndex(0);
-
-                    // �ki oda aras�ndaki fark� hesapla
-                    Vector2 direction = connectedRoomRect.anchoredPosition - roomButtonRect.anchoredPosition;
-                    float distance = direction.magnitude;
-
-                    // �izginin ortas�na yerle�tir
-                    lineRect.anchoredPosition = roomButtonRect.anchoredPosition + direction / 2;
-
-                    // �izginin geni�li�ini ayarla
-                    lineRect.sizeDelta = new Vector2(distance, 2f); // Y�kseklik olarak 2f de�erini kullanarak kal�nl��� d���r�yoruz
-
-                    // �izgiyi do�ru y�ne d�nd�r
-                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    lineRect.rotation = Quaternion.Euler(0, 0, angle);
-
-                    // �izgi rengini ayarlamak isterseniz
-                    Image lineImage = lineSegment.GetComponent<Image>();
-                    if (lineImage != null)
+                    if (connectedRoomInteraction != null)
                     {
-                        lineImage.color = Color.gray; // Renk tercihinizi burada ayarlayabilirsiniz
+                        RectTransform connectedRoomRect = connectedRoomInteraction.GetComponent<RectTransform>();
+
+                        // Çizgiyi oluştur
+                        GameObject lineSegment = Instantiate(lineSegmentPrefab, contentTransform);
+                        RectTransform lineRect = lineSegment.GetComponent<RectTransform>();
+
+                        // Çizgiyi hiyerarşide geriye taşı
+                        lineSegment.transform.SetSiblingIndex(0);
+
+                        // İki oda arasındaki farkı hesapla
+                        Vector2 direction = connectedRoomRect.anchoredPosition - roomButtonRect.anchoredPosition;
+                        float distance = direction.magnitude;
+
+                        // Çizgiyi ortasına yerleştir
+                        lineRect.anchoredPosition = roomButtonRect.anchoredPosition + direction / 2;
+
+                        // Çizginin genişliğini ayarla
+                        lineRect.sizeDelta = new Vector2(distance, 2f); // Yükseklik olarak 2f değerini kullanarak kalınlığı düşürüyoruz
+
+                        // Çizgiyi doğru yöne döndür
+                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                        lineRect.rotation = Quaternion.Euler(0, 0, angle);
+
+                        // Çizgi rengini ayarlamak isterseniz
+                        Image lineImage = lineSegment.GetComponent<Image>();
+                        if (lineImage != null)
+                        {
+                            lineImage.color = Color.gray; // Renk tercihinizi burada ayarlayabilirsiniz
+                        }
                     }
                 }
             }
@@ -366,17 +391,12 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-
-
-    // Add this variable to keep track of the currently selected room button
     private Button currentRoomButton;
 
-    // Singleton instance
     public static MapGenerator Instance { get; private set; }
 
     private void Awake()
     {
-        // Ensure there's only one instance of MapGenerator
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -388,32 +408,30 @@ public class MapGenerator : MonoBehaviour
     }
 
     public void OnRoomClicked(RoomInteraction clickedRoom)
+{
+    Debug.Log("OnRoomClicked method called.");
+
+    SetCurrentRoom(clickedRoom);
+    SetAllRoomsUnclickable();
+
+    List<Room> connectedRooms = roomManager.GetConnectedRooms(clickedRoom.Room);
+
+    foreach (var connectedRoom in connectedRooms)
     {
-        Debug.Log("OnRoomClicked method called.");
-
-        // Set the clicked room as the current room
-        SetCurrentRoom(clickedRoom);
-
-        // Set all other rooms unclickable
-        SetAllRoomsUnclickable();
-
-        // Allow moving only to connected rooms on higher floors
-        foreach (var connection in clickedRoom.Room.Connections)
+        if (connectedRoom.Y > clickedRoom.Room.Y)  // Ensure movement is only upwards
         {
-            if (connection.Y > clickedRoom.Room.Y)  // Ensure movement is only upwards
+            RoomInteraction nextRoom = GetRoomInteraction(connectedRoom);
+            if (nextRoom != null)
             {
-                RoomInteraction nextRoom = GetRoomInteraction(connection);
-                if (nextRoom != null)
-                {
-                    nextRoom.SetClickable(true);
-                    nextRoom.UpdateClickableVisuals(); // Update visuals for clickable rooms
-                }
+                nextRoom.SetClickable(true);
+                nextRoom.UpdateClickableVisuals(); // Update visuals for clickable rooms
             }
         }
-
-        // Update visuals for the clicked room as well
-        clickedRoom.UpdateClickableVisuals();
     }
+
+    clickedRoom.UpdateClickableVisuals();
+}
+
 
     private RoomInteraction GetRoomInteraction(Room room)
     {
@@ -434,7 +452,6 @@ public class MapGenerator : MonoBehaviour
             currentRoomButton.interactable = false;  // Disable interaction for the previous room button
         }
 
-        // Update the current room button reference
         currentRoomButton = clickedRoom.GetComponent<Button>();
         currentRoomButton.interactable = true;  // Enable interaction for the current room button
         currentRoomButton.GetComponent<RoomInteraction>().BlinkSprite(); // Trigger any visual effects if needed
@@ -452,3 +469,4 @@ public class MapGenerator : MonoBehaviour
         Debug.Log("All rooms set to unclickable.");
     }
 }
+

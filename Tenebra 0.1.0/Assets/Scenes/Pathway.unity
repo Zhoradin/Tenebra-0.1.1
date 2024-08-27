@@ -299,6 +299,7 @@ MonoBehaviour:
   maxPaths: 4
   verticalOffset: 60
   horizontalOffset: 100
+  remainingRooms: []
 --- !u!4 &337811194
 Transform:
   m_ObjectHideFlags: 0
