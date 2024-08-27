@@ -1,4 +1,4 @@
-using System;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -59,7 +59,7 @@ public class MapGenerator : MonoBehaviour
     private int extendedHeight;
 
     // Listeyi ekleyin
-    public List<Room> remainingRooms = new List<Room>();
+    public List<Room> remainingRooms = new List<Room>(); // Room list for saving
 
     private void Start()
     {
@@ -73,34 +73,83 @@ public class MapGenerator : MonoBehaviour
 
     private void GenerateMap()
     {
+        LoadRemainingRooms(); // Daha önceki remainingRooms listesini yükle
+
         grid = new Room[width, extendedHeight];
 
-        // Create rooms
-        for (int x = 0; x < width; x++)
+        if (remainingRooms.Count == 0)
         {
-            for (int y = 0; y < extendedHeight; y++)
+            // Create rooms
+            for (int x = 0; x < width; x++)
             {
-                grid[x, y] = new Room(x, y);
+                for (int y = 0; y < extendedHeight; y++)
+                {
+                    grid[x, y] = new Room(x, y);
+                }
+            }
+
+            // Generate starting paths
+            int pathCount = random.Next(minPaths, maxPaths + 1);
+            List<Room> startingRooms = new List<Room>();
+            for (int i = 0; i < pathCount; i++)
+            {
+                Room startRoom;
+                do
+                {
+                    startRoom = grid[random.Next(width), 0];
+                } while (startingRooms.Contains(startRoom));
+                startingRooms.Add(startRoom);
+            }
+
+            // Connect starting rooms to next floor
+            foreach (Room startRoom in startingRooms)
+            {
+                ConnectToNextFloor(startRoom, 0);
             }
         }
-
-        // Generate starting paths
-        int pathCount = random.Next(minPaths, maxPaths + 1);
-        List<Room> startingRooms = new List<Room>();
-        for (int i = 0; i < pathCount; i++)
+        else
         {
-            Room startRoom;
-            do
+            // remainingRooms listesine göre odaları oluştur
+            foreach (var room in remainingRooms)
             {
-                startRoom = grid[random.Next(width), 0];
-            } while (startingRooms.Contains(startRoom));
-            startingRooms.Add(startRoom);
-        }
+                // Room objelerini doğru pozisyonlarına yerleştirin
+                // (Burada room.Y ve room.X ile pozisyonlama yapılacak)
+            }
+        }  
+    }
 
-        // Connect starting rooms to next floor
-        foreach (Room startRoom in startingRooms)
+    public void SaveRemainingRooms()
+    {
+        string path = Application.persistentDataPath + "/remainingRooms.json";
+        string json = JsonUtility.ToJson(new RoomListWrapper(remainingRooms));
+
+        File.WriteAllText(path, json);
+    }
+
+    public void LoadRemainingRooms()
+    {
+        string path = Application.persistentDataPath + "/remainingRooms.json";
+
+        if (File.Exists(path))
         {
-            ConnectToNextFloor(startRoom, 0);
+            string json = File.ReadAllText(path);
+            RoomListWrapper roomListWrapper = JsonUtility.FromJson<RoomListWrapper>(json);
+            remainingRooms = roomListWrapper.rooms;
+        }
+        else
+        {
+            remainingRooms = new List<Room>(); // Eğer dosya yoksa boş listeyle başla
+        }
+    }
+
+    [System.Serializable]
+    public class RoomListWrapper
+    {
+        public List<Room> rooms;
+
+        public RoomListWrapper(List<Room> rooms)
+        {
+            this.rooms = rooms;
         }
     }
 
