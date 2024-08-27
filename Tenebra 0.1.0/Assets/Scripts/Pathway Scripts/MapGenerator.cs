@@ -74,7 +74,14 @@ public class MapGenerator : MonoBehaviour
         roomManager = new RoomManager(); // RoomManager'ı başlat
         extendedHeight = height + 1;
         GenerateMap();
-        AssignRoomLocations();
+        if(remainingRooms.Count == 0){
+            AssignRoomLocations();
+        }
+        else{
+            AssignRoomLocations();
+        }
+        // else kısmındaki assignroomlocations yerine yeni bi method olacak remaining rooms listesindeki odaları kullanan ona göre ayrıca yerleştiricek
+        
         RemoveUnconnectedRooms();
         AllocateBossRoom();
         GenerateRoomButtons();
@@ -82,39 +89,83 @@ public class MapGenerator : MonoBehaviour
 
     private void GenerateMap()
 {
-    grid = new Room[width, extendedHeight];
-
-    // Create rooms
-    for (int x = 0; x < width; x++)
+    if (remainingRooms.Count == 0)
     {
-        for (int y = 0; y < extendedHeight; y++)
+        grid = new Room[width, extendedHeight];
+
+        // Create rooms
+        for (int x = 0; x < width; x++)
         {
-            string name = $"Room_{x}_{y}";
-            var room = new Room(x, y, x + y * width, name); // ID ve Name oluştur
-            grid[x, y] = room;
-            roomManager.AddRoom(room); // Odayı yöneticisine ekle
+            for (int y = 0; y < extendedHeight; y++)
+            {
+                string name = $"Room_{x}_{y}";
+                var room = new Room(x, y, x + y * width, name); // ID ve Name oluştur
+                grid[x, y] = room;
+                roomManager.AddRoom(room); // Odayı yöneticisine ekle
+            }
+        }
+
+        // Generate starting paths
+        int pathCount = random.Next(minPaths, maxPaths + 1);
+        List<Room> startingRooms = new List<Room>();
+        for (int i = 0; i < pathCount; i++)
+        {
+            Room startRoom;
+            do
+            {
+                startRoom = grid[random.Next(width), 0];
+            } while (startingRooms.Contains(startRoom));
+            startingRooms.Add(startRoom);
+        }
+
+        // Connect starting rooms to next floor
+        foreach (Room startRoom in startingRooms)
+        {
+            ConnectToNextFloor(startRoom, 0);
         }
     }
-
-    // Generate starting paths
-    int pathCount = random.Next(minPaths, maxPaths + 1);
-    List<Room> startingRooms = new List<Room>();
-    for (int i = 0; i < pathCount; i++)
+    else
     {
-        Room startRoom;
-        do
+        // Create new grid with existing rooms
+        grid = new Room[width, extendedHeight];
+        HashSet<Room> addedRooms = new HashSet<Room>();
+
+        // Place remaining rooms into the grid
+        foreach (Room room in remainingRooms)
         {
-            startRoom = grid[random.Next(width), 0];
-        } while (startingRooms.Contains(startRoom));
-        startingRooms.Add(startRoom);
-    }
+            if (room.X >= 0 && room.X < width && room.Y >= 0 && room.Y < extendedHeight)
+            {
+                grid[room.X, room.Y] = room;
+                addedRooms.Add(room);
+                roomManager.AddRoom(room);
+            }
+        }
 
-    // Connect starting rooms to next floor
-    foreach (Room startRoom in startingRooms)
-    {
-        ConnectToNextFloor(startRoom, 0);
+        // Connect remaining rooms
+        foreach (Room room in remainingRooms)
+        {
+            foreach (Room other in remainingRooms)
+            {
+                if (room != other && IsAdjacent(room, other))
+                {
+                    roomManager.AddConnection(room, other);
+                }
+            }
+        }
+
+        // Generate starting paths if necessary
+        // You can add logic here if you need to regenerate starting paths or connections
     }
 }
+
+// Helper method to check if two rooms are adjacent
+private bool IsAdjacent(Room room1, Room room2)
+{
+    return (Math.Abs(room1.X - room2.X) == 1 && room1.Y == room2.Y) || 
+           (Math.Abs(room1.Y - room2.Y) == 1 && room1.X == room2.X);
+}
+
+
 
     private void ConnectToNextFloor(Room room, int currentFloor)
     {
@@ -156,9 +207,16 @@ public class MapGenerator : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 Room room = grid[x, y];
-                if (room.RoomType == RoomType.None)
-                {
-                    room.RoomType = GetRandomRoomType(y);
+
+                if (room != null){
+                    Debug.Log(room.Name);
+                    if (room.RoomType == RoomType.None)
+                    {
+                        room.RoomType = GetRandomRoomType(y);
+                    }
+                }
+                else{
+                    
                 }
             }
         }

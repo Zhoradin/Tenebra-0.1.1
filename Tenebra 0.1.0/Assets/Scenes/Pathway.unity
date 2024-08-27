@@ -277,7 +277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &337811193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -520,6 +520,116 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &1548421145
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1548421147}
+  - component: {fileID: 1548421146}
+  m_Layer: 0
+  m_Name: MapGenerator (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1548421146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548421145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17deb89cb7d9acf4da19d8293d6449e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomButtonPrefab: {fileID: 2593106787070587972, guid: b4f4fe2f6dafe0448be1292edf209f4a, type: 3}
+  contentTransform: {fileID: 101469835}
+  lineSegmentPrefab: {fileID: 3129046570042070998, guid: 609aca62bba69964a8a454a36ec8af03, type: 3}
+  width: 7
+  height: 16
+  minPaths: 3
+  maxPaths: 4
+  verticalOffset: 60
+  horizontalOffset: 100
+  remainingRooms:
+  - Name: Room_1_0
+  - Name: Room_2_0
+  - Name: Room_3_0
+  - Name: Room_5_0
+  - Name: Room_0_1
+  - Name: Room_2_1
+  - Name: Room_3_1
+  - Name: Room_5_1
+  - Name: Room_0_2
+  - Name: Room_3_2
+  - Name: Room_5_2
+  - Name: Room_0_3
+  - Name: Room_2_3
+  - Name: Room_6_3
+  - Name: Room_1_4
+  - Name: Room_3_4
+  - Name: Room_5_4
+  - Name: Room_0_5
+  - Name: Room_4_5
+  - Name: Room_5_5
+  - Name: Room_0_6
+  - Name: Room_3_6
+  - Name: Room_4_6
+  - Name: Room_5_6
+  - Name: Room_0_7
+  - Name: Room_2_7
+  - Name: Room_3_7
+  - Name: Room_5_7
+  - Name: Room_1_8
+  - Name: Room_4_8
+  - Name: Room_0_9
+  - Name: Room_1_9
+  - Name: Room_3_9
+  - Name: Room_5_9
+  - Name: Room_0_10
+  - Name: Room_1_10
+  - Name: Room_4_10
+  - Name: Room_6_10
+  - Name: Room_1_11
+  - Name: Room_4_11
+  - Name: Room_5_11
+  - Name: Room_1_12
+  - Name: Room_3_12
+  - Name: Room_5_12
+  - Name: Room_2_13
+  - Name: Room_3_13
+  - Name: Room_4_13
+  - Name: Room_1_14
+  - Name: Room_2_14
+  - Name: Room_3_14
+  - Name: Room_5_14
+  - Name: Room_1_15
+  - Name: Room_2_15
+  - Name: Room_3_15
+  - Name: Room_6_15
+  - Name: Room_3_16
+--- !u!4 &1548421147
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548421145}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1659770104
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,3 +740,4 @@ SceneRoots:
   - {fileID: 337811194}
   - {fileID: 1659770108}
   - {fileID: 414704003}
+  - {fileID: 1548421147}
