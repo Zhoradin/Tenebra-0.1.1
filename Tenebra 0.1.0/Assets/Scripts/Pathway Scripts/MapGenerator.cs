@@ -72,51 +72,80 @@ public class MapGenerator : MonoBehaviour
     }
 
     private void GenerateMap()
+{
+    LoadRemainingRooms(); // Daha önceki remainingRooms listesini yükle
+
+    grid = new Room[width, extendedHeight];
+
+    if (remainingRooms.Count == 0)
     {
-        LoadRemainingRooms(); // Daha önceki remainingRooms listesini yükle
-
-        grid = new Room[width, extendedHeight];
-
-        if (remainingRooms.Count == 0)
+        // Create rooms
+        for (int x = 0; x < width; x++)
         {
-            // Create rooms
-            for (int x = 0; x < width; x++)
+            for (int y = 0; y < extendedHeight; y++)
             {
-                for (int y = 0; y < extendedHeight; y++)
-                {
-                    grid[x, y] = new Room(x, y);
-                }
-            }
-
-            // Generate starting paths
-            int pathCount = random.Next(minPaths, maxPaths + 1);
-            List<Room> startingRooms = new List<Room>();
-            for (int i = 0; i < pathCount; i++)
-            {
-                Room startRoom;
-                do
-                {
-                    startRoom = grid[random.Next(width), 0];
-                } while (startingRooms.Contains(startRoom));
-                startingRooms.Add(startRoom);
-            }
-
-            // Connect starting rooms to next floor
-            foreach (Room startRoom in startingRooms)
-            {
-                ConnectToNextFloor(startRoom, 0);
+                grid[x, y] = new Room(x, y);
             }
         }
-        else
+
+        // Generate starting paths
+        int pathCount = random.Next(minPaths, maxPaths + 1);
+        List<Room> startingRooms = new List<Room>();
+        for (int i = 0; i < pathCount; i++)
         {
-            // remainingRooms listesine göre odaları oluştur
-            foreach (var room in remainingRooms)
+            Room startRoom;
+            do
             {
-                // Room objelerini doğru pozisyonlarına yerleştirin
-                // (Burada room.Y ve room.X ile pozisyonlama yapılacak)
-            }
-        }  
+                startRoom = grid[random.Next(width), 0];
+            } while (startingRooms.Contains(startRoom));
+            startingRooms.Add(startRoom);
+        }
+
+        // Connect starting rooms to next floor
+        foreach (Room startRoom in startingRooms)
+        {
+            ConnectToNextFloor(startRoom, 0);
+        }
     }
+    else
+    {
+        // remainingRooms listesine göre odaları oluştur
+        foreach (var room in remainingRooms)
+        {
+            if (room != null)
+            {
+                int x = room.X;
+                int y = room.Y;
+                grid[x, y] = room; // Odayı grid'e ekleyin
+
+                // Odanın RoomType'ını ayarlayın
+                if (room.RoomType != RoomType.None)
+                {
+                    // Oda türünü ayarlamak için gerekli kodları ekleyebilirsiniz
+                }
+            }
+        }
+
+        // Bağlantıları yeniden oluşturun
+        foreach (var room in remainingRooms)
+        {
+            if (room != null)
+            {
+                foreach (var connection in room.Connections)
+                {
+                    if (connection != null)
+                    {
+                        room.Connect(connection); // Oda bağlantılarını kurun
+                    }
+                }
+            }
+        }
+    }
+
+    // Oda butonlarını oluştur
+    GenerateRoomButtons();
+}
+
 
     public void SaveRemainingRooms()
     {

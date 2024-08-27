@@ -297,7 +297,7 @@ MonoBehaviour:
   height: 16
   minPaths: 3
   maxPaths: 4
-  verticalOffset: 60
+  verticalOffset: 90
   horizontalOffset: 100
 --- !u!4 &337811194
 Transform:
