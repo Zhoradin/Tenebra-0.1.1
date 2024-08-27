@@ -516,7 +516,7 @@ public class MapGenerator : MonoBehaviour
         currentRoomButton.interactable = true;  // Enable interaction for the current room button
         currentRoomButton.GetComponent<RoomInteraction>().BlinkSprite(); // Trigger any visual effects if needed
 
-        Debug.Log("Current room set to: " + clickedRoom.Room.X + ", " + clickedRoom.Room.Y);
+        Debug.Log("Current room set to: " + clickedRoom.Room.X + ", " + clickedRoom.Room.Y + "Room Type: " + clickedRoom.Room.RoomType);
     }
 
     private void SetAllRoomsUnclickable()
