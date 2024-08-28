@@ -31,8 +31,8 @@ public class RoomConnection
 [Serializable]
 public class Room
 {
-    public int X { get; private set; }
-    public int Y { get; private set; }
+    public int X { get; set; }
+    public int Y { get; set; }
     public RoomType RoomType { get; set; }
     public int Id { get; private set; } // Oda için benzersiz ID
     public string Name;
@@ -82,88 +82,67 @@ public class MapGenerator : MonoBehaviour
         }
         // else kısmındaki assignroomlocations yerine yeni bi method olacak remaining rooms listesindeki odaları kullanan ona göre ayrıca yerleştiricek
         
+        // RemoveUnconnectedRooms();
+        // AllocateBossRoom();
+        // GenerateRoomButtons();
+    }
+    private void GenerateMap()
+    {
+        grid = new Room[width, extendedHeight];
+
+        if (remainingRooms.Count == 0)
+        {
+            // Yeni harita oluşturma süreci
+            // Create rooms
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < extendedHeight; y++)
+                {
+                    string name = $"Room_{x}_{y}";
+                    var room = new Room(x, y, x + y * width, name); // ID ve Name oluştur
+                    grid[x, y] = room;
+                    roomManager.AddRoom(room); // Odayı yöneticisine ekle
+                }
+            }
+
+            // Generate starting paths
+            int pathCount = random.Next(minPaths, maxPaths + 1);
+            List<Room> startingRooms = new List<Room>();
+            for (int i = 0; i < pathCount; i++)
+            {
+                Room startRoom;
+                do
+                {
+                    startRoom = grid[random.Next(width), 0];
+                } while (startingRooms.Contains(startRoom));
+                startingRooms.Add(startRoom);
+            }
+
+            // Connect starting rooms to next floor
+            foreach (Room startRoom in startingRooms)
+            {
+                ConnectToNextFloor(startRoom, 0);
+            }
+
+            // Odaların türlerini atama
+            AssignRoomLocations();
+        }
+        else
+        {
+            // remainingRooms listesindeki odaları grid'e yerleştirme süreci
+            AssignRemainingRoomLocations();
+        }
+
+        // Gereksiz odaları temizliyoruz
         RemoveUnconnectedRooms();
+
+        // Harita oluşturma işlemi tamamlandıktan sonra boss odasını yerleştiriyoruz
         AllocateBossRoom();
+
+        // Odaları görsel olarak oluşturuyoruz
         GenerateRoomButtons();
     }
 
-    private void GenerateMap()
-{
-    if (remainingRooms.Count == 0)
-    {
-        grid = new Room[width, extendedHeight];
-
-        // Create rooms
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < extendedHeight; y++)
-            {
-                string name = $"Room_{x}_{y}";
-                var room = new Room(x, y, x + y * width, name); // ID ve Name oluştur
-                grid[x, y] = room;
-                roomManager.AddRoom(room); // Odayı yöneticisine ekle
-            }
-        }
-
-        // Generate starting paths
-        int pathCount = random.Next(minPaths, maxPaths + 1);
-        List<Room> startingRooms = new List<Room>();
-        for (int i = 0; i < pathCount; i++)
-        {
-            Room startRoom;
-            do
-            {
-                startRoom = grid[random.Next(width), 0];
-            } while (startingRooms.Contains(startRoom));
-            startingRooms.Add(startRoom);
-        }
-
-        // Connect starting rooms to next floor
-        foreach (Room startRoom in startingRooms)
-        {
-            ConnectToNextFloor(startRoom, 0);
-        }
-    }
-    else
-    {
-        // Create new grid with existing rooms
-        grid = new Room[width, extendedHeight];
-        HashSet<Room> addedRooms = new HashSet<Room>();
-
-        // Place remaining rooms into the grid
-        foreach (Room room in remainingRooms)
-        {
-            if (room.X >= 0 && room.X < width && room.Y >= 0 && room.Y < extendedHeight)
-            {
-                grid[room.X, room.Y] = room;
-                addedRooms.Add(room);
-                roomManager.AddRoom(room);
-            }
-        }
-
-        // Connect remaining rooms
-        foreach (Room room in remainingRooms)
-        {
-            foreach (Room other in remainingRooms)
-            {
-                if (room != other && IsAdjacent(room, other))
-                {
-                    roomManager.AddConnection(room, other);
-                }
-            }
-        }
-
-        // Generate starting paths if necessary
-        // You can add logic here if you need to regenerate starting paths or connections
-    }
-}
-
-// Helper method to check if two rooms are adjacent
-private bool IsAdjacent(Room room1, Room room2)
-{
-    return (Math.Abs(room1.X - room2.X) == 1 && room1.Y == room2.Y) || 
-           (Math.Abs(room1.Y - room2.Y) == 1 && room1.X == room2.X);
-}
 
 
 
@@ -196,31 +175,90 @@ private bool IsAdjacent(Room room1, Room room2)
         ConnectToNextFloor(nextRoom, nextFloor);
     }
 
+    private void AssignRemainingRoomLocations()
+    {
+        foreach (Room room in remainingRooms)
+        {
+            // Odaların isimlerinden (örneğin "Room_1_0") x ve y koordinatlarını çıkart
+            string[] nameParts = room.Name.Split('_');
+            if (nameParts.Length == 3 && int.TryParse(nameParts[1], out int x) && int.TryParse(nameParts[2], out int y))
+            {
+                room.X = x;
+                room.Y = y;
+
+                // Eğer koordinatlar grid sınırları içerisindeyse grid'e yerleştir
+                if (room.X >= 0 && room.X < width && room.Y >= 0 && room.Y < extendedHeight)
+                {
+                    grid[room.X, room.Y] = room;
+                    roomManager.AddRoom(room); // Odayı yöneticisine ekle
+
+                    // Oda türü eğer atanmadıysa (None) uygun bir tür ata
+                    if (room.RoomType == RoomType.None)
+                    {
+                        room.RoomType = GetRandomRoomType(room.Y);
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogError($"Invalid room name format: {room.Name}");
+            }
+        }
+
+        // Oda bağlantılarını kur
+        foreach (Room room in remainingRooms)
+        {
+            foreach (Room otherRoom in remainingRooms)
+            {
+                if (room != otherRoom)
+                {
+                    roomManager.AddConnection(room, otherRoom);
+                }
+            }
+        }
+    }
+
+
     private void AssignRoomLocations()
     {
-        foreach (Room room in GetRoomsOnFloor(0)) { room.RoomType = RoomType.Monster; }
-        foreach (Room room in GetRoomsOnFloor(8)) { room.RoomType = RoomType.Treasure; }
-        foreach (Room room in GetRoomsOnFloor(15)) { room.RoomType = RoomType.RestSite; }
+        // Assign specific room types to specific floors
+        foreach (Room room in GetRoomsOnFloor(0)) 
+        {
+            room.RoomType = RoomType.Monster; 
+        }
+        
+        foreach (Room room in GetRoomsOnFloor(8)) 
+        { 
+            room.RoomType = RoomType.Treasure; 
+        }
+        
+        foreach (Room room in GetRoomsOnFloor(15)) 
+        { 
+            room.RoomType = RoomType.RestSite; 
+        }
 
+        // Iterate over the grid and assign room types
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
                 Room room = grid[x, y];
 
-                if (room != null){
-                    Debug.Log(room.Name);
+                if (room != null)
+                {
+                    // If the room has no type assigned, give it a random type based on floor level
                     if (room.RoomType == RoomType.None)
                     {
                         room.RoomType = GetRandomRoomType(y);
                     }
-                }
-                else{
-                    
+
+                    // Log each room's type and position for debugging purposes
+                    Debug.Log($"Room assigned: {room.Name}, Position: ({room.X}, {room.Y}), Type: {room.RoomType}");
                 }
             }
         }
     }
+
 
     private RoomType GetRandomRoomType(int floor)
     {
@@ -234,27 +272,27 @@ private bool IsAdjacent(Room room1, Room room2)
     }
 
     private void AllocateBossRoom()
-{
-    int bossRoomX = width / 2;
-    int bossRoomY = extendedHeight - 1;
-
-    string name = $"Room_{bossRoomX}_{bossRoomY}";
-    Room bossRoom = new Room(bossRoomX, bossRoomY, bossRoomX + bossRoomY * width, name)
     {
-        RoomType = RoomType.Boss
-    };
-    grid[bossRoomX, bossRoomY] = bossRoom;
+        int bossRoomX = width / 2;
+        int bossRoomY = extendedHeight - 1;
 
-    roomManager.AddRoom(bossRoom); // Boss odasını yöneticisine ekle
-
-    foreach (Room room in GetRoomsOnFloor(extendedHeight - 2))
-    {
-        if (room != null)
+        string name = $"Room_{bossRoomX}_{bossRoomY}";
+        Room bossRoom = new Room(bossRoomX, bossRoomY, bossRoomX + bossRoomY * width, name)
         {
-            roomManager.AddConnection(room, bossRoom);
+            RoomType = RoomType.Boss
+        };
+        grid[bossRoomX, bossRoomY] = bossRoom;
+
+        roomManager.AddRoom(bossRoom); // Boss odasını yöneticisine ekle
+
+        foreach (Room room in GetRoomsOnFloor(extendedHeight - 2))
+        {
+            if (room != null)
+            {
+                roomManager.AddConnection(room, bossRoom);
+            }
         }
     }
-}
 
     private List<Room> GetRoomsOnFloor(int floor)
     {
@@ -466,29 +504,29 @@ private bool IsAdjacent(Room room1, Room room2)
     }
 
     public void OnRoomClicked(RoomInteraction clickedRoom)
-{
-    Debug.Log("OnRoomClicked method called.");
-
-    SetCurrentRoom(clickedRoom);
-    SetAllRoomsUnclickable();
-
-    List<Room> connectedRooms = roomManager.GetConnectedRooms(clickedRoom.Room);
-
-    foreach (var connectedRoom in connectedRooms)
     {
-        if (connectedRoom.Y > clickedRoom.Room.Y)  // Ensure movement is only upwards
+        Debug.Log("OnRoomClicked method called.");
+
+        SetCurrentRoom(clickedRoom);
+        SetAllRoomsUnclickable();
+
+        List<Room> connectedRooms = roomManager.GetConnectedRooms(clickedRoom.Room);
+
+        foreach (var connectedRoom in connectedRooms)
         {
-            RoomInteraction nextRoom = GetRoomInteraction(connectedRoom);
-            if (nextRoom != null)
+            if (connectedRoom.Y > clickedRoom.Room.Y)  // Ensure movement is only upwards
             {
-                nextRoom.SetClickable(true);
-                nextRoom.UpdateClickableVisuals(); // Update visuals for clickable rooms
+                RoomInteraction nextRoom = GetRoomInteraction(connectedRoom);
+                if (nextRoom != null)
+                {
+                    nextRoom.SetClickable(true);
+                    nextRoom.UpdateClickableVisuals(); // Update visuals for clickable rooms
+                }
             }
         }
-    }
 
-    clickedRoom.UpdateClickableVisuals();
-}
+        clickedRoom.UpdateClickableVisuals();
+    }
 
 
     private RoomInteraction GetRoomInteraction(Room room)

@@ -559,60 +559,52 @@ MonoBehaviour:
   verticalOffset: 60
   horizontalOffset: 100
   remainingRooms:
-  - Name: Room_1_0
-  - Name: Room_2_0
-  - Name: Room_3_0
-  - Name: Room_5_0
+  - Name: Room_0_0
+  - Name: Room_4_0
+  - Name: Room_6_0
   - Name: Room_0_1
-  - Name: Room_2_1
   - Name: Room_3_1
-  - Name: Room_5_1
+  - Name: Room_6_1
   - Name: Room_0_2
   - Name: Room_3_2
   - Name: Room_5_2
   - Name: Room_0_3
-  - Name: Room_2_3
-  - Name: Room_6_3
+  - Name: Room_3_3
+  - Name: Room_5_3
   - Name: Room_1_4
-  - Name: Room_3_4
-  - Name: Room_5_4
-  - Name: Room_0_5
-  - Name: Room_4_5
-  - Name: Room_5_5
-  - Name: Room_0_6
-  - Name: Room_3_6
+  - Name: Room_4_4
+  - Name: Room_6_4
+  - Name: Room_1_5
+  - Name: Room_3_5
+  - Name: Room_6_5
+  - Name: Room_2_6
   - Name: Room_4_6
-  - Name: Room_5_6
-  - Name: Room_0_7
+  - Name: Room_6_6
   - Name: Room_2_7
   - Name: Room_3_7
   - Name: Room_5_7
-  - Name: Room_1_8
+  - Name: Room_3_8
   - Name: Room_4_8
-  - Name: Room_0_9
-  - Name: Room_1_9
+  - Name: Room_5_8
+  - Name: Room_2_9
   - Name: Room_3_9
-  - Name: Room_5_9
-  - Name: Room_0_10
-  - Name: Room_1_10
-  - Name: Room_4_10
+  - Name: Room_6_9
+  - Name: Room_3_10
   - Name: Room_6_10
-  - Name: Room_1_11
+  - Name: Room_2_11
   - Name: Room_4_11
   - Name: Room_5_11
   - Name: Room_1_12
-  - Name: Room_3_12
+  - Name: Room_4_12
   - Name: Room_5_12
   - Name: Room_2_13
   - Name: Room_3_13
-  - Name: Room_4_13
+  - Name: Room_6_13
   - Name: Room_1_14
-  - Name: Room_2_14
-  - Name: Room_3_14
+  - Name: Room_4_14
   - Name: Room_5_14
-  - Name: Room_1_15
-  - Name: Room_2_15
-  - Name: Room_3_15
+  - Name: Room_0_15
+  - Name: Room_5_15
   - Name: Room_6_15
   - Name: Room_3_16
 --- !u!4 &1548421147
@@ -738,6 +730,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 815241003}
   - {fileID: 337811194}
+  - {fileID: 1548421147}
   - {fileID: 1659770108}
   - {fileID: 414704003}
-  - {fileID: 1548421147}
