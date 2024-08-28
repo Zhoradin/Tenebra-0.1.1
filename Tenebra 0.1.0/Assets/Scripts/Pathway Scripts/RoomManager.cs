@@ -18,7 +18,8 @@ public class RoomManager
 
     public void AddConnection(Room roomA, Room roomB)
     {
-        var connection = new RoomConnection(roomA, roomB);
+        string name = $"Connection_{roomA.Name}_{roomB.Name}";
+        var connection = new RoomConnection(roomA, roomB, name);
         connections.Add(connection);
     }
 
