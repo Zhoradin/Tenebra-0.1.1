@@ -153,6 +153,7 @@ public class MapGenerator : MonoBehaviour
 
         int nextFloor = currentFloor + 1;
 
+        // Eğer son kata ulaştıysak boss odasını yerleştir
         if (nextFloor == extendedHeight - 1)
         {
             Room bossRoom = grid[width / 2, nextFloor];
@@ -161,19 +162,49 @@ public class MapGenerator : MonoBehaviour
         }
 
         List<Room> possibleConnections = new List<Room>();
-        for (int dx = -1; dx <= 1; dx++)
+
+        // Eğer remainingRooms doluysa, sadece remainingRooms içindeki odalarla bağlantı kur
+        if (remainingRooms.Count > 0)
         {
-            int nx = room.X + dx;
-            if (nx >= 0 && nx < width)
+            for (int dx = -1; dx <= 1; dx++)
             {
-                possibleConnections.Add(grid[nx, nextFloor]);
+                int nx = room.X + dx;
+                if (nx >= 0 && nx < width)
+                {
+                    Room nextRoom = grid[nx, nextFloor];
+                    if (nextRoom != null && remainingRooms.Contains(nextRoom)) // Sadece remainingRooms odalarını ekle
+                    {
+                        possibleConnections.Add(nextRoom);
+                    }
+                }
+            }
+        }
+        // Eğer remainingRooms boşsa, normal bağlantı kur
+        else
+        {
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                int nx = room.X + dx;
+                if (nx >= 0 && nx < width)
+                {
+                    Room nextRoom = grid[nx, nextFloor];
+                    if (nextRoom != null) // Herhangi bir odayla bağlantı kurabilir
+                    {
+                        possibleConnections.Add(nextRoom);
+                    }
+                }
             }
         }
 
-        Room nextRoom = possibleConnections[random.Next(possibleConnections.Count)];
-        roomManager.AddConnection(room, nextRoom);
-        ConnectToNextFloor(nextRoom, nextFloor);
+        // Olası bağlantılar arasında rastgele bir oda seç ve bağlantı kur
+        if (possibleConnections.Count > 0)
+        {
+            Room nextRoom = possibleConnections[random.Next(possibleConnections.Count)];
+            roomManager.AddConnection(room, nextRoom);
+            ConnectToNextFloor(nextRoom, nextFloor);
+        }
     }
+
 
     private void AssignRemainingRoomLocations()
     {
@@ -205,15 +236,11 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        // Oda bağlantılarını kur
         foreach (Room room in remainingRooms)
         {
-            foreach (Room otherRoom in remainingRooms)
+            if (room.Y < extendedHeight - 1)
             {
-                if (room != otherRoom)
-                {
-                    roomManager.AddConnection(room, otherRoom);
-                }
+                ConnectToNextFloor(room, room.Y); // Bağlantıları kalan odalar arasında oluştur
             }
         }
     }
