@@ -300,7 +300,6 @@ MonoBehaviour:
   verticalOffset: 60
   horizontalOffset: 100
   remainingRooms: []
-  remainingConnections: []
 --- !u!4 &337811194
 Transform:
   m_ObjectHideFlags: 0
@@ -532,7 +531,7 @@ GameObject:
   - component: {fileID: 1548421147}
   - component: {fileID: 1548421146}
   m_Layer: 0
-  m_Name: "Map Generator S\u0131k\u0131nt\u0131"
+  m_Name: MapGenerator (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -608,71 +607,6 @@ MonoBehaviour:
   - Name: Room_5_15
   - Name: Room_6_15
   - Name: Room_3_16
-  remainingConnections:
-  - connectionName: Connection_Room_0_0_Room_0_1
-  - connectionName: Connection_Room_0_3_Room_0_4
-  - connectionName: Connection_Room_0_4_Room_0_5
-  - connectionName: Connection_Room_0_5_Room_0_6
-  - connectionName: Connection_Room_0_11_Room_0_12
-  - connectionName: Connection_Room_0_12_Room_0_13
-  - connectionName: Connection_Room_0_13_Room_0_14
-  - connectionName: Connection_Room_0_1_Room_1_2
-  - connectionName: Connection_Room_1_2_Room_0_3
-  - connectionName: Connection_Room_0_6_Room_1_7
-  - connectionName: Connection_Room_1_7_Room_1_8
-  - connectionName: Connection_Room_1_8_Room_0_9
-  - connectionName: Connection_Room_0_9_Room_1_10
-  - connectionName: Connection_Room_1_10_Room_0_11
-  - connectionName: Connection_Room_0_14_Room_1_15
-  - connectionName: Connection_Room_2_1_Room_2_2
-  - connectionName: Connection_Room_2_2_Room_2_3
-  - connectionName: Connection_Room_3_0_Room_2_1
-  - connectionName: Connection_Room_2_3_Room_3_4
-  - connectionName: Connection_Room_3_4_Room_3_5
-  - connectionName: Connection_Room_3_6_Room_2_7
-  - connectionName: Connection_Room_2_7_Room_3_8
-  - connectionName: Connection_Room_3_8_Room_2_9
-  - connectionName: Connection_Room_2_9_Room_3_10
-  - connectionName: Connection_Room_3_10_Room_2_11
-  - connectionName: Connection_Room_3_9_Room_3_10
-  - connectionName: Connection_Room_2_11_Room_3_12
-  - connectionName: Connection_Room_3_12_Room_3_13
-  - connectionName: Connection_Room_3_13_Room_3_14
-  - connectionName: Connection_Room_3_14_Room_2_15
-  - connectionName: Connection_Room_1_15_Room_3_16
-  - connectionName: Connection_Room_2_15_Room_3_16
-  - connectionName: Connection_Room_4_5_Room_3_6
-  - connectionName: Connection_Room_4_6_Room_3_7
-  - connectionName: Connection_Room_3_5_Room_4_6
-  - connectionName: Connection_Room_4_6_Room_4_7
-  - connectionName: Connection_Room_3_7_Room_4_8
-  - connectionName: Connection_Room_4_8_Room_3_9
-  - connectionName: Connection_Room_3_10_Room_4_11
-  - connectionName: Connection_Room_4_11_Room_4_12
-  - connectionName: Connection_Room_4_12_Room_4_13
-  - connectionName: Connection_Room_4_13_Room_3_14
-  - connectionName: Connection_Room_3_14_Room_4_15
-  - connectionName: Connection_Room_4_15_Room_3_16
-  - connectionName: Connection_Room_4_0_Room_5_1
-  - connectionName: Connection_Room_5_0_Room_5_1
-  - connectionName: Connection_Room_5_1_Room_5_2
-  - connectionName: Connection_Room_5_4_Room_4_5
-  - connectionName: Connection_Room_5_3_Room_5_4
-  - connectionName: Connection_Room_5_4_Room_5_5
-  - connectionName: Connection_Room_5_5_Room_4_6
-  - connectionName: Connection_Room_4_7_Room_5_8
-  - connectionName: Connection_Room_5_10_Room_4_11
-  - connectionName: Connection_Room_4_11_Room_5_12
-  - connectionName: Connection_Room_5_12_Room_5_13
-  - connectionName: Connection_Room_5_13_Room_4_14
-  - connectionName: Connection_Room_4_14_Room_5_15
-  - connectionName: Connection_Room_5_15_Room_3_16
-  - connectionName: Connection_Room_5_1_Room_6_2
-  - connectionName: Connection_Room_6_2_Room_5_3
-  - connectionName: Connection_Room_5_2_Room_6_3
-  - connectionName: Connection_Room_6_3_Room_5_4
-  - connectionName: Connection_Room_5_8_Room_6_9
-  - connectionName: Connection_Room_6_9_Room_5_10
 --- !u!4 &1548421147
 Transform:
   m_ObjectHideFlags: 0

@@ -3,21 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
+public enum RoomType
+{
+    None,
+    Monster,
+    Event,
+    EliteMonster,
+    RestSite,
+    Merchant,
+    Treasure,
+    Boss
+}
+
 public class RoomConnection
 {
     public Room RoomA { get; private set; }
     public Room RoomB { get; private set; }
 
-    public string connectionName;
-
-    public RoomConnection(Room roomA, Room roomB, string name)
+    public RoomConnection(Room roomA, Room roomB)
     {
         RoomA = roomA;
         RoomB = roomB;
-        this.connectionName = name;
     }
 }
+
 
 [Serializable]
 public class Room
@@ -25,7 +34,7 @@ public class Room
     public int X { get; set; }
     public int Y { get; set; }
     public RoomType RoomType { get; set; }
-    public int Id { get; private set; }
+    public int Id { get; private set; } // Oda için benzersiz ID
     public string Name;
 
     public Room(int x, int y, int id, string name)
@@ -58,12 +67,11 @@ public class MapGenerator : MonoBehaviour
     private System.Random random = new System.Random();
     private int extendedHeight;
 
-    public List<Room> remainingRooms = new List<Room>();
-    public List<RoomConnection> remainingConnections = new List<RoomConnection>();
+     public List<Room> remainingRooms = new List<Room>();
 
     private void Start()
     {
-        roomManager = new RoomManager();
+        roomManager = new RoomManager(); // RoomManager'ı başlat
         extendedHeight = height + 1;
         GenerateMap();
         if(remainingRooms.Count == 0){
@@ -72,6 +80,11 @@ public class MapGenerator : MonoBehaviour
         else{
             AssignRoomLocations();
         }
+        // else kısmındaki assignroomlocations yerine yeni bi method olacak remaining rooms listesindeki odaları kullanan ona göre ayrıca yerleştiricek
+        
+        // RemoveUnconnectedRooms();
+        // AllocateBossRoom();
+        // GenerateRoomButtons();
     }
     private void GenerateMap()
     {
@@ -79,17 +92,20 @@ public class MapGenerator : MonoBehaviour
 
         if (remainingRooms.Count == 0)
         {
+            // Yeni harita oluşturma süreci
+            // Create rooms
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < extendedHeight; y++)
                 {
                     string name = $"Room_{x}_{y}";
-                    var room = new Room(x, y, x + y * width, name);
+                    var room = new Room(x, y, x + y * width, name); // ID ve Name oluştur
                     grid[x, y] = room;
-                    roomManager.AddRoom(room);
+                    roomManager.AddRoom(room); // Odayı yöneticisine ekle
                 }
             }
 
+            // Generate starting paths
             int pathCount = random.Next(minPaths, maxPaths + 1);
             List<Room> startingRooms = new List<Room>();
             for (int i = 0; i < pathCount; i++)
@@ -102,24 +118,33 @@ public class MapGenerator : MonoBehaviour
                 startingRooms.Add(startRoom);
             }
 
+            // Connect starting rooms to next floor
             foreach (Room startRoom in startingRooms)
             {
                 ConnectToNextFloor(startRoom, 0);
             }
 
+            // Odaların türlerini atama
             AssignRoomLocations();
         }
         else
         {
+            // remainingRooms listesindeki odaları grid'e yerleştirme süreci
             AssignRemainingRoomLocations();
         }
 
+        // Gereksiz odaları temizliyoruz
         RemoveUnconnectedRooms();
 
+        // Harita oluşturma işlemi tamamlandıktan sonra boss odasını yerleştiriyoruz
         AllocateBossRoom();
 
+        // Odaları görsel olarak oluşturuyoruz
         GenerateRoomButtons();
     }
+
+
+
 
     private void ConnectToNextFloor(Room room, int currentFloor)
     {
@@ -154,17 +179,20 @@ public class MapGenerator : MonoBehaviour
     {
         foreach (Room room in remainingRooms)
         {
+            // Odaların isimlerinden (örneğin "Room_1_0") x ve y koordinatlarını çıkart
             string[] nameParts = room.Name.Split('_');
             if (nameParts.Length == 3 && int.TryParse(nameParts[1], out int x) && int.TryParse(nameParts[2], out int y))
             {
                 room.X = x;
                 room.Y = y;
 
+                // Eğer koordinatlar grid sınırları içerisindeyse grid'e yerleştir
                 if (room.X >= 0 && room.X < width && room.Y >= 0 && room.Y < extendedHeight)
                 {
                     grid[room.X, room.Y] = room;
-                    roomManager.AddRoom(room);
+                    roomManager.AddRoom(room); // Odayı yöneticisine ekle
 
+                    // Oda türü eğer atanmadıysa (None) uygun bir tür ata
                     if (room.RoomType == RoomType.None)
                     {
                         room.RoomType = GetRandomRoomType(room.Y);
@@ -177,6 +205,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
+        // Oda bağlantılarını kur
         foreach (Room room in remainingRooms)
         {
             foreach (Room otherRoom in remainingRooms)
@@ -189,8 +218,10 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+
     private void AssignRoomLocations()
     {
+        // Assign specific room types to specific floors
         foreach (Room room in GetRoomsOnFloor(0)) 
         {
             room.RoomType = RoomType.Monster; 
@@ -206,6 +237,7 @@ public class MapGenerator : MonoBehaviour
             room.RoomType = RoomType.RestSite; 
         }
 
+        // Iterate over the grid and assign room types
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
@@ -214,10 +246,13 @@ public class MapGenerator : MonoBehaviour
 
                 if (room != null)
                 {
+                    // If the room has no type assigned, give it a random type based on floor level
                     if (room.RoomType == RoomType.None)
                     {
                         room.RoomType = GetRandomRoomType(y);
                     }
+
+                    // Log each room's type and position for debugging purposes
                     Debug.Log($"Room assigned: {room.Name}, Position: ({room.X}, {room.Y}), Type: {room.RoomType}");
                 }
             }
@@ -274,6 +309,9 @@ public class MapGenerator : MonoBehaviour
 
     private void RemoveUnconnectedRooms()
     {
+        // Kalan odaları yöneticiden al
+       
+
         for (int y = 0; y < extendedHeight; y++)
         {
             for (int x = 0; x < width; x++)
@@ -327,6 +365,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
+        // Debug log: kalan odaları yazdır
         Debug.Log($"Kalan odalar: {remainingRooms.Count}");
 
         foreach (var room in remainingRooms)
@@ -379,6 +418,7 @@ public class MapGenerator : MonoBehaviour
                     }
                 }
 
+                // Çizgileri oluştur
                 CreateConnections(room, buttonRect);
             }
         }
@@ -399,29 +439,33 @@ public class MapGenerator : MonoBehaviour
                     {
                         RectTransform connectedRoomRect = connectedRoomInteraction.GetComponent<RectTransform>();
 
+                        // Çizgiyi oluştur
                         GameObject lineSegment = Instantiate(lineSegmentPrefab, contentTransform);
                         RectTransform lineRect = lineSegment.GetComponent<RectTransform>();
 
+                        // Çizgiyi hiyerarşide geriye taşı
                         lineSegment.transform.SetSiblingIndex(0);
 
+                        // İki oda arasındaki farkı hesapla
                         Vector2 direction = connectedRoomRect.anchoredPosition - roomButtonRect.anchoredPosition;
                         float distance = direction.magnitude;
 
+                        // Çizgiyi ortasına yerleştir
                         lineRect.anchoredPosition = roomButtonRect.anchoredPosition + direction / 2;
 
-                        lineRect.sizeDelta = new Vector2(distance, 2f);
+                        // Çizginin genişliğini ayarla
+                        lineRect.sizeDelta = new Vector2(distance, 2f); // Yükseklik olarak 2f değerini kullanarak kalınlığı düşürüyoruz
 
+                        // Çizgiyi doğru yöne döndür
                         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                         lineRect.rotation = Quaternion.Euler(0, 0, angle);
 
+                        // Çizgi rengini ayarlamak isterseniz
                         Image lineImage = lineSegment.GetComponent<Image>();
                         if (lineImage != null)
                         {
-                            lineImage.color = Color.gray;
+                            lineImage.color = Color.gray; // Renk tercihinizi burada ayarlayabilirsiniz
                         }
-
-                        // RoomConnection nesnesini remainingConnections listesine ekle
-                        remainingConnections.Add(connection);
                     }
                 }
             }
@@ -484,6 +528,7 @@ public class MapGenerator : MonoBehaviour
         clickedRoom.UpdateClickableVisuals();
     }
 
+
     private RoomInteraction GetRoomInteraction(Room room)
     {
         foreach (var interaction in FindObjectsOfType<RoomInteraction>())
@@ -521,14 +566,3 @@ public class MapGenerator : MonoBehaviour
     }
 }
 
-public enum RoomType
-{
-    None,
-    Monster,
-    Event,
-    EliteMonster,
-    RestSite,
-    Merchant,
-    Treasure,
-    Boss
-}
