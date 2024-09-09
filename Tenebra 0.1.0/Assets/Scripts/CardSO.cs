@@ -26,6 +26,8 @@ public class CardSO : ScriptableObject
     public CardType cardType;
 
     public CardKind cardKind;
+
+    public CardRarity cardRarity;
 }
 public enum MoonPhase
 {
@@ -43,4 +45,13 @@ public enum CardKind
 {
     Field,
     Efect
+}
+
+public enum CardRarity
+{
+    Common,
+    Uncommon,
+    Rare,
+    Crimson, // consumes health to use this rarity of cards
+    Cursed // has good and bad effects together
 }
