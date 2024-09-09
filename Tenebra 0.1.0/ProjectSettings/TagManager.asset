@@ -41,3 +41,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Room Line
+    uniqueID: 2733573457
+    locked: 0
