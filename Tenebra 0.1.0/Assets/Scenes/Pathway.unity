@@ -277,7 +277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &337811193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,7 +536,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1548421146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,53 +559,59 @@ MonoBehaviour:
   verticalOffset: 60
   horizontalOffset: 100
   remainingRooms:
-  - Name: Room_0_0
+  - Name: Room_1_0
   - Name: Room_4_0
+  - Name: Room_5_0
   - Name: Room_6_0
   - Name: Room_0_1
-  - Name: Room_3_1
-  - Name: Room_6_1
+  - Name: Room_4_1
+  - Name: Room_5_1
   - Name: Room_0_2
-  - Name: Room_3_2
+  - Name: Room_4_2
   - Name: Room_5_2
   - Name: Room_0_3
   - Name: Room_3_3
+  - Name: Room_4_3
   - Name: Room_5_3
-  - Name: Room_1_4
-  - Name: Room_4_4
+  - Name: Room_0_4
+  - Name: Room_3_4
+  - Name: Room_5_4
   - Name: Room_6_4
   - Name: Room_1_5
-  - Name: Room_3_5
-  - Name: Room_6_5
-  - Name: Room_2_6
+  - Name: Room_2_5
+  - Name: Room_5_5
+  - Name: Room_0_6
+  - Name: Room_3_6
   - Name: Room_4_6
-  - Name: Room_6_6
+  - Name: Room_0_7
   - Name: Room_2_7
-  - Name: Room_3_7
+  - Name: Room_4_7
   - Name: Room_5_7
+  - Name: Room_1_8
   - Name: Room_3_8
   - Name: Room_4_8
   - Name: Room_5_8
   - Name: Room_2_9
   - Name: Room_3_9
-  - Name: Room_6_9
+  - Name: Room_4_9
+  - Name: Room_2_10
   - Name: Room_3_10
-  - Name: Room_6_10
-  - Name: Room_2_11
+  - Name: Room_4_10
+  - Name: Room_1_11
+  - Name: Room_3_11
   - Name: Room_4_11
-  - Name: Room_5_11
   - Name: Room_1_12
+  - Name: Room_2_12
+  - Name: Room_3_12
   - Name: Room_4_12
-  - Name: Room_5_12
+  - Name: Room_1_13
   - Name: Room_2_13
   - Name: Room_3_13
-  - Name: Room_6_13
-  - Name: Room_1_14
-  - Name: Room_4_14
-  - Name: Room_5_14
-  - Name: Room_0_15
-  - Name: Room_5_15
-  - Name: Room_6_15
+  - Name: Room_0_14
+  - Name: Room_3_14
+  - Name: Room_1_15
+  - Name: Room_2_15
+  - Name: Room_4_15
   - Name: Room_3_16
 --- !u!4 &1548421147
 Transform:
