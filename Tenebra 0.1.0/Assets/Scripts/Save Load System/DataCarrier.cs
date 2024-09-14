@@ -11,6 +11,9 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
     public int playerCoin;
     public List<ItemSO> possessedItems;
     public List<CardSO> deckToUse;
+    public List<Room> pathwayRooms;
+    public string currentRoomName;
+    public EnemySO enemy;
 
     private void Awake()
     {
@@ -67,6 +70,9 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
         playerCoin = data.money;
         deckToUse = new List<CardSO>(data.deck);
         possessedItems = new List<ItemSO>(data.items);
+        pathwayRooms.Clear();
+        pathwayRooms = new List<Room>(data.rooms);
+        currentRoomName = data.currentRoom;
     }
 
     public void SaveData(PlayerData data)
@@ -76,5 +82,7 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
         data.money = playerCoin;
         data.deck = new List<CardSO>(deckToUse);
         data.items = new List<ItemSO>(possessedItems);
+        data.rooms = new List<Room>(pathwayRooms);
+        data.currentRoom = currentRoomName;
     }
 }

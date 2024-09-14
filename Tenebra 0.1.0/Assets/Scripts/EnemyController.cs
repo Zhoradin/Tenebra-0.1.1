@@ -33,9 +33,23 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(WaitForEnemyCo());
+    }
+
+    public IEnumerator WaitForEnemyCo()
+    {
+        yield return new WaitForSeconds(.5f);
+
+        if (FindObjectOfType<DataCarrier>().enemy != null)
+        {
+            enemySO = FindObjectOfType<DataCarrier>().enemy;
+        }
+
+        yield return new WaitForSeconds(.5f);
+
         if (enemySO != null)
         {
-            deckToUse = new List<CardSO>(enemySO.deckToUse);
+            deckToUse.AddRange(enemySO.deckToUse);
             enemyHealth = enemySO.enemyHealth;
             BattleController.instance.SetEnemyHealth();
         }
@@ -86,7 +100,7 @@ public class EnemyController : MonoBehaviour
             SetupDeck();
         }
 
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(2f);
 
         if (enemyAIType != AIType.placeFromDeck)
         {
