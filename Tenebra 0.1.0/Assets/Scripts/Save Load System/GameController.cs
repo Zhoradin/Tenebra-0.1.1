@@ -42,6 +42,7 @@ public class GameController : MonoBehaviour
         {
             StartCoroutine(LoadSceneAndSetData(loadedData.currentSceneName));
         }
+        Debug.Log("Oyun yüklendi");
     }
 
     private IEnumerator LoadSceneAndSetData(string sceneName)

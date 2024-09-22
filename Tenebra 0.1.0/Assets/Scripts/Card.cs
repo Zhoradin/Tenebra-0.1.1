@@ -32,6 +32,8 @@ public class Card : MonoBehaviour
 
     public CardKind cardKind;
 
+    public CardRarity cardRarity;
+
     private Vector3 targetPoint;
     private Quaternion targetRot;
     public float moveSpeed = 5f, rotateSpeed = 540f;
@@ -98,6 +100,7 @@ public class Card : MonoBehaviour
 
         cardType = cardSO.cardType;
         cardKind = cardSO.cardKind;
+        cardRarity = cardSO.cardRarity;
 
         moonPhaseArt.sprite = cardSO.moonPhaseSprite;
 
