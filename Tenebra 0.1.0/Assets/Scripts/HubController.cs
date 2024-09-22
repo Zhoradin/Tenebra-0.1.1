@@ -29,11 +29,11 @@ public class HubController : MonoBehaviour
 
     public void OnCaerulisnClicked()
     {
-        SceneManager.LoadScene("Battle 2");
+        SceneManager.LoadScene("Pathway");
     }
 
     public void OnAmarunisClicked()
     {
-        SceneManager.LoadScene("Battle 3");
+        SceneManager.LoadScene("Pathway");
     }
 }

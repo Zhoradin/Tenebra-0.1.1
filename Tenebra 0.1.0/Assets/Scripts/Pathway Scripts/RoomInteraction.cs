@@ -27,14 +27,10 @@ public class RoomInteraction : MonoBehaviour
 
     private void Start()
     {
-        // Initialize Button interaction
-        if (button != null)
-        {
-            button.onClick.AddListener(OnButtonClick);
-        }
+
     }
 
-    private void OnButtonClick()
+    public void OnButtonClick()
     {
         if (button.interactable) // Check if the button is clickable
         {
