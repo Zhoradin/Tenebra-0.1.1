@@ -6969,10 +6969,10 @@ RectTransform:
   - {fileID: 311637057063342812}
   - {fileID: 842463010849606008}
   - {fileID: 971337608734235295}
+  - {fileID: 7715704176700885463}
   - {fileID: 5257738399064308669}
   - {fileID: 5477334399133638585}
   - {fileID: 827735726315066457}
-  - {fileID: 7715704176700885463}
   - {fileID: 1435967925160737062}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7067,7 +7067,8 @@ MonoBehaviour:
   drawPileButton: {fileID: 4232757636729571151}
   discardPileButton: {fileID: 2220667637469670619}
   graveyardPileButton: {fileID: 5464043833015092280}
-  inventoryPanelButton: {fileID: 6843435334066691738}
+  inventoryButton: {fileID: 0}
+  encyclopediaButton: {fileID: 0}
   playerDamage: {fileID: 776974399496209955}
   enemyDamage: {fileID: 2457627841164547602}
   battleEndedScreen: {fileID: 5092711149021966552}
@@ -7079,10 +7080,12 @@ MonoBehaviour:
   discardPilePanel: {fileID: 46437827361693176}
   graveyardPilePanel: {fileID: 1983403736707917664}
   inventoryPanel: {fileID: 4242570156721868403}
+  encyclopediaPanel: {fileID: 0}
   drawPileOpen: 0
   discardPileOpen: 0
   graveyardPileOpen: 0
   inventoryPanelOpen: 0
+  encyclopediaPanelOpen: 0
   drawPileOpenPosition: {x: 0, y: 0}
   drawPileClosedPosition: {x: -2000, y: 0}
   discardPileOpenPosition: {x: 0, y: 0}

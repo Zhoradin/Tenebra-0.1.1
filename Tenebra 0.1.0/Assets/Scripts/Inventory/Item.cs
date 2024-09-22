@@ -46,10 +46,10 @@ public class Item : MonoBehaviour
 
     public void BuyObject()
     {
-        if(TestUIController.instance.testPlayerCoin >= itemSO.itemCost)
+        if(BarController.instance.testPlayerCoin >= itemSO.itemCost)
         {
-            TestUIController.instance.testPlayerCoin -= itemSO.itemCost;
-            TestUIController.instance.SetPlayerCoin();
+            BarController.instance.testPlayerCoin -= itemSO.itemCost;
+            BarController.instance.SetPlayerCoin();
             CheckItemSkill();
             FindObjectOfType<GameController>().SaveGame();
             DataCarrier.instance.possessedItems.Add(itemSO);
@@ -64,7 +64,7 @@ public class Item : MonoBehaviour
             case ItemSO.ItemSkill.Heal:
                 DataCarrier.instance.playerMaxHealth += itemSO.effectAmount;
                 DataCarrier.instance.playerHealth += itemSO.effectAmount;
-                TestUIController.instance.SetPlayerHealth();
+                BarController.instance.SetPlayerHealth();
                 break;
         }
     }
