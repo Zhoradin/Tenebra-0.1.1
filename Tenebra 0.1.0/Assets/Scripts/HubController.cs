@@ -24,7 +24,7 @@ public class HubController : MonoBehaviour
 
     public void OnSoliriaClicked()
     {
-        SceneManager.LoadScene("Battle 1");
+        SceneManager.LoadScene("Pathway");
     }
 
     public void OnCaerulisnClicked()
