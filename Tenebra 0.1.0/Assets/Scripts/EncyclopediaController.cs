@@ -82,7 +82,7 @@ public class EncyclopediaController : MonoBehaviour
         text = text.Replace("Gale", "<sprite name=\"gale\"> Gale");
         text = text.Replace("Gloom", "<sprite name=\"gloom\"> Gloom");
         text = text.Replace("Ember", "<sprite name=\"ember\"> Ember");
-        text = text.Replace("Normal", "<sprite name=\"normal\"> Normal");
+        text = text.Replace("Normal", "<sprite name=\"abyss\"> Abyss");
 
         return text;
     }
@@ -94,16 +94,16 @@ public class EncyclopediaController : MonoBehaviour
             if (dataCarrier.deckToUse.Contains(cardInfo.cardSO))
             {
                 cardInfo.button.interactable = true;
-                cardInfo.buttonImage.color = Color.white; // Butonun rengi normal beyaz olarak ayarlanýr
-                cardInfo.buttonText.text = cardInfo.cardName; // Orijinal kart ismi gösterilir
-                cardInfo.buttonText.color = Color.black; // Orijinal text rengi siyah olarak ayarlanýr
+                cardInfo.buttonImage.color = Color.white; // Butonun rengi normal beyaz olarak ayarlanï¿½r
+                cardInfo.buttonText.text = cardInfo.cardName; // Orijinal kart ismi gï¿½sterilir
+                cardInfo.buttonText.color = Color.black; // Orijinal text rengi siyah olarak ayarlanï¿½r
             }
             else
             {
                 cardInfo.button.interactable = false;
-                cardInfo.buttonImage.color = Color.black; // Butonun rengi siyah olarak ayarlanýr
-                cardInfo.buttonText.text = "???"; // ??? metni gösterilir
-                cardInfo.buttonText.color = Color.white; // Metin rengi beyaz olarak ayarlanýr
+                cardInfo.buttonImage.color = Color.black; // Butonun rengi siyah olarak ayarlanï¿½r
+                cardInfo.buttonText.text = "???"; // ??? metni gï¿½sterilir
+                cardInfo.buttonText.color = Color.white; // Metin rengi beyaz olarak ayarlanï¿½r
             }
         }
     }
@@ -168,7 +168,7 @@ public class EncyclopediaController : MonoBehaviour
 
     public void OnNormalClicked()
     {
-        ActivateTypeInfo(TypeList.Find(type => type.typeName == "Normal"));
+        ActivateTypeInfo(TypeList.Find(type => type.typeName == "Abyss"));
     }
 
     public void OnCaerulisnClicked()
@@ -253,8 +253,8 @@ public class CardInfo
     public string cardName;
     public CardSO cardSO;
     public Button button;
-    public Image buttonImage; // Butonun Image bileþeni
-    public TMP_Text buttonText; // Butonun Text bileþeni
+    public Image buttonImage; // Butonun Image bileï¿½eni
+    public TMP_Text buttonText; // Butonun Text bileï¿½eni
     [TextArea]
     public string description;
 
