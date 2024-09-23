@@ -9699,28 +9699,135 @@ MonoBehaviour:
   - typeName: Holy
     typeSprite: {fileID: 21300000, guid: 6393b8f10bd43f248aa62a1509d1e9d9, type: 3}
     description: "Description:\nLight from the bright fireball called \u201CSun\u201D.\nNotes
-      Cacao and Darkwood.\n\nCharacteristics:\nShining bugs, Prismatic beings, light
-      bending creatures (iguana, shapeshifter, etc.), Light-based Lifeforms\n\nSuper
+      of Cacao and Darkwood.\n\nCharacteristics:\nShining bugs, Prismatic beings,
+      light bending creatures (iguana, shapeshifter, etc.), Light-based Lifeforms\n\nSuper
       Effective Against:\nGloom\n\nEffective Against:\nEmber\n\nNormal Against:\nAqua,
       Dust\n\nWeak Against:\nHoly, Gale"
   - typeName: Dust
     typeSprite: {fileID: 21300000, guid: b47d8737015f33240b61c3074e7a5156, type: 3}
-    description: Dust Description
+    description: 'Description:
+
+      Hardwork of worms. Wet and fertile by Pollens.
+
+
+      Characteristics:
+
+      Muddy
+      creatures, Flowers, Plants, Seeds, Pollen-based Lifeforms
+
+
+      Super Effective
+      Against:
+
+      Gale
+
+
+      Effective Against:
+
+      Gloom
+
+
+      Normal
+      Against:
+
+      Holy, Ember
+
+
+      Weak Against:
+
+      Dust, Aqua
+
+'
   - typeName: Ember
     typeSprite: {fileID: 21300000, guid: ac22a091af8880f4f961f5d4d1f18e62, type: 3}
-    description: Ember Description
+    description: 'Description:
+
+      Reeks of metal and smoke. Cinders away anything
+      it touches, Rarely heals mostly burns.
+
+
+      Characteristics:
+
+      Fiery
+      creatures, Oil creatures (Oil slime, sludge, etc.), Oil-based Lifeforms, Fire-based
+      Lifeforms
+
+
+      Super Effective Against:
+
+      Aqua
+
+
+      Effective Against:
+
+      Gale
+
+
+      Normal
+      Against:
+
+      Dust, Gloom
+
+
+      Weak Against:
+
+      Ember, Holy'
   - typeName: Gloom
     typeSprite: {fileID: 21300000, guid: 61c7a6a17e737c142afa5581b607931b, type: 3}
-    description: Gloom Description
+    description: "Descripton:\nEternal darkness that smells like a sleepless night.
+      Steals one\u2019s sleep away. Might be helpful in short term but deadly in
+      long term use\n\nCharacteristics:\nDarkness creatures, Litch, Skeletons, Cursed
+      beings, Nightmare-based Lifeforms\n\nSuper Effective Against:\nHoly\n\nEffective
+      Against:\nAqua\n\nNormal Against:\nEmber, Gale\n\nWeak Against:\nGloom, Dust"
   - typeName: Gale
     typeSprite: {fileID: 21300000, guid: 74f21177dc7de9a4db2e920ba4870ad5, type: 3}
-    description: Gale Description
+    description: 'Description:
+
+      A sad and weak breeze that cuts like an ice
+      and overwhelms the receiver of hateful bliss
+
+
+      Characteristics:
+
+      Flying
+      creatures, Butterflies, Dragons, Wind-Sky-based Lifeforms
+
+
+      Super Effective
+      Against:
+
+      Dust
+
+
+      Effective Against:
+
+      Holy
+
+
+      Normal
+      Against:
+
+      Aqua, Gloom
+
+
+      Weak Against:
+
+      Gale, Ember
+
+'
   - typeName: Aqua
     typeSprite: {fileID: 21300000, guid: ed930a72a447e8440b9ece2e48e65f7d, type: 3}
-    description: 
+    description: "Description: \nA gentle sphere of life. Cold and smooth liquid.
+      Harsh melancholy awaits.\n\nCharacteristics:\nFish creatures, Gentle bu dangerous
+      healers ,Water-based Lifeforms \n\nSuper Effective Against:\nEmber\n\nEffective
+      Against:\nDust\n\nNormal Against:\nHoly, Gale\n\nWeak Against:\nAqua, Gloom"
   - typeName: Abyss
     typeSprite: {fileID: 21300000, guid: 6db9a9e54a296a94989b3c620c4f7f05, type: 3}
-    description: Normal Description
+    description: "Description: \n...Born of nothing. Cosmic void that consumes everything
+      but ultimately hurts nothing. Such a sad fate but it\u2019s called Abyss for
+      some reason right?\n\nCharacteristics:\nCosmic creatures, tentacle monsters,
+      \nvoid-eaters, Dark-based Lifeforms\n\nSuper Effective Against:\nNone\n\nEffective
+      Against:\nNone\n\nNormal Against:\nAll\n\nWeak Against:\nNone\n"
   GodsList:
   - godName: Caerulisn
     godDescription: Caerulisn Description
