@@ -222,7 +222,7 @@ public class TypeInfo
 {
     public string typeName;
     public Sprite typeSprite;
-    [TextArea]
+    [TextArea(5,10)]
     public string description;
 
     public TypeInfo(string typeName, Sprite typeSprite, string description)
