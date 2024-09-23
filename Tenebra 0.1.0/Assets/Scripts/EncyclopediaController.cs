@@ -237,7 +237,7 @@ public class TypeInfo
 public class GodInfo
 {
     public string godName;
-    [TextArea]
+    [TextArea(5,10)]
     public string godDescription;
 
     public GodInfo(string godName, string godDescription)
@@ -255,7 +255,7 @@ public class CardInfo
     public Button button;
     public Image buttonImage; // Butonun Image bile�eni
     public TMP_Text buttonText; // Butonun Text bile�eni
-    [TextArea]
+    [TextArea(5,10)]
     public string description;
 
     public CardInfo(string cardName, CardSO cardSO, Button button, Image buttonImage, TMP_Text buttonText, string description)

@@ -1451,14 +1451,14 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 734513992}
-  - {fileID: 457797269}
-  - {fileID: 1874010707}
-  - {fileID: 580855364}
-  - {fileID: 705759780}
-  - {fileID: 1584699379}
   - {fileID: 1821924811}
+  - {fileID: 457797269}
+  - {fileID: 580855364}
+  - {fileID: 1584699379}
   - {fileID: 392194863}
+  - {fileID: 734513992}
+  - {fileID: 1874010707}
+  - {fileID: 705759780}
   - {fileID: 1017955294}
   m_Father: {fileID: 1834028354}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1762,7 +1762,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -475, y: -165}
+  m_AnchoredPosition: {x: -475, y: 4.7}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &392194864
@@ -3003,7 +3003,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -475, y: 55}
+  m_AnchoredPosition: {x: -475, y: 110}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &580855365
@@ -3941,7 +3941,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -475, y: 0}
+  m_AnchoredPosition: {x: -475, y: -51.600006}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &705759781
@@ -4074,7 +4074,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -475, y: 220}
+  m_AnchoredPosition: {x: -475, y: -165.2}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &734513993
@@ -9705,79 +9705,22 @@ MonoBehaviour:
       Dust\n\nWeak Against:\nHoly, Gale"
   - typeName: Dust
     typeSprite: {fileID: 21300000, guid: b47d8737015f33240b61c3074e7a5156, type: 3}
-    description: 'Description:
-
-      Hardwork of worms. Wet and fertile by Pollens.
-
-
-      Characteristics:
-
-      Muddy
-      creatures, Flowers, Plants, Seeds, Pollen-based Lifeforms
-
-
-      Super Effective
-      Against:
-
-      Gale
-
-
-      Effective Against:
-
-      Gloom
-
-
-      Normal
-      Against:
-
-      Holy, Ember
-
-
-      Weak Against:
-
-      Dust, Aqua
-
-'
+    description: "Description:\nHardwork of worms. \nWet and fertile by Pollens.\n\nCharacteristics:\nMuddy
+      creatures, Flowers, Plants, Seeds, Pollen-based Lifeforms\n\nSuper Effective
+      Against:\nGale\n\nEffective Against:\nGloom\n\nNormal Against:\nHoly, Ember\n\nWeak
+      Against:\nDust, Aqua\n"
   - typeName: Ember
     typeSprite: {fileID: 21300000, guid: ac22a091af8880f4f961f5d4d1f18e62, type: 3}
-    description: 'Description:
-
-      Reeks of metal and smoke. Cinders away anything
-      it touches, Rarely heals mostly burns.
-
-
-      Characteristics:
-
-      Fiery
-      creatures, Oil creatures (Oil slime, sludge, etc.), Oil-based Lifeforms, Fire-based
-      Lifeforms
-
-
-      Super Effective Against:
-
-      Aqua
-
-
-      Effective Against:
-
-      Gale
-
-
-      Normal
-      Against:
-
-      Dust, Gloom
-
-
-      Weak Against:
-
-      Ember, Holy'
+    description: "Description:\nReeks of metal and smoke. \nCinders away anything
+      it touches, Rarely heals mostly burns.\n\nCharacteristics:\nFiery creatures,
+      Oil creatures (Oil slime, sludge, etc.), Oil-based Lifeforms, Fire-based Lifeforms\n\nSuper
+      Effective Against:\nAqua\n\nEffective Against:\nGale\n\nNormal Against:\nDust,
+      Gloom\n\nWeak Against:\nEmber, Holy"
   - typeName: Gloom
     typeSprite: {fileID: 21300000, guid: 61c7a6a17e737c142afa5581b607931b, type: 3}
     description: "Descripton:\nEternal darkness that smells like a sleepless night.
-      Steals one\u2019s sleep away. Might be helpful in short term but deadly in
-      long term use\n\nCharacteristics:\nDarkness creatures, Litch, Skeletons, Cursed
-      beings, Nightmare-based Lifeforms\n\nSuper Effective Against:\nHoly\n\nEffective
+      \nSteals one\u2019s sleep away. \n\nCharacteristics:\nDarkness creatures, Litch,
+      Skeletons, Cursed beings, Nightmare-based Lifeforms\n\nSuper Effective Against:\nHoly\n\nEffective
       Against:\nAqua\n\nNormal Against:\nEmber, Gale\n\nWeak Against:\nGloom, Dust"
   - typeName: Gale
     typeSprite: {fileID: 21300000, guid: 74f21177dc7de9a4db2e920ba4870ad5, type: 3}
@@ -9817,34 +9760,42 @@ MonoBehaviour:
 '
   - typeName: Aqua
     typeSprite: {fileID: 21300000, guid: ed930a72a447e8440b9ece2e48e65f7d, type: 3}
-    description: "Description: \nA gentle sphere of life. Cold and smooth liquid.
-      Harsh melancholy awaits.\n\nCharacteristics:\nFish creatures, Gentle bu dangerous
+    description: "Description: \nA gentle sphere of life. \nCold and smooth liquid.
+      \nHarsh melancholy awaits.\n\nCharacteristics:\nFish creatures, Gentle bu dangerous
       healers ,Water-based Lifeforms \n\nSuper Effective Against:\nEmber\n\nEffective
       Against:\nDust\n\nNormal Against:\nHoly, Gale\n\nWeak Against:\nAqua, Gloom"
   - typeName: Abyss
     typeSprite: {fileID: 21300000, guid: 6db9a9e54a296a94989b3c620c4f7f05, type: 3}
-    description: "Description: \n...Born of nothing. Cosmic void that consumes everything
-      but ultimately hurts nothing. Such a sad fate but it\u2019s called Abyss for
-      some reason right?\n\nCharacteristics:\nCosmic creatures, tentacle monsters,
-      \nvoid-eaters, Dark-based Lifeforms\n\nSuper Effective Against:\nNone\n\nEffective
+    description: "Description: \n...Born of nothing. \nCosmic void that consumes
+      everything but ultimately hurts nothing. \nSuch a sad fate but it\u2019s called
+      Abyss for some reason right?\n\nCharacteristics:\nCosmic creatures, tentacle
+      monsters, \nvoid-eaters, Dark-based Lifeforms\n\nSuper Effective Against:\nNone\n\nEffective
       Against:\nNone\n\nNormal Against:\nAll\n\nWeak Against:\nNone\n"
   GodsList:
-  - godName: Caerulisn
-    godDescription: Caerulisn Description
-  - godName: Amarunis
-    godDescription: Amarunis Description
-  - godName: Poulvi
-    godDescription: Poulvi Description
-  - godName: Arstello
-    godDescription: Arstello Description
-  - godName: Logium
-    godDescription: Logium Description
-  - godName: Rohv
-    godDescription: Rohv Description
   - godName: Soliria
     godDescription: Soliria Description
+  - godName: Amarunis
+    godDescription: Amarunis Description
+  - godName: Arstello
+    godDescription: Arstello Description
+  - godName: Rohv
+    godDescription: Rohv Description
   - godName: Tenebra
     godDescription: Tenebra Description
+  - godName: Caerulisn
+    godDescription: "Caerulisn (Light & Illusion) (M)\n\nLoves: Soliria, Poulvi\nLikes:
+      Amarunis, Logium\nDislikes: Arstello, Tenebra\nHates: Rohv\n\nDescription:
+      \nGod of Shiny. Master of Illusions. Source of Trickery and all that is Golden.
+      His followers founded the Thieves Guild. They are in rivalry with the Hunters
+      of Blood.\n\nMotive: \nSpreads his influence, trick and brainwash anyone he
+      can. Rumours say his true intentions are collecting all golden objects that
+      exist in the known world and keep them all to himself like a Dragon. A Kleptomaniac
+      if you will.\n\nDrink:\nMilkshake\n\nTerrain:\nHouse of Mirrors \n\nAttitude:\nMischievous,
+      Sly, Kleptomaniac\n\nFavourite Food:\nMoly"
+  - godName: Poulvi
+    godDescription: Poulvi Description
+  - godName: Logium
+    godDescription: Logium Description
   - godName: Abor'or
     godDescription: Abor'or Description
   CardsList:
@@ -9944,7 +9895,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -475, y: -55}
+  m_AnchoredPosition: {x: -475, y: 58.1}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1584699380
@@ -11475,7 +11426,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -475, y: -110}
+  m_AnchoredPosition: {x: -475, y: 220}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1821924812
@@ -11856,7 +11807,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -475, y: 110}
+  m_AnchoredPosition: {x: -475, y: -108.7}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1874010708
