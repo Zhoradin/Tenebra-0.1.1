@@ -82,7 +82,7 @@ public class EncyclopediaController : MonoBehaviour
         text = text.Replace("Gale", "<sprite name=\"gale\"> Gale");
         text = text.Replace("Gloom", "<sprite name=\"gloom\"> Gloom");
         text = text.Replace("Ember", "<sprite name=\"ember\"> Ember");
-        text = text.Replace("Normal", "<sprite name=\"abyss\"> Abyss");
+        text = text.Replace("Abyss", "<sprite name=\"abyss\"> Abyss");
 
         return text;
     }
@@ -166,7 +166,7 @@ public class EncyclopediaController : MonoBehaviour
         ActivateTypeInfo(TypeList.Find(type => type.typeName == "Ember"));
     }
 
-    public void OnNormalClicked()
+    public void OnAbyssClicked()
     {
         ActivateTypeInfo(TypeList.Find(type => type.typeName == "Abyss"));
     }
