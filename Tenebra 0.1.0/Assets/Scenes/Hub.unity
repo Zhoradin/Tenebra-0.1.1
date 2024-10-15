@@ -204,7 +204,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 669568117}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1021031977}
+        m_TargetAssemblyTypeName: HubController, Assembly-CSharp
+        m_MethodName: OnAbororClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &669568117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1567,7 +1579,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1236859439}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1021031977}
+        m_TargetAssemblyTypeName: HubController, Assembly-CSharp
+        m_MethodName: OnRohvClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1236859439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1878,7 +1902,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1397144982}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1021031977}
+        m_TargetAssemblyTypeName: HubController, Assembly-CSharp
+        m_MethodName: OnArstelloClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1397144982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2400,7 +2436,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1617123623}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1021031977}
+        m_TargetAssemblyTypeName: HubController, Assembly-CSharp
+        m_MethodName: OnPoulviClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1617123623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2789,7 +2837,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1678386035}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1021031977}
+        m_TargetAssemblyTypeName: HubController, Assembly-CSharp
+        m_MethodName: OnLogiumClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1678386035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2910,7 +2970,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2007915964}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1021031977}
+        m_TargetAssemblyTypeName: HubController, Assembly-CSharp
+        m_MethodName: OnTenebraClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2007915964
 MonoBehaviour:
   m_ObjectHideFlags: 0

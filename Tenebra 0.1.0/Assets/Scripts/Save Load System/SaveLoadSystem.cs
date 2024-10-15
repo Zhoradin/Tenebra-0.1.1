@@ -5,7 +5,9 @@ public class SaveLoadSystem : MonoBehaviour
 {
     public static SaveLoadSystem instance;
 
-    public int currentSlot; // Seçilen slot numarasý
+    public int currentSlot;
+    public string currentSotName;
+    public string slotName;
 
     private void Awake()
     {
@@ -30,6 +32,7 @@ public class SaveLoadSystem : MonoBehaviour
     public void SaveGame(PlayerData playerData)
     {
         string savePath = GetSavePath(currentSlot);
+        playerData.slotName = slotName;
         string json = JsonUtility.ToJson(playerData);
         File.WriteAllText(savePath, json);
     }
@@ -76,5 +79,31 @@ public class SaveLoadSystem : MonoBehaviour
         }
 
         return mostRecentSlot;
+    }
+
+    public PlayerData LoadGame(int slotNumber)
+    {
+        string savePath = GetSavePath(slotNumber);
+        if (File.Exists(savePath))
+        {
+            string json = File.ReadAllText(savePath);
+            return JsonUtility.FromJson<PlayerData>(json);
+        }
+        else
+        {
+            Debug.Log("Save file not found for slot " + slotNumber);
+            return null;
+        }
+    }
+
+    public void DeleteSaveFile(int slotNumber)
+    {
+        string path = Application.persistentDataPath + "/savegame_slot" + slotNumber + ".json";
+
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("Save file deleted for slot: " + slotNumber);
+        }
     }
 }

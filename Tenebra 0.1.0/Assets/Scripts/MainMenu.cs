@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
 
     public string hubScene = "Hub";
     private SaveLoadSystem saveLoadSystem;
+    public GameObject saveSlot1, saveSlot2, saveSlot3;
 
     public Button continueButton, loadGameButton;
 
@@ -16,6 +17,7 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        saveSlotPanel.gameObject.SetActive(false);
         instance = this;
         saveLoadSystem = FindObjectOfType<SaveLoadSystem>();
 
@@ -54,7 +56,12 @@ public class MainMenu : MonoBehaviour
 
     public void OnReturnClicked()
     {
+        saveSlot1.GetComponent<Button>().interactable = true;
+        saveSlot2.GetComponent<Button>().interactable = true;
+        saveSlot3.GetComponent<Button>().interactable = true;
         saveSlotPanel.SetActive(false);
+        isLoadGame = false;
+        isNewGame = false;
     }
 
     private void CheckButtonAvailability()

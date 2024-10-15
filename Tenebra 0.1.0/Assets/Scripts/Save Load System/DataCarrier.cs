@@ -14,6 +14,7 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
     public List<Room> pathwayRooms;
     public string currentRoomName;
     public EnemySO enemy;
+    public string lastGod;
 
     private void Awake()
     {
@@ -73,6 +74,7 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
         pathwayRooms.Clear();
         pathwayRooms = new List<Room>(data.rooms);
         currentRoomName = data.currentRoom;
+        lastGod = data.lastGod;
     }
 
     public void SaveData(PlayerData data)
@@ -84,5 +86,6 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
         data.items = new List<ItemSO>(possessedItems);
         data.rooms = new List<Room>(pathwayRooms);
         data.currentRoom = currentRoomName;
+        data.lastGod = lastGod;
     }
 }
