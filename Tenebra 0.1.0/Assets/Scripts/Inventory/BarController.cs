@@ -15,7 +15,6 @@ public class BarController : MonoBehaviour
     public bool shopPanelOpen, dialoguePanelOpen = false;
 
     public TextAsset inkJSONOne, inkJSONTwo;
-    
 
     private void Awake()
     {

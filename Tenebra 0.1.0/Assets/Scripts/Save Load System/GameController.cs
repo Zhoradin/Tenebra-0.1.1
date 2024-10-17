@@ -38,6 +38,11 @@ public class GameController : MonoBehaviour
             playerData.currentSceneName = currentScene;
         }
 
+        if (currentScene == "Rest Site")
+        {
+            playerData.currentSceneName = "Pathway " + DataCarrier.instance.lastGod;
+        }
+
         saveLoadSystem.currentSlot = currentSlot;
         saveLoadSystem.SaveGame(playerData);
         Debug.Log("Oyun kaydedildi");

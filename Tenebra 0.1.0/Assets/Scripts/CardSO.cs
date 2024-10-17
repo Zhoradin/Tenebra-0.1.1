@@ -13,7 +13,7 @@ public class CardSO : ScriptableObject
     [TextArea]
     public string cardDescription;
 
-    public int currentHealth, attackPower, essenceCost;
+    public int currentHealth, attackPower, essenceCost, coinCost;
 
     public Sprite characterSprite, bgSprite;
 
