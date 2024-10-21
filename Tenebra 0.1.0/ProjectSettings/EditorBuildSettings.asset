@@ -59,4 +59,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Merchant.unity
     guid: 0d9456a5ff206554b952710ac2cd277f
+  - enabled: 1
+    path: Assets/Scenes/Random Event.unity
+    guid: 2497772de890a5048867f11f058441d6
   m_configObjects: {}

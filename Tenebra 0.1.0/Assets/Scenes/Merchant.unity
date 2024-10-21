@@ -1658,7 +1658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: playerCoin
-      value: 1500
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2727439233793707573, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: m_Name
@@ -2621,7 +2621,7 @@ GameObject:
   - component: {fileID: 1912184147}
   - component: {fileID: 1912184146}
   m_Layer: 0
-  m_Name: Low Essence Warning
+  m_Name: Low Coin Warning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2666,7 +2666,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Not Enough Essence
+  m_text: "Not Enough Co\u0131n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e48616eed09bfa2419c1ee0e6080b756, type: 2}
   m_sharedMaterial: {fileID: 5710450887843241171, guid: e48616eed09bfa2419c1ee0e6080b756, type: 2}

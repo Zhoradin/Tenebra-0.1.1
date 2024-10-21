@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Card Ability", menuName = "Card Ability", order = 1)]
+[CreateAssetMenu(fileName = "New Card Ability", menuName = "Scriptable Object/Card Ability", order = 1)]
 public class CardAbilitySO : ScriptableObject
 {
     public enum AbilityType

@@ -329,7 +329,7 @@ public class MapGenerator : MonoBehaviour, IDataPersistence
         // Assign specific room types to specific floors
         foreach (Room room in GetRoomsOnFloor(0)) 
         {
-            room.RoomType = RoomType.Merchant; 
+            room.RoomType = RoomType.RestSite; 
         }
         
         foreach (Room room in GetRoomsOnFloor(8)) 

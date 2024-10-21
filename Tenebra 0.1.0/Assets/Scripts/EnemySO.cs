@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Enemy", menuName = "Enemy", order = 1)]
+[CreateAssetMenu(fileName = "New Enemy", menuName = "Scriptable Object/Enemy", order = 1)]
 public class EnemySO : ScriptableObject
 {
     public enum EnemyRarity

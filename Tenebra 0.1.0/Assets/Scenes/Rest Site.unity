@@ -1045,7 +1045,7 @@ GameObject:
   - component: {fileID: 1336036675}
   - component: {fileID: 1336036674}
   m_Layer: 5
-  m_Name: Return
+  m_Name: Leave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1090,7 +1090,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Return
+  m_text: 'Leave
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d7979b60c17e5a44a97f475e78e4724, type: 2}
   m_sharedMaterial: {fileID: 5710450887843241171, guid: 7d7979b60c17e5a44a97f475e78e4724, type: 2}
@@ -1377,7 +1379,7 @@ GameObject:
   - component: {fileID: 1574705740}
   - component: {fileID: 1574705739}
   m_Layer: 5
-  m_Name: Return Button
+  m_Name: Leave Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

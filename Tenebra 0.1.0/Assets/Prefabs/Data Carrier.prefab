@@ -67,4 +67,4 @@ MonoBehaviour:
   pathwayRooms: []
   currentRoomName: 
   enemy: {fileID: 0}
-  lastGod: 
+  lastGod: Amarunis
