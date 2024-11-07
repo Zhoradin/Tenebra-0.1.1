@@ -13,7 +13,7 @@ public class SaveSlot : MonoBehaviour
     public Image healthImage, coinImage;
     public Image caerulisnBadge, amarunisBadge, poulviBadge, arstelloBadge, logiumBadge, rohvBadge, soliriaBadge, tenebraBadge, abororBadge;
     public Image caerulisnBg, amarunisBg, poulviBg, arstelloBg, logiumBg, rohvBg, soliriaBg, tenebraBg, abororBg;
-    public GameObject areYouSurePanel;
+    public GameObject areYouSurePanel, overwritePanel;
     private SaveLoadSystem saveLoadSystem;
     private GameController gameController;
 
@@ -45,13 +45,14 @@ public class SaveSlot : MonoBehaviour
 
     public void CheckActiveness()
     {
-        if (MainMenu.instance.isNewGame && saveLoadSystem.SaveFileExists(slotNumber))
+        /*if (MainMenu.instance.isNewGame && saveLoadSystem.SaveFileExists(slotNumber))
         {
             GetComponent<Button>().interactable = false;
             editButton.GetComponent<Button>().interactable = false;
             deleteButton.GetComponent<Button>().interactable = true;
         }
-        else if (MainMenu.instance.isLoadGame && !saveLoadSystem.SaveFileExists(slotNumber))
+        else */
+        if (MainMenu.instance.isLoadGame && !saveLoadSystem.SaveFileExists(slotNumber))
         {
             GetComponent<Button>().interactable = false;
             editButton.GetComponent<Button>().interactable = false;
@@ -79,11 +80,15 @@ public class SaveSlot : MonoBehaviour
             gameController.SaveGame();
             gameController.LoadGame();
         }
-        else if (MainMenu.instance.isNewGame)
+        else if (MainMenu.instance.isNewGame && !saveLoadSystem.SaveFileExists(slotNumber))
         {
             gameController.currentSlot = slotNumber;
             gameController.SaveGame();
             SceneManager.LoadScene("Hub");
+        }
+        else if(MainMenu.instance.isNewGame && saveLoadSystem.SaveFileExists(slotNumber))
+        {
+            overwritePanel.gameObject.SetActive(true);
         }
     }
 

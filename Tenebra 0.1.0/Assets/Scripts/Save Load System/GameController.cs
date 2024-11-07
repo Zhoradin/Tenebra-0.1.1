@@ -29,18 +29,17 @@ public class GameController : MonoBehaviour
 
         // Sahne adı "MainMenu" ise "Hub" olarak kaydet, diğer sahneler olduğu gibi kalsın
         string currentScene = SceneManager.GetActiveScene().name;
-        if (currentScene == "MainMenu" || currentScene == "Hub")
+        if (currentScene == "Main Menu" || currentScene == "Hub")
         {
             playerData.currentSceneName = "Hub";
+        }
+        else if (currentScene == "Rest Site")
+        {
+            playerData.currentSceneName = "Pathway " + DataCarrier.instance.lastGod;
         }
         else
         {
             playerData.currentSceneName = currentScene;
-        }
-
-        if (currentScene == "Rest Site")
-        {
-            playerData.currentSceneName = "Pathway " + DataCarrier.instance.lastGod;
         }
 
         saveLoadSystem.currentSlot = currentSlot;

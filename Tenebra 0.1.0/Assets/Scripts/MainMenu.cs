@@ -59,7 +59,8 @@ public class MainMenu : MonoBehaviour
         saveSlot1.GetComponent<Button>().interactable = true;
         saveSlot2.GetComponent<Button>().interactable = true;
         saveSlot3.GetComponent<Button>().interactable = true;
-        saveSlotPanel.SetActive(false);
+        CheckButtonAvailability();
+        saveSlotPanel.SetActive(false);       
         isLoadGame = false;
         isNewGame = false;
     }
