@@ -223,7 +223,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: normal
+      name: abyss
       rect:
         serializedVersion: 2
         x: 1500
@@ -254,13 +254,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      abyss: 1925232930
       aqua: 255938158
       dust: 2032589608
       ember: -1516183352
       gale: 1018510600
       gloom: -163792393
       holy: -8928943
-      normal: 1925232930
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
