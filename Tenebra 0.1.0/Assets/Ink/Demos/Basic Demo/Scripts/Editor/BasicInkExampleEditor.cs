@@ -1,12 +1,14 @@
-﻿using Ink.Runtime;
-using Ink.UnityIntegration;
-using UnityEditor;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using Ink.UnityIntegration;
+using Ink.Runtime;
 
 [CustomEditor(typeof(BasicInkExample))]
 [InitializeOnLoad]
 public class BasicInkExampleEditor : Editor {
-    static bool storyExpanded;
+
     static BasicInkExampleEditor () {
         BasicInkExample.OnCreateStory += OnCreateStory;
     }
@@ -21,6 +23,6 @@ public class BasicInkExampleEditor : Editor {
 		base.OnInspectorGUI ();
 		var realTarget = target as BasicInkExample;
 		var story = realTarget.story;
-		InkPlayerWindow.DrawStoryPropertyField(story, ref storyExpanded, new GUIContent("Story"));
+		InkPlayerWindow.DrawStoryPropertyField(story, new GUIContent("Story"));
 	}
 }

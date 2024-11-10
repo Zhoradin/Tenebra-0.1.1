@@ -139,19 +139,8 @@ namespace Ink
             }
         }
 
-        protected bool tagActive
-        {
-            get {
-                return GetFlag ((uint)CustomFlags.TagActive);
-            }
-            set {
-                SetFlag ((uint)CustomFlags.TagActive, value);
-            }
-        }
-
         protected enum CustomFlags {
-            ParsingString = 0x1,
-            TagActive = 0x2
+            ParsingString = 0x1
         }
 
         void OnStringParserError(string message, int index, int lineIndex, bool isWarning)

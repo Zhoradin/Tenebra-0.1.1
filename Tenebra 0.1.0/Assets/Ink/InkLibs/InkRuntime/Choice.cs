@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿
 namespace Ink.Runtime
 {
     /// <summary>
@@ -45,8 +45,6 @@ namespace Ink.Runtime
         public int originalThreadIndex;
 
         public bool isInvisibleDefault;
-
-        public List<string> tags;
 
         public Choice()
         {

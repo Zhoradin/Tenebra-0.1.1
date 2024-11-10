@@ -20,9 +20,8 @@ namespace Ink.Parsed
     public class Glue : Wrap<Runtime.Glue> {
         public Glue (Runtime.Glue glue) : base(glue) {}
     }
-    public class LegacyTag : Wrap<Runtime.Tag> {
-        public LegacyTag (Runtime.Tag tag) : base (tag) { }
+    public class Tag : Wrap<Runtime.Tag> {
+        public Tag (Runtime.Tag tag) : base (tag) { }
     }
-    
 }
 

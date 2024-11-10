@@ -28,34 +28,38 @@ IPreprocessBuild
     #endif
 
     static void PreprocessValidationStep () {
-        // If we're compiling, we've throw an error to cancel the build. Exit out immediately.
-        if(!AssertNotCompiling()) return;
-        EnsureInkIsCompiled();
+        AssertNotCompiling();
+        CheckForInvalidFiles();
     }
-    
-    // Prevent building if ink is currently compiling. 
-    // Ideally we'd force it to complete instantly. 
-    // It seems you can do this with WaitHandle.WaitAll but I'm out of my depth!
-    // Info here - https://stackoverflow.com/questions/540078/wait-for-pooled-threads-to-complete
-    static bool AssertNotCompiling () {
-        if(InkCompiler.executingCompilationStack) {
+
+    static void AssertNotCompiling () {
+        if(InkCompiler.compiling) {
             StringBuilder sb = new StringBuilder("Ink is currently compiling!");
             var errorString = sb.ToString();
-            InkCompiler.SetBuildBlocked();
+            InkCompiler.buildBlocked = true;
             if(UnityEditor.EditorUtility.DisplayDialog("Ink Build Error!", errorString, "Ok")) {
                 Debug.LogError(errorString);
             }
-            return false;
         }
-        return true;
     }
-    
-    // Immediately compile any files that aren't compiled and should be.
-    static void EnsureInkIsCompiled () {
+    // When syncronous compilation is allowed we should try to replace this error with a compile.
+    static void CheckForInvalidFiles () {
         var filesToRecompile = InkLibrary.GetFilesRequiringRecompile();
         if(filesToRecompile.Any()) {
-            if(InkSettings.instance.compileAllFilesAutomatically) {
-                InkCompiler.CompileInk(filesToRecompile.ToArray(), true, null);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("There are Ink files which should be compiled, but appear not to be. You can resolve this by either:");
+            sb.AppendLine(" - Compiling your files via 'Assets/Recompile Ink'");
+            var resolveStep = " - Disabling 'Compile Automatically' "+(InkSettings.instance.compileAutomatically ? "in your Ink Settings file" : "for each of the files listed below");
+            sb.AppendLine(resolveStep);
+            sb.AppendLine();
+            sb.AppendLine("Files:");
+            var filesAsString = string.Join(", ", filesToRecompile.Select(x => x.filePath).ToArray());
+            sb.AppendLine(filesAsString);
+            var errorString = sb.ToString();
+            if(!UnityEditor.EditorUtility.DisplayDialog("Ink Build Error!", errorString, "Build anyway", "Cancel build")) {
+                Debug.LogError(errorString);
+            } else {
+                Debug.LogWarning(errorString);
             }
         }
     }
