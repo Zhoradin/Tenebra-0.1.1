@@ -48,9 +48,7 @@ MonoBehaviour:
   playerHealth: 50
   playerEssence: 4
   playerCoin: 150
-  possessedItems:
-  - {fileID: 11400000, guid: 80fb8fedb9086df48ab4dcd0ac320a06, type: 2}
-  - {fileID: 11400000, guid: 156b2f2824f0f3c458697d5198932d5b, type: 2}
+  possessedItems: []
   deckToUse:
   - {fileID: 11400000, guid: 75869764fe1a8b14db9a3f8913e0e80b, type: 2}
   - {fileID: 11400000, guid: 9bd58c0bdaee74348a8b41088f0f3246, type: 2}
@@ -66,3 +64,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 35583191ae9e696469026924218ec6b5, type: 2}
   - {fileID: 11400000, guid: dd4a4d73dbb02af4e8788f6eb269a274, type: 2}
   - {fileID: 11400000, guid: 67f9449e6a9e54243b9ada2724b201d4, type: 2}
+  pathwayRooms: []
+  currentRoomName: 
+  enemy: {fileID: 0}
+  lastGod: Amarunis

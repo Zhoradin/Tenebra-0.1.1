@@ -139,6 +139,8 @@ public class MapGenerator : MonoBehaviour, IDataPersistence
             FindObjectOfType<GameController>().SaveGame();
             roomInteractionMap[activeRoomName].UpdateClickableVisuals();
         }
+        FindObjectOfType<DataCarrier>().pathwayRooms.Clear();
+        FindObjectOfType<DataCarrier>().pathwayRooms.AddRange(remainingRooms);
         FindObjectOfType<GameController>().SaveGame();
     }
 
@@ -327,7 +329,7 @@ public class MapGenerator : MonoBehaviour, IDataPersistence
         // Assign specific room types to specific floors
         foreach (Room room in GetRoomsOnFloor(0)) 
         {
-            room.RoomType = RoomType.Monster; 
+            room.RoomType = RoomType.RestSite; 
         }
         
         foreach (Room room in GetRoomsOnFloor(8)) 
@@ -633,7 +635,10 @@ public class MapGenerator : MonoBehaviour, IDataPersistence
         }
         else
         {
-            Debug.LogWarning("No EnemySO assigned for room type: " + roomType);
+            if(roomType != RoomType.RestSite)
+            {
+                Debug.LogWarning("No EnemySO assigned for room type: " + roomType);
+            } 
         }
 
         SetAllRoomsUnclickable();
@@ -656,7 +661,19 @@ public class MapGenerator : MonoBehaviour, IDataPersistence
         FindObjectOfType<DataCarrier>().currentRoomName = activeRoomName;
         FindObjectOfType<GameController>().SaveGame();
         clickedRoom.UpdateClickableVisuals();
-        SceneManager.LoadScene("Battle 1");
+
+        if(clickedRoom.Room.RoomType == RoomType.RestSite)
+        {
+            SceneManager.LoadScene("Rest Site");
+        }
+        else if(clickedRoom.Room.RoomType == RoomType.Merchant)
+        {
+            SceneManager.LoadScene("Merchant");
+        }
+        else
+        {
+            SceneManager.LoadScene("Battle 1");
+        } 
     }
 
     private RoomInteraction GetRoomInteraction(Room room)

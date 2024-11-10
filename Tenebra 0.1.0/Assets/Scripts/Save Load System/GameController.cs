@@ -21,18 +21,32 @@ public class GameController : MonoBehaviour
     {
         PlayerData playerData = new PlayerData();
 
+        // Tüm data persistence objelerinden verileri kaydet
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.SaveData(playerData);
         }
 
-        // Sahne ismi MainMenu ise Hub olarak kaydet
-        playerData.currentSceneName = SceneManager.GetActiveScene().name == "MainMenu" ? "Hub" : SceneManager.GetActiveScene().name;
+        // Sahne adı "MainMenu" ise "Hub" olarak kaydet, diğer sahneler olduğu gibi kalsın
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (currentScene == "Main Menu" || currentScene == "Hub")
+        {
+            playerData.currentSceneName = "Hub";
+        }
+        else if (currentScene == "Rest Site")
+        {
+            playerData.currentSceneName = "Pathway " + DataCarrier.instance.lastGod;
+        }
+        else
+        {
+            playerData.currentSceneName = currentScene;
+        }
 
         saveLoadSystem.currentSlot = currentSlot;
         saveLoadSystem.SaveGame(playerData);
         Debug.Log("Oyun kaydedildi");
     }
+
 
     public void LoadGame()
     {

@@ -14,6 +14,7 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
     public List<Room> pathwayRooms;
     public string currentRoomName;
     public EnemySO enemy;
+    public string lastGod;
 
     private void Awake()
     {
@@ -37,6 +38,7 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
         playerEssence = oldDataCarrier.playerEssence;
         // Listeyi derin kopyalama
         deckToUse = new List<CardSO>(oldDataCarrier.deckToUse);
+        pathwayRooms = new List<Room>(oldDataCarrier.pathwayRooms);
         Debug.Log("Veriler aktarýldý.");
     }
 
@@ -70,9 +72,10 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
         playerCoin = data.money;
         deckToUse = new List<CardSO>(data.deck);
         possessedItems = new List<ItemSO>(data.items);
-        pathwayRooms.Clear();
+        //pathwayRooms.Clear();
         pathwayRooms = new List<Room>(data.rooms);
         currentRoomName = data.currentRoom;
+        lastGod = data.lastGod;
     }
 
     public void SaveData(PlayerData data)
@@ -82,7 +85,18 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
         data.money = playerCoin;
         data.deck = new List<CardSO>(deckToUse);
         data.items = new List<ItemSO>(possessedItems);
+
         data.rooms = new List<Room>(pathwayRooms);
         data.currentRoom = currentRoomName;
+
+        /* Map Generator kontrolü
+        if (GameObject.Find("MapGenerator") != null)
+        {
+            data.rooms = new List<Room>(pathwayRooms);
+            data.currentRoom = currentRoomName;
+        }
+        */
+
+        data.lastGod = lastGod;
     }
 }

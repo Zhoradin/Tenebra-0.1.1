@@ -24,6 +24,42 @@ EditorBuildSettings:
     path: Assets/Scenes/Bar.unity
     guid: 1cf7926cb98425641b72bbb0841b7390
   - enabled: 1
-    path: Assets/Scenes/Pathway.unity
+    path: Assets/Scenes/Pathway Scenes/Pathway Main.unity
     guid: 492061679589c32408a0e1beaf168616
+  - enabled: 1
+    path: Assets/Scenes/Pathway Scenes/Pathway Aboror.unity
+    guid: 5e862ad6070db744e8533f3935dc0521
+  - enabled: 1
+    path: Assets/Scenes/Pathway Scenes/Pathway Amarunis.unity
+    guid: 4e2141e566f7e6241866e904b0660e27
+  - enabled: 1
+    path: Assets/Scenes/Pathway Scenes/Pathway Arstello.unity
+    guid: e34de5ba8d719864f83058593dfeb91f
+  - enabled: 1
+    path: Assets/Scenes/Pathway Scenes/Pathway Caerulisn.unity
+    guid: da186972238736242bb2ab386fa51a41
+  - enabled: 1
+    path: Assets/Scenes/Pathway Scenes/Pathway Logium.unity
+    guid: 853fee93834084248a862fe2de3e6556
+  - enabled: 1
+    path: Assets/Scenes/Pathway Scenes/Pathway Poulvi.unity
+    guid: 81270958f5b4eee4bacdae76bd0365ab
+  - enabled: 1
+    path: Assets/Scenes/Pathway Scenes/Pathway Rohv.unity
+    guid: 9c4d6e3487bf2394fb5a8917b8dae630
+  - enabled: 1
+    path: Assets/Scenes/Pathway Scenes/Pathway Soliria.unity
+    guid: 4e4a4ce329780604bad36dc7f791bf05
+  - enabled: 1
+    path: Assets/Scenes/Pathway Scenes/Pathway Tenebra.unity
+    guid: 20ee640f41c92584c946aa680c8367ac
+  - enabled: 1
+    path: Assets/Scenes/Rest Site.unity
+    guid: 52ce3accb97e6f84ca98443c9f349fde
+  - enabled: 1
+    path: Assets/Scenes/Merchant.unity
+    guid: 0d9456a5ff206554b952710ac2cd277f
+  - enabled: 1
+    path: Assets/Scenes/Random Event.unity
+    guid: 2497772de890a5048867f11f058441d6
   m_configObjects: {}

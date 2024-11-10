@@ -2226,7 +2226,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardSO: {fileID: 11400000, guid: dd4a4d73dbb02af4e8788f6eb269a274, type: 2}
-  isPlayer: 1
   currentHealth: 3
   attackPower: 2
   essenceCost: 3
@@ -2242,16 +2241,26 @@ MonoBehaviour:
   characterArt: {fileID: 2357040949159273376}
   bgArt: {fileID: 6582079235945193437}
   moonPhaseArt: {fileID: 5165075588857808217}
+  inHand: 0
+  isActive: 0
+  isSelected: 0
+  returningToHand: 0
+  justPressed: 0
+  isPlayer: 1
+  isGraveyard: 0
+  isLocked: 0
+  handPosition: 0
   abilityDescription: {fileID: 7778786355584961167}
   abilityDescriptionToo: {fileID: 205070032946060294}
   cardType: 0
+  cardKind: 0
+  cardRarity: 0
   moveSpeed: 5
   rotateSpeed: 540
   selectedRotateSpeed: 30
   scaleSpeed: 10
-  inHand: 0
-  isActive: 0
-  handPosition: 0
+  hoverScale: {x: 1.1, y: 1.1, z: 1}
+  selectedScale: {x: 1.2, y: 1.2, z: 1}
   whatIsDesktop:
     serializedVersion: 2
     m_Bits: 64
@@ -2260,8 +2269,6 @@ MonoBehaviour:
     m_Bits: 128
   assignedPlace: {fileID: 0}
   anim: {fileID: 7977741196874239274}
-  hoverScale: {x: 1.1, y: 1.1, z: 1}
-  selectedScale: {x: 1.2, y: 1.2, z: 1}
   directHit: 0
   doubleTap: 0
   quickAttack: 0
@@ -2270,6 +2277,7 @@ MonoBehaviour:
   multipleHit: 0
   mend: 0
   leech: 0
+  revelation: 0
 --- !u!61 &311820245305926517
 BoxCollider2D:
   m_ObjectHideFlags: 0
