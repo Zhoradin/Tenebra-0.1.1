@@ -6,9 +6,9 @@ using System.Collections;
 public class ItemMarket : MonoBehaviour
 {
     public Image itemImage;
-    public TMP_Text itemDescriptionText;
+    //public TMP_Text itemNameText;
+    //public TMP_Text itemDescriptionText;
     public TMP_Text itemCostText;
-    public GameObject itemDescription;
 
     private ItemSO itemData;
     private int itemCost;
@@ -41,13 +41,11 @@ public class ItemMarket : MonoBehaviour
 
     public void OnMouseOver()
     {
-        itemDescription.SetActive(true);
         isHovering = true;
     }
 
     public void OnMouseExit()
     {
-        itemDescription.SetActive(false);
         isHovering = false;
     }
 
@@ -55,15 +53,15 @@ public class ItemMarket : MonoBehaviour
     {
         itemData = item;
         itemImage.sprite = item.itemSprite;
-        itemDescriptionText.text = item.itemName + "\n" + item.itemDescription;
+        //itemNameText.text = item.itemName;
+        //itemDescriptionText.text = item.itemDescription;
         itemCostText.text = item.itemCost.ToString();
         itemCost = item.itemCost;
-        itemDescription.SetActive(false);
     }
 
     public void OnSelectButtonClick()
     {
-        if (DataCarrier.instance.playerCoin > itemCost)
+        if(DataCarrier.instance.playerCoin > itemCost)
         {
             DataCarrier.instance.playerCoin -= itemCost;
             MerchantController.instance.UpdateCoin();
