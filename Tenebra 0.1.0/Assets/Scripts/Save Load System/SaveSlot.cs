@@ -23,6 +23,7 @@ public class SaveSlot : MonoBehaviour
         gameController = FindObjectOfType<GameController>();
 
         areYouSurePanel.gameObject.SetActive(false);
+        overwritePanel.gameObject.SetActive(false);
 
         GameObject[] badges = { caerulisnBadge.gameObject, amarunisBadge.gameObject, poulviBadge.gameObject, arstelloBadge.gameObject, logiumBadge.gameObject, rohvBadge.gameObject, soliriaBadge.gameObject, tenebraBadge.gameObject, abororBadge.gameObject };
         GameObject[] backgrounds = { caerulisnBg.gameObject, amarunisBg.gameObject, poulviBg.gameObject, arstelloBg.gameObject, logiumBg.gameObject, rohvBg.gameObject, soliriaBg.gameObject, tenebraBg.gameObject, abororBg.gameObject };
@@ -56,6 +57,10 @@ public class SaveSlot : MonoBehaviour
         {
             GetComponent<Button>().interactable = false;
             editButton.GetComponent<Button>().interactable = false;
+            deleteButton.GetComponent<Button>().interactable = false;
+        }
+        else if(MainMenu.instance.isNewGame && !saveLoadSystem.SaveFileExists(slotNumber))
+        {
             deleteButton.GetComponent<Button>().interactable = false;
         }
         else
@@ -108,16 +113,24 @@ public class SaveSlot : MonoBehaviour
 
     public void EditDone()
     {
+        // inputText'in boþ olup olmadýðýný kontrol et (boþluk karakterlerini de hesaba kat)
+        if (!string.IsNullOrWhiteSpace(slotNameInput.text))
+        {
+            // slotNameInput doluysa slotNameText'e girilen metni ata
+            slotNameText.text = slotNameInput.text.Trim();  // slotNameInput'tan gelen metni alýyoruz
+            slotNameText.color = Color.black;
+        }
+        else
+        {
+            // slotNameInput boþsa 'New Save' yazýsýný ata
+            slotNameText.text = "New Save";
+            slotNameText.color = Color.gray;  // Varsayýlan bir renk kullanabilirsiniz
+        }
+
+        // Düzenleme iþlemini tamamla
         slotNameInput.gameObject.SetActive(false);
         slotNameText.gameObject.SetActive(true);
         editButton.GetComponent<Button>().interactable = true;
-
-        if (!string.IsNullOrEmpty(inputText.text))
-        {
-            slotNameInput.text = inputText.text;
-            slotNameText.text = inputText.text;
-            slotNameText.color = Color.black;
-        }
     }
 
     private void LoadSlotData()
@@ -249,5 +262,18 @@ public class SaveSlot : MonoBehaviour
         GetComponent<Button>().interactable = true;
 
         gameController.SaveGame();
+    }
+
+    public void OnOverwriteClicked()
+    {
+        DeleteSave();
+        gameController.currentSlot = slotNumber;
+        gameController.SaveGame();
+        SceneManager.LoadScene("Hub");
+    }
+
+    public void OnOverwriteCancelled()
+    {
+        overwritePanel.gameObject.SetActive(false);
     }
 }
