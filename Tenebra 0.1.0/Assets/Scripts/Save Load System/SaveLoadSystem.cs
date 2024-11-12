@@ -6,7 +6,7 @@ public class SaveLoadSystem : MonoBehaviour
     public static SaveLoadSystem instance;
 
     public int currentSlot;
-    public string currentSotName;
+    public string currentSlotName;
     public string slotName;
 
     private void Awake()

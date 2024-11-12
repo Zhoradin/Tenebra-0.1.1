@@ -90,9 +90,9 @@ Material:
     - _TextureHeight: 512
     - _TextureWidth: 512
     - _UnderlayDilate: 0
-    - _UnderlayOffsetX: 0
-    - _UnderlayOffsetY: 0
-    - _UnderlaySoftness: 0
+    - _UnderlayOffsetX: 0.67
+    - _UnderlayOffsetY: -0.57
+    - _UnderlaySoftness: 0.07
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
     - _WeightBold: 0.75
@@ -107,7 +107,7 @@ Material:
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _UnderlayColor: {r: 0.013359263, g: 0.011068376, b: 0.011068376, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &11400000
 MonoBehaviour:
@@ -119,11 +119,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: Lansdowne SDF
+  m_Name: Lansdowne Shadow
   m_EditorClassIdentifier: 
-  hashCode: -1000253418
+  hashCode: -1474904415
   material: {fileID: -6609591428968660060}
-  materialHashCode: -1952737802
+  materialHashCode: 1496691169
   m_Version: 1.1.0
   m_SourceFontFileGUID: 8987df248f32ba248b54917c9a5b6ca8
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 8987df248f32ba248b54917c9a5b6ca8, type: 3}

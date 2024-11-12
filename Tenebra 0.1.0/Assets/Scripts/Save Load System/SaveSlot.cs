@@ -82,7 +82,7 @@ public class SaveSlot : MonoBehaviour
 
         if (MainMenu.instance.isLoadGame)
         {
-            gameController.SaveGame();
+            Debug.Log("load game");
             gameController.LoadGame();
         }
         else if (MainMenu.instance.isNewGame && !saveLoadSystem.SaveFileExists(slotNumber))

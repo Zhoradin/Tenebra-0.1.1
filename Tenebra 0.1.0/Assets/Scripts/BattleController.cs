@@ -333,7 +333,7 @@ public class BattleController : MonoBehaviour
             UIController.instance.OpenDiscardPile();
         }
 
-        UIController.instance.battleEndedScreen.SetActive(true);
+        UIController.instance.resultScreen.SetActive(true);
 
         // Verileri DataCarrier'a kaydet
         if (DataCarrier.instance != null)

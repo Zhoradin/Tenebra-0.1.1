@@ -24,7 +24,7 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public UIDamageIndicator playerDamage, enemyDamage;
 
-    public GameObject battleEndedScreen;
+    public GameObject resultScreen;
     public TMP_Text battleResultText;
 
     public string mainMenuScene;
@@ -32,7 +32,7 @@ public class UIController : MonoBehaviour, IDataPersistence
     public GameObject pauseScreen, areYouSurePanel;
 
     public GameObject drawPilePanel, discardPilePanel, graveyardPilePanel, inventoryPanel, encyclopediaPanel;
-    public bool drawPileOpen, discardPileOpen, graveyardPileOpen, inventoryPanelOpen, encyclopediaPanelOpen = false;
+    public bool drawPileOpen, discardPileOpen, graveyardPileOpen, inventoryPanelOpen, encyclopediaPanelOpen, fromResultScreen = false;
 
     public Vector2 drawPileOpenPosition, drawPileClosedPosition;
     public Vector2 discardPileOpenPosition, discardPileClosedPosition;
@@ -45,6 +45,8 @@ public class UIController : MonoBehaviour, IDataPersistence
     public TMP_Text coinAmountText;
     private int coinAmount = 0;
 
+    public string whichTower;
+
     void Start()
     {
         coinAmount = DataCarrier.instance.playerCoin;
@@ -53,6 +55,8 @@ public class UIController : MonoBehaviour, IDataPersistence
         drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileClosedPosition;
         discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileClosedPosition;
         encyclopediaPanel.SetActive(false);
+
+        whichTower = "Pathway " + DataCarrier.instance.lastGod;
     }
 
     void Update()
@@ -126,22 +130,35 @@ public class UIController : MonoBehaviour, IDataPersistence
         BattleController.instance.UpdateDataCarrier();
         DataCarrier.instance.playerCoin = coinAmount;
         FindObjectOfType<GameController>().SaveGame();
-        SceneManager.LoadScene("Hub");
+        SceneManager.LoadScene("Main Menu");
         Time.timeScale = 1f;
     }
 
     public void SaveQuitCancel()
     {
         areYouSurePanel.SetActive(false);
+        if (fromResultScreen)
+        {
+            resultScreen.SetActive(true);
+            fromResultScreen = false;
+        }
     }
 
-    public void RestartLevel()
+    public void OnContinueClicked()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(whichTower);
         Time.timeScale = 1f;
     }
 
-    public void ChooseNewBattle()
+    public void OnMainMenuClicked()
+    {
+        areYouSurePanel.SetActive(true);
+        resultScreen.SetActive(false);
+        fromResultScreen = true;
+        Time.timeScale = 1f;
+    }
+
+    public void OnReturnHubClicked()
     {
         SceneManager.LoadScene("Hub");
         Time.timeScale = 1f;
