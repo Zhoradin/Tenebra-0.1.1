@@ -28,6 +28,7 @@ public class EnemyController : MonoBehaviour
 
     [HideInInspector]
     public int enemyHealth;
+    public int enemyEssence;
     public Image enemyImage;
 
     // Start is called before the first frame update
@@ -51,6 +52,7 @@ public class EnemyController : MonoBehaviour
         {
             deckToUse.AddRange(enemySO.deckToUse);
             enemyHealth = enemySO.enemyHealth;
+            enemyEssence = enemySO.enemyEssence;
             BattleController.instance.SetEnemyHealth();
         }
 

@@ -670,6 +670,10 @@ public class MapGenerator : MonoBehaviour, IDataPersistence
         {
             SceneManager.LoadScene("Merchant");
         }
+        else if(clickedRoom.Room.RoomType == RoomType.Event)
+        {
+            SceneManager.LoadScene("Random Event");
+        }
         else
         {
             SceneManager.LoadScene("Battle 1");

@@ -130,6 +130,7 @@ public class CardMarket : MonoBehaviour
         {
             DataCarrier.instance.playerCoin -= coinAmount;
             MerchantController.instance.UpdateCoin();
+            DataCarrier.instance.deckToUse.Add(cardData);
             FindObjectOfType<GameController>().SaveGame();
             Destroy(gameObject);
         }

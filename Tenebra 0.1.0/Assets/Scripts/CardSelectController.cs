@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardSelectController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class CardSelectController : MonoBehaviour
     }
 
     public List<CardSO> cardToSelect = new List<CardSO>();
+    public List<CardSlot> activeCardSlots = new List<CardSlot>();
     public GameObject cardSlotPrefab;
     public Transform scrollViewContent; // Scroll view içindeki Content alaný
 
@@ -27,6 +29,9 @@ public class CardSelectController : MonoBehaviour
 
     public void ShowRandomCards()
     {
+        // Kart slotlarý listesini temizleyin
+        activeCardSlots.Clear();
+
         // Scroll view içindeki önceki kartlarý temizle
         foreach (Transform child in scrollViewContent)
         {
@@ -50,13 +55,31 @@ public class CardSelectController : MonoBehaviour
             GameObject cardSlot = Instantiate(cardSlotPrefab, scrollViewContent);
             CardSlot slotScript = cardSlot.GetComponent<CardSlot>();
             slotScript.SetupCardSlot(card);
+
+            // Kart slotunu aktif kart slotlarý listesine ekleyin
+            activeCardSlots.Add(slotScript);
         }
 
         StartCoroutine(SlideMenuCo(panelOpenPosition));
     }
 
+    // Diðer kart slotlarýnýn týklanabilirliðini devre dýþý býrak
+    public void DisableOtherCardSlots(CardSlot selectedSlot)
+    {
+        foreach (CardSlot slot in activeCardSlots)
+        {
+            if (slot != selectedSlot)
+            {
+                // Sadece Card Trigger içindeki butonu devre dýþý býrak
+                slot.SetCardTriggerInteractable(false);
+            }
+        }
+    }
+
     IEnumerator SlideMenuCo(Vector2 targetPosition)
     {
+        yield return new WaitForSeconds(1f);
+
         float elapsedTime = 0f;
         float duration = 1f / moveSpeed;
 

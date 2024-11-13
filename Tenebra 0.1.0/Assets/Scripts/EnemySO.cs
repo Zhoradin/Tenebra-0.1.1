@@ -8,13 +8,17 @@ public class EnemySO : ScriptableObject
     public enum EnemyRarity
     {
         Common,
-        Uncommon,
-        Rare, 
-        Epic,
-        Legendary
+        Epic, 
+        Boss
     }
 
+    public EnemyRarity enemyRarity;
+
     public int enemyHealth;
+
+    public int enemyEssence;
+
+    public int gainedCoin;
 
     public Sprite enemySprite;
 

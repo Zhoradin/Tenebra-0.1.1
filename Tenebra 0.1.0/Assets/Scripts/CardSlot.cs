@@ -11,7 +11,8 @@ public class CardSlot : MonoBehaviour
     public TMP_Text healthText;
     public TMP_Text attackText;
     public TMP_Text costText;
-    public Button selectButton;
+    public GameObject abilityDescription1, abilityDescription2;
+    public TMP_Text abilityDescriptionText, abilityDescriptionTextToo;
 
     private CardSO cardData;
 
@@ -21,8 +22,13 @@ public class CardSlot : MonoBehaviour
 
     private bool isHovering = false;
 
+    // Card Trigger alt nesnesindeki Button'a referans
+    public Button cardTriggerButton;
+
     private void Start()
     {
+        abilityDescription1.gameObject.SetActive(false);
+        abilityDescription2.gameObject.SetActive(false);
         originalScale = transform.localScale;
     }
 
@@ -64,5 +70,14 @@ public class CardSlot : MonoBehaviour
     {
         DeckController.instance.deckToUse.Add(cardData);
         BattleController.instance.StartCoroutine(BattleController.instance.ShowResultsCo());
+        UIController.instance.CardSelected(cardNameText.text.ToString());
+
+        // Card Trigger'daki button interactable durumu devre dýþý býrakýlacak
+        CardSelectController.instance.DisableOtherCardSlots(this);
+    }
+
+    public void SetCardTriggerInteractable(bool state)
+    {
+        cardTriggerButton.interactable = state;
     }
 }

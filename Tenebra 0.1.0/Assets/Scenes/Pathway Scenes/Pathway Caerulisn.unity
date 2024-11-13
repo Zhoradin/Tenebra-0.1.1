@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 337811194}
   - component: {fileID: 337811193}
   m_Layer: 0
-  m_Name: MapGenerator
+  m_Name: Map Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -306,9 +306,9 @@ MonoBehaviour:
   merchantRoomSprite: {fileID: 21300000, guid: f3e69ffbfdbd8fd45bd1cc31ac0e8945, type: 3}
   treasureRoomSprite: {fileID: 21300000, guid: e8d4dd50ac916ed4d9cded516dcb1351, type: 3}
   bossRoomSprite: {fileID: 21300000, guid: f4d452a7d9b8cfe4197f54b721009ef0, type: 3}
-  monsterEnemySO: {fileID: 11400000, guid: 992342b8809d3e046b81241806093a39, type: 2}
-  eliteEnemySO: {fileID: 11400000, guid: 992342b8809d3e046b81241806093a39, type: 2}
-  bossEnemySO: {fileID: 11400000, guid: 992342b8809d3e046b81241806093a39, type: 2}
+  monsterEnemySO: {fileID: 11400000, guid: 30e23c2ec66fb164fa6140f123746a5b, type: 2}
+  eliteEnemySO: {fileID: 11400000, guid: 8c162e490eb4cfd46aebd9c05fbb9382, type: 2}
+  bossEnemySO: {fileID: 11400000, guid: 571b7f49a52395042a8d5dcd2c59a8c9, type: 2}
   remainingRooms: []
   activeRoomName: 
 --- !u!4 &337811194

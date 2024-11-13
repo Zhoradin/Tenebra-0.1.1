@@ -25,7 +25,7 @@ public class UIController : MonoBehaviour, IDataPersistence
     public UIDamageIndicator playerDamage, enemyDamage;
 
     public GameObject resultScreen;
-    public TMP_Text battleResultText;
+    public TMP_Text battleResultText, gainedRewardsText;
 
     public string mainMenuScene;
 
@@ -44,6 +44,7 @@ public class UIController : MonoBehaviour, IDataPersistence
     public GameObject coins;
     public TMP_Text coinAmountText;
     private int coinAmount = 0;
+    public bool coinSelected = false;
 
     public string whichTower;
 
@@ -306,15 +307,24 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public void AddCoins()
     {
+        coinSelected = true;
         coinAmount += 6;
         UpdateCoinAmountText();
 
         BattleController.instance.StartCoroutine(BattleController.instance.ShowResultsCo());
+
+        gainedRewardsText.text = "+" + (DataCarrier.instance.enemy.gainedCoin + 6).ToString() + " Coins Gained!";
     }
 
-    private void UpdateCoinAmountText()
+    public void UpdateCoinAmountText()
     {
         coinAmountText.text = coinAmount.ToString();
+    }
+
+    public void CardSelected(string cardName)
+    {
+        gainedRewardsText.text = "+" + DataCarrier.instance.enemy.gainedCoin.ToString() + " Coins Gained!"
+            + "\n" + "+" + cardName + " Gained!";
     }
 
     public void OnSaveButtonClick()

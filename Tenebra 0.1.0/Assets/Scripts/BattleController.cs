@@ -87,6 +87,12 @@ public class BattleController : MonoBehaviour
         UIController.instance.SetEnemyHealthText(EnemyController.instance.enemyHealth);
     }
 
+    public void SetEnemyEssence()
+    {
+        enemyEssence = EnemyController.instance.enemyEssence;
+        UIController.instance.SetEnemyEssenceText(EnemyController.instance.enemyEssence);
+    }
+
     public void SetupActiveCards()
     {
         playerCardPoints = CardPointsController.instance.playerCardPoints;
@@ -289,6 +295,9 @@ public class BattleController : MonoBehaviour
 
         if (enemyHealth <= 0)
         {
+            DataCarrier.instance.playerCoin += DataCarrier.instance.enemy.gainedCoin;
+            UIController.instance.UpdateCoinAmountText();
+
             UIController.instance.battleResultText.text = "YOU WON!";
 
             foreach (CardPlacePoint point in CardPointsController.instance.enemyCardPoints)
