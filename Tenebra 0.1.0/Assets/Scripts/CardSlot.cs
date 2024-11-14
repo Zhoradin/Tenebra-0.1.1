@@ -56,14 +56,25 @@ public class CardSlot : MonoBehaviour
         }
     }
 
-    private void OnMouseOver()
+    public void OnMouseOver()
     {
         isHovering = true;
+        if (Time.timeScale != 0f && cardData.abilities.Length > 0)
+        {
+            abilityDescription1.SetActive(true);
+
+            if (cardData.abilities.Length > 1)
+            {
+                abilityDescription2.SetActive(true);
+            }
+        }
     }
 
-    private void OnMouseExit()
+    public void OnMouseExit()
     {
         isHovering = false;
+        abilityDescription1.gameObject.SetActive(false);
+        abilityDescription2.gameObject.SetActive(false);
     }
 
     public void OnSelectButtonClick()
