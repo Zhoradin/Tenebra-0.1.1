@@ -13,13 +13,17 @@ MonoBehaviour:
   m_Name: Test Gloom
   m_EditorClassIdentifier: 
   cardName: Test Gloom
+  isGraveyard: 0
   cardDescription: Third Test Card
   currentHealth: 5
   attackPower: 2
   essenceCost: 2
+  coinCost: 50
   characterSprite: {fileID: 21300000, guid: b4c581d5d64171147bcce550cc614d4f, type: 3}
   bgSprite: {fileID: 21300000, guid: ac44cb3326b919c4b93300164cde8661, type: 3}
   moonPhaseSprite: {fileID: 21300000, guid: 3df023b0b79547b4e8f6010ea3f4a6dc, type: 3}
   abilities: []
   moonPhase: 4
   cardType: 2
+  cardKind: 0
+  cardRarity: 0

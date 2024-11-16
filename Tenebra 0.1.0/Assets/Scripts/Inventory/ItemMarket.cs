@@ -66,13 +66,27 @@ public class ItemMarket : MonoBehaviour
         if (DataCarrier.instance.playerCoin > itemCost)
         {
             DataCarrier.instance.playerCoin -= itemCost;
-            MerchantController.instance.UpdateCoin();
+            if(FindObjectOfType<BarController>() != null)
+            {
+                BarController.instance.SetPlayerCoin();
+            }
+            else
+            {
+                MerchantController.instance.UpdateCoin();
+            }
             FindObjectOfType<GameController>().SaveGame();
             Destroy(gameObject);
         }
         else
         {
-            MerchantController.instance.lowEssenceWarning.SetActive(true);
+            if (FindObjectOfType<BarController>() != null)
+            {
+                BarController.instance.lowCoinWarning.SetActive(true);
+            }
+            else
+            {
+                MerchantController.instance.lowEssenceWarning.SetActive(true);
+            }                
             StartCoroutine(HideLowEssenceWarning());
         }
     }
@@ -80,6 +94,13 @@ public class ItemMarket : MonoBehaviour
     private IEnumerator HideLowEssenceWarning()
     {
         yield return new WaitForSeconds(3f);
-        MerchantController.instance.lowEssenceWarning.SetActive(false);
+        if(FindObjectOfType<BarController>() != null)
+        {
+            BarController.instance.lowCoinWarning.SetActive(false);
+        }
+        else
+        {
+            MerchantController.instance.lowEssenceWarning.SetActive(false);
+        } 
     }
 }

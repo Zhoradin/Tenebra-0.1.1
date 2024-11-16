@@ -18,6 +18,7 @@ MonoBehaviour:
   currentHealth: 5
   attackPower: 10
   essenceCost: 15
+  coinCost: 0
   characterSprite: {fileID: 21300000, guid: 424d28bd6e37ce64ab6e2749e1e2bf0e, type: 3}
   bgSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   moonPhaseSprite: {fileID: 21300000, guid: 86fdf100d0bc5cb4c8bfd87919fb0d93, type: 3}
@@ -25,3 +26,4 @@ MonoBehaviour:
   moonPhase: 0
   cardType: 0
   cardKind: 0
+  cardRarity: 0

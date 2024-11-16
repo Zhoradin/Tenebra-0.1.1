@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections;
 using System.Text;
+using System.Collections;
 
 public class CardMarket : MonoBehaviour
 {
@@ -15,9 +15,11 @@ public class CardMarket : MonoBehaviour
     public TMP_Text costText;
     public TMP_Text coinText;
     public Image coinImage;
+    public GameObject saleImage;
     public GameObject abilityDescription1, abilityDescription2;
     public TMP_Text abilityDescriptionText, abilityDescriptionTextToo;
-    private int coinAmount;
+    public int coinAmount;
+    public string cardName;
 
     private CardSO cardData;
 
@@ -32,6 +34,7 @@ public class CardMarket : MonoBehaviour
 
     private void Start()
     {
+        saleImage.SetActive(false);
         abilityDescription1.gameObject.SetActive(false);
         abilityDescription2.gameObject.SetActive(false);
         originalScale = transform.localScale;
@@ -45,6 +48,7 @@ public class CardMarket : MonoBehaviour
         cardImage.sprite = card.characterSprite;
         cardBgImage.sprite = card.bgSprite;
         cardNameText.text = card.cardName;
+        cardName = card.cardName;
         cardDescriptionText.text = card.cardDescription;
         healthText.text = card.currentHealth.ToString();
         attackText.text = card.attackPower.ToString();
@@ -65,7 +69,6 @@ public class CardMarket : MonoBehaviour
             transform.localScale = Vector3.Lerp(transform.localScale, originalScale, Time.deltaTime * transitionSpeed);
         }
 
-        // coinText ve coinImage'ýn ölçeðini sabit tut
         coinText.transform.localScale = coinTextOriginalScale;
         coinImage.transform.localScale = coinImageOriginalScale;
     }
@@ -106,7 +109,7 @@ public class CardMarket : MonoBehaviour
     public void OnMouseOver()
     {
         isHovering = true;
-        if (Time.timeScale != 0f && cardData.abilities.Length > 0)
+        if (cardData.abilities.Length > 0)
         {
             abilityDescription1.SetActive(true);
 
@@ -129,14 +132,28 @@ public class CardMarket : MonoBehaviour
         if (DataCarrier.instance.playerCoin >= coinAmount)
         {
             DataCarrier.instance.playerCoin -= coinAmount;
-            MerchantController.instance.UpdateCoin();
+            if (FindObjectOfType<BarController>() != null)
+            {
+                BarController.instance.SetPlayerCoin();
+            }
+            else
+            {
+                MerchantController.instance.UpdateCoin();
+            }
             DataCarrier.instance.deckToUse.Add(cardData);
             FindObjectOfType<GameController>().SaveGame();
             Destroy(gameObject);
         }
         else
         {
-            MerchantController.instance.lowEssenceWarning.SetActive(true);
+            if (FindObjectOfType<BarController>() != null)
+            {
+                BarController.instance.lowCoinWarning.SetActive(true);
+            }
+            else
+            {
+                MerchantController.instance.lowEssenceWarning.SetActive(true);
+            }
             StartCoroutine(HideLowEssenceWarning());
         }
     }
@@ -144,6 +161,31 @@ public class CardMarket : MonoBehaviour
     private IEnumerator HideLowEssenceWarning()
     {
         yield return new WaitForSeconds(3f);
-        MerchantController.instance.lowEssenceWarning.SetActive(false);
+        if (FindObjectOfType<BarController>() != null)
+        {
+            BarController.instance.lowCoinWarning.SetActive(false);
+        }
+        else
+        {
+            MerchantController.instance.lowEssenceWarning.SetActive(false);
+        }
+    }
+
+    public CardSO GetCard()
+    {
+        return cardData;
+    }
+
+    public int GetCoinAmount()
+    {
+        return coinAmount;
+    }
+
+    public void SetCoinAmount(int newCoinAmount)
+    {
+        saleImage.SetActive(true);
+        coinAmount = newCoinAmount;
+        coinText.text = "<s><color=#808080>" + (coinAmount * 2).ToString() + "</color></s> " + coinAmount.ToString();
+
     }
 }

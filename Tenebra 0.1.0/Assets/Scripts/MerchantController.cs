@@ -21,7 +21,7 @@ public class MerchantController : MonoBehaviour
     public GameObject lowEssenceWarning;
 
     public List<CardSO> unlockedCards = new List<CardSO>();
-    public List<ItemSO> unlockedItems = new List<ItemSO>();  // ItemSO listesi eklendi
+    public List<ItemSO> unlockedItems = new List<ItemSO>();
 
     public string whichTower;
 
@@ -57,25 +57,50 @@ public class MerchantController : MonoBehaviour
             cardSlot1, cardSlot2, cardSlot3, cardSlot4, cardSlot5, cardSlot6, cardSlot7
         };
 
-        List<CardSO> availableCards = new List<CardSO>(unlockedCards); // Kartlarý geçici bir listeye kopyala
+        List<CardSO> rareCards = unlockedCards.FindAll(card => card.cardRarity == CardRarity.Rare);
+        List<CardSO> uncommonCards = unlockedCards.FindAll(card => card.cardRarity == CardRarity.Uncommon);
+        List<CardSO> commonCards = unlockedCards.FindAll(card => card.cardRarity == CardRarity.Common);
+
         System.Random random = new System.Random();
 
-        foreach (var slot in cardSlots)
+        AssignCardsToSlots(cardSlots.GetRange(0, 2), rareCards, random);
+        AssignCardsToSlots(cardSlots.GetRange(2, 2), uncommonCards, random);
+        AssignCardsToSlots(cardSlots.GetRange(4, 3), commonCards, random);
+
+        SelectRandomCardSlotAndLogName(cardSlots, random);
+    }
+
+    private void SelectRandomCardSlotAndLogName(List<GameObject> cardSlots, System.Random random)
+    {
+        int randomSlotIndex = random.Next(cardSlots.Count);
+        GameObject selectedSlot = cardSlots[randomSlotIndex];
+
+        CardMarket cardMarket = selectedSlot.GetComponent<CardMarket>();
+
+        if (cardMarket != null && cardMarket.GetCard() != null)
         {
-            if (availableCards.Count > 0)
+            int updatedCoinAmount = cardMarket.GetCoinAmount() / 2;
+            cardMarket.SetCoinAmount(updatedCoinAmount);
+        }
+    }
+
+    private void AssignCardsToSlots(List<GameObject> slots, List<CardSO> cards, System.Random random)
+    {
+        foreach (var slot in slots)
+        {
+            if (cards.Count > 0)
             {
-                int randomIndex = random.Next(availableCards.Count);
-                CardSO selectedCard = availableCards[randomIndex];
+                int randomIndex = random.Next(cards.Count);
+                CardSO selectedCard = cards[randomIndex];
 
                 CardMarket cardMarket = slot.GetComponent<CardMarket>();
                 cardMarket.SetupCardSlot(selectedCard);
 
-                availableCards.RemoveAt(randomIndex);
+                cards.RemoveAt(randomIndex);
             }
         }
     }
 
-    // Item'larý slotlara atamak için yeni fonksiyon
     private void AssignRandomItemsToSlots()
     {
         List<GameObject> itemSlots = new List<GameObject>
@@ -83,7 +108,7 @@ public class MerchantController : MonoBehaviour
             itemSlot1, itemSlot2, itemSlot3, itemSlot4, itemSlot5, itemSlot6
         };
 
-        List<ItemSO> availableItems = new List<ItemSO>(unlockedItems); // Item'larý geçici bir listeye kopyala
+        List<ItemSO> availableItems = new List<ItemSO>(unlockedItems);
         System.Random random = new System.Random();
 
         foreach (var slot in itemSlots)
@@ -94,7 +119,7 @@ public class MerchantController : MonoBehaviour
                 ItemSO selectedItem = availableItems[randomIndex];
 
                 ItemMarket itemMarket = slot.GetComponent<ItemMarket>();
-                itemMarket.SetupItemSlot(selectedItem); // Item'ý slot'a ata
+                itemMarket.SetupItemSlot(selectedItem);
 
                 availableItems.RemoveAt(randomIndex);
             }

@@ -10,11 +10,11 @@ How are you feeling today?
 + [Sad]
     Oh, well that makes me <color=\#5B81FF>sad</color> too. #portrait:barista
 
-- Well, would you want to drink something? #portrait:tavern_keeper
+- Well, would you want to drink something? #portrait:tavern_keeper 
 + [Yes]
     -> drinks
 + [No]
-    Goodbye then!
+    Goodbye then! #order:1 
     -> END
     
 === drinks ===
@@ -30,7 +30,7 @@ What would you want to drink?
 + [Yes]
     -> drinks
 + [No]
-    Goodbye then!
+    Goodbye then! #order:1 
     -> END
     
 === already_chosen ===

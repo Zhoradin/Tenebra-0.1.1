@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: Test Holy
   m_EditorClassIdentifier: 
   cardName: Test Holy
+  isGraveyard: 0
   cardDescription: Second Test Card
   currentHealth: 4
   attackPower: 2
   essenceCost: 1
+  coinCost: 50
   characterSprite: {fileID: 21300000, guid: 050a70d1abdd2364cb5ddb1560e65941, type: 3}
   bgSprite: {fileID: 21300000, guid: 3df0185171d1b804ca11f557c48a2d83, type: 3}
   moonPhaseSprite: {fileID: 21300000, guid: d928d264aa3127a40bbda8d0a7f46cbc, type: 3}
@@ -24,3 +26,4 @@ MonoBehaviour:
   moonPhase: 6
   cardType: 5
   cardKind: 1
+  cardRarity: 0

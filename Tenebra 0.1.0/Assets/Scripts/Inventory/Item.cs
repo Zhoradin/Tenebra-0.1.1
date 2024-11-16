@@ -10,7 +10,8 @@ public class Item : MonoBehaviour
 
     public string itemName;
 
-    public TMP_Text itemCost;
+    public TMP_Text itemCostText;
+    public int itemCost;
 
     [TextArea]
     public string itemDescription;
@@ -38,7 +39,7 @@ public class Item : MonoBehaviour
     public void SetupItem()
     {
         itemName = itemSO.itemName;
-        itemCost.text = itemSO.itemCost.ToString();
+        itemCostText.text = itemSO.itemCost.ToString();
         itemDescription = itemSO.itemDescription;
         itemImage.sprite = itemSO.itemSprite;
         itemLongevity = itemSO.itemLongevity;
@@ -46,14 +47,18 @@ public class Item : MonoBehaviour
 
     public void BuyObject()
     {
-        if(BarController.instance.testPlayerCoin >= itemSO.itemCost)
+        if (DataCarrier.instance.playerCoin > itemCost)
         {
-            BarController.instance.testPlayerCoin -= itemSO.itemCost;
+            DataCarrier.instance.playerCoin -= itemCost;
             BarController.instance.SetPlayerCoin();
-            CheckItemSkill();
             FindObjectOfType<GameController>().SaveGame();
-            DataCarrier.instance.possessedItems.Add(itemSO);
             Destroy(gameObject);
+            CheckItemSkill();
+        }
+        else
+        {
+            BarController.instance.lowCoinWarning.SetActive(true);
+            StartCoroutine(HideLowEssenceWarning());
         }
     }
 
@@ -69,16 +74,9 @@ public class Item : MonoBehaviour
         }
     }
 
-    /*
-    public void OnMouseOver()
+    private IEnumerator HideLowEssenceWarning()
     {
-        itemDescriptionPanel.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        BarController.instance.lowCoinWarning.SetActive(false);
     }
-
-    public void OnMouseExit()
-    {
-        itemDescriptionPanel.SetActive(false);
-    }
-
-    */
 }

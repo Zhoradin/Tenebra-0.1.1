@@ -1,4 +1,5 @@
 using Ink.Runtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,7 +27,7 @@ public class DialogueManager : MonoBehaviour
     public TMP_Text leftDisplayNameText, rightDisplayNameText;
     public Animator portraitAnimator;
     public Animator layoutAnimator;
-    public GameObject continueIcon;
+    public GameObject dialoguePanel, dialogueButton, continueIcon;
     public Animator leftPortraitAnimator, rightPortraitAnimator;
     public CanvasGroup leftPortraitGroup, rightPortraitGroup;
 
@@ -44,6 +45,7 @@ public class DialogueManager : MonoBehaviour
     private const string LAYOUT_TAG = "layout";
     private const string SPEAKER_TAG = "speaker";
     private const string PORTRAIT_TAG = "portrait";
+    private const string ORDER_TAG = "order";
 
     private DialogueVariables dialogueVariables;
 
@@ -55,6 +57,8 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
+        dialoguePanel.SetActive(false);
+
         dialogueIsPlaying = false;
 
         choicesText = new TextMeshProUGUI[choices.Length];
@@ -98,7 +102,12 @@ public class DialogueManager : MonoBehaviour
 
     public void EnterDialogueMode(TextAsset inkJSON)
     {
-        BarController.instance.dialoguePanel.SetActive(true);
+        dialoguePanel.SetActive(true);
+        dialogueButton.SetActive(false);
+        if(FindObjectOfType<BarController>() != null)
+        {
+            BarController.instance.shopButton.SetActive(false);
+        }
         currentStory = new Story(inkJSON.text);
         dialogueIsPlaying = true;
 
@@ -117,7 +126,13 @@ public class DialogueManager : MonoBehaviour
         dialogueVariables.StopListening(currentStory);
 
         dialogueIsPlaying = false;
-        BarController.instance.dialoguePanel.SetActive(false);
+        dialoguePanel.SetActive(false);
+        dialogueButton.SetActive(true);
+        if (FindObjectOfType<BarController>() != null)
+        {
+            BarController.instance.shopButton.SetActive(true);
+            BarController.instance.leaveButton.SetActive(true);
+        }
         dialogueText.text = "";
     }
 
@@ -262,6 +277,17 @@ public class DialogueManager : MonoBehaviour
                     else if (rightPortrait)
                     {
                         rightPortraitAnimator.Play(tagValue);
+                    }
+                    break;
+                case ORDER_TAG:
+                    if (int.TryParse(tagValue, out int newOrder))
+                    {
+                        Debug.Log("deneme");
+                        NPCController.instance.UpdateOrder(newOrder);
+                    }
+                    else
+                    {
+                        Debug.LogError("Invalid ORDER_TAG value: " + tagValue);
                     }
                     break;
 
