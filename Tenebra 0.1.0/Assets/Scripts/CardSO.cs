@@ -13,9 +13,9 @@ public class CardSO : ScriptableObject
     [TextArea]
     public string cardDescription;
 
-    public int currentHealth, attackPower, essenceCost, coinCost;
+    public int currentHealth, attackPower, essenceCost, coinCost, changedHealth, changedAttackPower;
 
-    public Sprite characterSprite, bgSprite;
+    public Sprite characterSprite, bgSprite, changedCharacterSprite;
 
     public Sprite moonPhaseSprite;
 

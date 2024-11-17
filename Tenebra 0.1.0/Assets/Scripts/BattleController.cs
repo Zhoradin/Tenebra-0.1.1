@@ -31,7 +31,8 @@ public class BattleController : MonoBehaviour
 
     public float resultScreenDelayTime = 1f;
 
-    private int turnCount = 0;
+    
+    public int turnCount = 0;
 
     [Range(0f, 1f)]
     public float playerFirstChance = .5f;
@@ -182,6 +183,8 @@ public class BattleController : MonoBehaviour
                     // Check moon phase for player cards
                     CheckMoonPhaseForAllCards(playerCardPoints);
                     CheckMoonPhaseForAllCards(enemyCardPoints);
+                    turnCount++;
+                    AbilityManager.instance.MetamorphoseCard();
                     break;
 
                 case TurnOrder.playerCardAttacks:

@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityType: 5
   value: 0
-  description: "yedi\u011Fi hasar\u0131n yar\u0131s\u0131 kadar kendini iyile\u015Ftirir"
+  description: Heals itself by the half of the damage taken

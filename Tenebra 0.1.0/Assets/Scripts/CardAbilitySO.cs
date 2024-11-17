@@ -12,10 +12,12 @@ public class CardAbilitySO : ScriptableObject
         GlassCannon,
         Mend,
         Leech,
-        Revelation
+        Revelation,
+        Metamorphosis
     }
 
     public AbilityType abilityType;
     public int value;
+    [TextArea]
     public string description;
 }

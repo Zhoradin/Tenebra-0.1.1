@@ -56,7 +56,8 @@ public class Card : MonoBehaviour
     public Animator anim;
 
     [HideInInspector]
-    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, multipleHit, mend, leech, revelation = false;
+    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, multipleHit, mend, leech, revelation, metamorphosis = false;
+    public int metamorphosisTurnCount;
 
     // Start is called before the first frame update
     void Start()

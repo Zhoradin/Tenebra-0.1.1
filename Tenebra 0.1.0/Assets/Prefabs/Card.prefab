@@ -1431,8 +1431,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 112.54, y: 99.295}
+  m_AnchoredPosition: {x: -2.8, y: -0}
+  m_SizeDelta: {x: 108.27, y: 117.54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2521147671952672529
 CanvasRenderer:
@@ -2278,6 +2278,8 @@ MonoBehaviour:
   mend: 0
   leech: 0
   revelation: 0
+  metamorphosis: 0
+  metamorphosisTurnCount: 0
 --- !u!61 &311820245305926517
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -58,13 +58,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dd4a4d73dbb02af4e8788f6eb269a274, type: 2}
   - {fileID: 11400000, guid: 67f9449e6a9e54243b9ada2724b201d4, type: 2}
   - {fileID: 11400000, guid: 75869764fe1a8b14db9a3f8913e0e80b, type: 2}
-  - {fileID: 11400000, guid: 9bd58c0bdaee74348a8b41088f0f3246, type: 2}
   - {fileID: 11400000, guid: 219e780c88339b74f82a694e22647bfc, type: 2}
-  - {fileID: 11400000, guid: 8c3cf27eb2ce1984ba4e19bf4a2f0baf, type: 2}
   - {fileID: 11400000, guid: 35583191ae9e696469026924218ec6b5, type: 2}
   - {fileID: 11400000, guid: dd4a4d73dbb02af4e8788f6eb269a274, type: 2}
   - {fileID: 11400000, guid: 67f9449e6a9e54243b9ada2724b201d4, type: 2}
+  - {fileID: 11400000, guid: 7a7890845cd90924a817b46da22e79bf, type: 2}
+  - {fileID: 11400000, guid: 8c3cf27eb2ce1984ba4e19bf4a2f0baf, type: 2}
   pathwayRooms: []
   currentRoomName: 
-  enemy: {fileID: 0}
+  enemy: {fileID: 11400000, guid: 926c6e2bf115d3d4a8e757c366b80f12, type: 2}
   lastGod: Amarunis

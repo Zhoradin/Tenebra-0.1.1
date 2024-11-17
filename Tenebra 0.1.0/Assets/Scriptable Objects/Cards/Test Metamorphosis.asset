@@ -10,24 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
-  m_Name: Test Dust
+  m_Name: Test Metamorphosis
   m_EditorClassIdentifier: 
-  cardName: Test Dust
+  cardName: Wormunite
   isGraveyard: 0
-  cardDescription: 
-  currentHealth: 5
-  attackPower: 2
+  cardDescription: Not as scary as it looks, but be sure to kill before it's too
+    late
+  currentHealth: 8
+  attackPower: 1
   essenceCost: 2
   coinCost: 150
-  changedHealth: 0
-  changedAttackPower: 0
-  characterSprite: {fileID: 21300000, guid: d9a32830b52656342b099438139076ed, type: 3}
+  changedHealth: 10
+  changedAttackPower: 12
+  characterSprite: {fileID: 21300000, guid: f9f31148339fe4b4aa7905968809977e, type: 3}
   bgSprite: {fileID: 21300000, guid: 46f156a0b42e41c4ca888a5c41d625b3, type: 3}
-  changedCharacterSprite: {fileID: 0}
-  moonPhaseSprite: {fileID: 0}
+  changedCharacterSprite: {fileID: 21300000, guid: 5bf22bc13e1a0f842b82742d28c6eccf, type: 3}
+  moonPhaseSprite: {fileID: 21300000, guid: 3df023b0b79547b4e8f6010ea3f4a6dc, type: 3}
   abilities:
   - {fileID: 11400000, guid: 30e80893064722b4cacfadf875ac4bb4, type: 2}
-  moonPhase: 6
+  moonPhase: 4
   cardType: 4
   cardKind: 0
   cardRarity: 2

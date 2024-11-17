@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityType: 0
   value: 5
-  description: Fadime
+  description: Heals itself by 5 right after being placed on board

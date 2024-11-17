@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class AbilityManager : MonoBehaviour
 {
+    public int turnCount = 0;
+    public int metamorphoseTurnCount;
+
     public static AbilityManager instance;
     private void Awake()
     {
@@ -46,6 +49,9 @@ public class AbilityManager : MonoBehaviour
                         break;
                     case CardAbilitySO.AbilityType.Leech:
                         Leech(card);
+                        break;
+                    case CardAbilitySO.AbilityType.Metamorphosis:
+                        Metamorphosis(card);
                         break;
                 }
             }
@@ -94,7 +100,32 @@ public class AbilityManager : MonoBehaviour
 
     public void Revelation(Card card)
     {
-        card.leech = true;
+        card.revelation = true;
+    }
+
+    public void Metamorphosis(Card card)
+    {
+        card.metamorphosis = true;
+        card.metamorphosisTurnCount = BattleController.instance.turnCount; // Kartýn dönüþüm zamanýný kaydet
+    }
+
+    public void MetamorphoseCard()
+    {
+        foreach (var point in CardPointsController.instance.playerCardPoints)
+        {
+            if (point.activeCard != null)
+            {
+                var card = point.activeCard;
+                if (card.metamorphosis && BattleController.instance.turnCount >= card.metamorphosisTurnCount + 2) // Her kartýn kendi dönüþüm zamanýný kontrol et
+                {
+                    card.characterArt.sprite = card.cardSO.changedCharacterSprite; // Görseli deðiþtir
+                    card.currentHealth = card.cardSO.changedHealth;
+                    card.attackPower = card.cardSO.changedAttackPower;
+                    card.UpdateCardDisplay();
+                    card.metamorphosis = false; // Ýþlem tamamlandýðý için kapat
+                }
+            }
+        }
     }
 
     public IEnumerator QuickAttackCoroutine(Card card)
