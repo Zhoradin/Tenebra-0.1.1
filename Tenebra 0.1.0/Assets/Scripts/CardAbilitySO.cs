@@ -14,7 +14,8 @@ public class CardAbilitySO : ScriptableObject
         Leech,
         Revelation,
         Metamorphosis,
-        PrimalPact
+        PrimalPact,
+        HealingTouch
     }
 
     public AbilityType abilityType;

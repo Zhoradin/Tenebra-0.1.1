@@ -226,7 +226,7 @@ public class Card : MonoBehaviour
                             returningToHand = false;
                             targetScale = originalScale;
                             theHC.RemoveCardFromHand(this);
-                            AbilityManager.instance.ActivateAbility(this);
+                            AbilityManager.instance.ActivateEffectAbility(this, selectedPoint.activeCard);
                             BattleController.instance.SpendPlayerEssence(essenceCost);
                             isActive = true;
                             CheckMoonPhase();

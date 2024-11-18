@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
+  m_Name: Test Healing Touch
+  m_EditorClassIdentifier: 
+  cardName: Paramedic
+  isGraveyard: 1
+  cardDescription: Always cares for things around it. You can hear it's soothing
+    voice when it's near you
+  currentHealth: 0
+  attackPower: 0
+  essenceCost: 0
+  coinCost: 50
+  changedHealth: 0
+  changedAttackPower: 0
+  characterSprite: {fileID: 21300000, guid: 19895f3231b145f4d9418b91a56e621d, type: 3}
+  bgSprite: {fileID: 0}
+  changedCharacterSprite: {fileID: 0}
+  moonPhaseSprite: {fileID: 0}
+  abilities:
+  - {fileID: 11400000, guid: 631e46f4ba677b94b9fb9547d6338ec7, type: 2}
+  moonPhase: 0
+  cardType: 4
+  cardKind: 1
+  cardRarity: 0

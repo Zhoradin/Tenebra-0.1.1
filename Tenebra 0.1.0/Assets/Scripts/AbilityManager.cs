@@ -26,50 +26,54 @@ public class AbilityManager : MonoBehaviour
 
         foreach (CardAbilitySO ability in card.cardSO.abilities)
         {
-            if(card.cardKind == CardKind.Field)
+            switch (ability.abilityType)
             {
-                switch (ability.abilityType)
-                {
-                    case CardAbilitySO.AbilityType.Heal:
-                        Heal(card, ability.value);
-                        break;
-                    case CardAbilitySO.AbilityType.DirectHit:
-                        DirectHit(card);
-                        break;
-                    case CardAbilitySO.AbilityType.DoubleTap:
-                        DoubleTap(card);
-                        break;
-                    case CardAbilitySO.AbilityType.QuickAttack:
-                        StartCoroutine(QuickAttackCoroutine(card));
-                        break;
-                    case CardAbilitySO.AbilityType.GlassCannon:
-                        GlassCannon(card);
-                        break;
-                    case CardAbilitySO.AbilityType.Mend:
-                        Mend(card);
-                        break;
-                    case CardAbilitySO.AbilityType.Leech:
-                        Leech(card);
-                        break;
-                    case CardAbilitySO.AbilityType.Metamorphosis:
-                        Metamorphosis(card);
-                        break;
-                    case CardAbilitySO.AbilityType.PrimalPact:
-                        PrimalPact(card);
-                        break;
-                }
-            }
-            else if (card.cardKind == CardKind.Efect)
-            {
-                switch (ability.abilityType)
-                {
-                    case CardAbilitySO.AbilityType.Revelation:
-                        Revelation(card);
-                        break;
-                }
+                case CardAbilitySO.AbilityType.Heal:
+                    Heal(card, ability.value);
+                    break;
+                case CardAbilitySO.AbilityType.DirectHit:
+                    DirectHit(card);
+                    break;
+                case CardAbilitySO.AbilityType.DoubleTap:
+                    DoubleTap(card);
+                    break;
+                case CardAbilitySO.AbilityType.QuickAttack:
+                    StartCoroutine(QuickAttackCoroutine(card));
+                    break;
+                case CardAbilitySO.AbilityType.GlassCannon:
+                    GlassCannon(card);
+                    break;
+                case CardAbilitySO.AbilityType.Mend:
+                    Mend(card);
+                    break;
+                case CardAbilitySO.AbilityType.Leech:
+                    Leech(card);
+                    break;
+                case CardAbilitySO.AbilityType.Metamorphosis:
+                    Metamorphosis(card);
+                    break;
+                case CardAbilitySO.AbilityType.PrimalPact:
+                    PrimalPact(card);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
+    }
+
+    public void ActivateEffectAbility(Card playedCard, Card effectedCard)
+    {
+        foreach (CardAbilitySO ability in playedCard.cardSO.abilities)
+        {
+            switch (ability.abilityType)
+            {
+                case CardAbilitySO.AbilityType.Revelation:
+                    Revelation(playedCard);
+                    break;
+                case CardAbilitySO.AbilityType.HealingTouch:
+                    HealingTouch(playedCard, effectedCard);
+                    break;
+            }
+        }
     }
 
     public void Heal(Card card, int healAmount)
@@ -117,6 +121,12 @@ public class AbilityManager : MonoBehaviour
     public void PrimalPact(Card card)
     {
         card.primalPact = true;
+    }
+
+    public void HealingTouch(Card playedCard, Card effectedCard)
+    {
+        effectedCard.currentHealth += playedCard.cardSO.abilities[0].value;
+        effectedCard.UpdateCardDisplay();
     }
 
     public void MetamorphoseCard()

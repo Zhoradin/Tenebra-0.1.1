@@ -28,5 +28,5 @@ MonoBehaviour:
   abilities: []
   moonPhase: 1
   cardType: 0
-  cardKind: 1
+  cardKind: 0
   cardRarity: 2
