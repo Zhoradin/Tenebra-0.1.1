@@ -13,7 +13,8 @@ public class CardAbilitySO : ScriptableObject
         Mend,
         Leech,
         Revelation,
-        Metamorphosis
+        Metamorphosis,
+        PrimalPact
     }
 
     public AbilityType abilityType;

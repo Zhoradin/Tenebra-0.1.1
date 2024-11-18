@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityType: 6
   value: 0
-  description: Absorbs the taken damage and add to overall health
+  description: Absorbs the taken damage and adds to overall health

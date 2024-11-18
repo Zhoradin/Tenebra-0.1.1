@@ -37,8 +37,8 @@ public class BattleController : MonoBehaviour
     [Range(0f, 1f)]
     public float playerFirstChance = .5f;
 
-    public CardPlacePoint[] playerCardPoints;
-    public CardPlacePoint[] enemyCardPoints;
+    [HideInInspector]
+    public CardPlacePoint[] playerCardPoints, enemyCardPoints;
 
     void Start()
     {
@@ -203,6 +203,7 @@ public class BattleController : MonoBehaviour
                     EnemyController.instance.StartAction();
                     // Check moon phase for enemy cards
                     CheckMoonPhaseForAllCards(enemyCardPoints);
+                    AbilityManager.instance.MetamorphoseCard();
                     break;
 
                 case TurnOrder.enemyCardAttacks:

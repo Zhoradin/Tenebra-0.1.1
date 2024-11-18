@@ -23,7 +23,7 @@ public class Card : MonoBehaviour
 
     public Image characterArt, bgArt, moonPhaseArt;
 
-    public bool inHand, isActive, isSelected, returningToHand, justPressed, isPlayer, isGraveyard, isLocked;
+    public bool inHand, isActive, isSelected, returningToHand, justPressed, isPlayer, isGraveyard, isLocked, isTransformed;
     public int handPosition;
 
     public GameObject abilityDescription, abilityDescriptionToo;
@@ -56,7 +56,7 @@ public class Card : MonoBehaviour
     public Animator anim;
 
     [HideInInspector]
-    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, multipleHit, mend, leech, revelation, metamorphosis = false;
+    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, multipleHit, mend, leech, revelation, metamorphosis, primalPact = false;
     public int metamorphosisTurnCount;
 
     // Start is called before the first frame update
@@ -690,5 +690,12 @@ public class Card : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public bool CanMetamorphose()
+    {
+        return metamorphosis &&
+               !isTransformed &&
+               (BattleController.instance.turnCount - metamorphosisTurnCount) >= 2; // Örnek olarak dönüşüm için 2 tur bekleme
     }
 }

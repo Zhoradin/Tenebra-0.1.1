@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class AbilityManager : MonoBehaviour
@@ -53,6 +54,9 @@ public class AbilityManager : MonoBehaviour
                     case CardAbilitySO.AbilityType.Metamorphosis:
                         Metamorphosis(card);
                         break;
+                    case CardAbilitySO.AbilityType.PrimalPact:
+                        PrimalPact(card);
+                        break;
                 }
             }
             else if (card.cardKind == CardKind.Efect)
@@ -65,6 +69,7 @@ public class AbilityManager : MonoBehaviour
                 }
             }
         }
+        CheckPrimalPactInteractions(card);
     }
 
     public void Heal(Card card, int healAmount)
@@ -109,23 +114,76 @@ public class AbilityManager : MonoBehaviour
         card.metamorphosisTurnCount = BattleController.instance.turnCount; // Kartýn dönüþüm zamanýný kaydet
     }
 
+    public void PrimalPact(Card card)
+    {
+        card.primalPact = true;
+    }
+
     public void MetamorphoseCard()
     {
-        foreach (var point in CardPointsController.instance.playerCardPoints)
+        CardPlacePoint[] cardPoints = null;
+
+        // Þu anki tura göre metamorphose iþlemini uygun kartlar için yap
+        if (BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive)
         {
-            if (point.activeCard != null)
+            cardPoints = CardPointsController.instance.playerCardPoints;
+        }
+        else if (BattleController.instance.currentPhase == BattleController.TurnOrder.enemyActive)
+        {
+            cardPoints = CardPointsController.instance.enemyCardPoints;
+        }
+
+        if (cardPoints == null) return;
+
+        foreach (var point in cardPoints)
+        {
+            if (point.activeCard != null && point.activeCard.CanMetamorphose())
             {
-                var card = point.activeCard;
-                if (card.metamorphosis && BattleController.instance.turnCount >= card.metamorphosisTurnCount + 2) // Her kartýn kendi dönüþüm zamanýný kontrol et
+                TransformCard(point.activeCard);
+            }
+        }
+    }
+
+    private void CheckPrimalPactInteractions(Card card)
+    {
+        if (!card.primalPact || card.isTransformed) return;
+
+        // Ýlgili kart türü (oyuncu veya düþman) için sahadaki tüm kartlarý kontrol et
+        var cardPoints = card.isPlayer
+            ? CardPointsController.instance.playerCardPoints
+            : CardPointsController.instance.enemyCardPoints;
+
+        int primalPactCount = 0;
+
+        // Sahadaki `PrimalPact` kartlarýnýn sayýsýný kontrol et
+        foreach (var point in cardPoints)
+        {
+            if (point.activeCard != null && point.activeCard.primalPact)
+            {
+                primalPactCount++;
+            }
+        }
+
+        // Eðer sahada birden fazla `PrimalPact` kartý varsa dönüþümü baþlat
+        if (primalPactCount > 1)
+        {
+            foreach (var point in cardPoints)
+            {
+                if (point.activeCard != null && point.activeCard.primalPact && !point.activeCard.isTransformed)
                 {
-                    card.characterArt.sprite = card.cardSO.changedCharacterSprite; // Görseli deðiþtir
-                    card.currentHealth = card.cardSO.changedHealth;
-                    card.attackPower = card.cardSO.changedAttackPower;
-                    card.UpdateCardDisplay();
-                    card.metamorphosis = false; // Ýþlem tamamlandýðý için kapat
+                    TransformCard(point.activeCard);
                 }
             }
         }
+    }
+
+    private void TransformCard(Card card)
+    {
+        card.characterArt.sprite = card.cardSO.changedCharacterSprite;
+        card.currentHealth = card.cardSO.changedHealth;
+        card.attackPower = card.cardSO.changedAttackPower;
+        card.UpdateCardDisplay();
+        card.isTransformed = true; // Kart dönüþmüþ olarak iþaretleniyor
     }
 
     public IEnumerator QuickAttackCoroutine(Card card)

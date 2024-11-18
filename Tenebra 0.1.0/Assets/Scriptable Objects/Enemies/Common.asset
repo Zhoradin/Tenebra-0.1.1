@@ -18,7 +18,6 @@ MonoBehaviour:
   gainedCoin: 50
   enemySprite: {fileID: 21300000, guid: fae3fb108e7208c46b7abb7ee1afaeab, type: 3}
   deckToUse:
-  - {fileID: 11400000, guid: 75869764fe1a8b14db9a3f8913e0e80b, type: 2}
-  - {fileID: 11400000, guid: 9bd58c0bdaee74348a8b41088f0f3246, type: 2}
-  - {fileID: 11400000, guid: 219e780c88339b74f82a694e22647bfc, type: 2}
-  - {fileID: 11400000, guid: 8c3cf27eb2ce1984ba4e19bf4a2f0baf, type: 2}
+  - {fileID: 11400000, guid: 7a7890845cd90924a817b46da22e79bf, type: 2}
+  - {fileID: 11400000, guid: 67f9449e6a9e54243b9ada2724b201d4, type: 2}
+  - {fileID: 11400000, guid: 2c6d38f42f6cc7a4bb705dd736eddc23, type: 2}

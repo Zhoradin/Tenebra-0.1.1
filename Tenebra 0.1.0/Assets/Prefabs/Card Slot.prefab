@@ -564,8 +564,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -22.7, y: -8.599991}
-  m_SizeDelta: {x: 118.73, y: 29.19}
+  m_AnchoredPosition: {x: 0.0252, y: -7.0622}
+  m_SizeDelta: {x: 173.7492, y: 23.3805}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5658772607041386182
 CanvasRenderer:
@@ -622,11 +622,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.2
+  m_fontSize: 16.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 9
   m_fontSizeMax: 72
   m_fontStyle: 1
   m_HorizontalAlignment: 1
@@ -658,7 +658,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 5, y: 0, z: 5, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1376,6 +1376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardImage: {fileID: 7451863287436529473}
   cardBgImage: {fileID: 5152624281468275612}
+  cardMoonPhaseImage: {fileID: 8745824042738254961}
   cardNameText: {fileID: 3133440846332022921}
   cardDescriptionText: {fileID: 3214056918736584760}
   healthText: {fileID: 20200888337605962}
@@ -1387,7 +1388,7 @@ MonoBehaviour:
   abilityDescriptionTextToo: {fileID: 2428285818663643076}
   hoverScale: {x: 1.2, y: 1.2, z: 1.2}
   transitionSpeed: 10
-  isSelect: 0
+  cardTriggerButton: {fileID: 0}
 --- !u!61 &-2103334018103224348
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1676,8 +1677,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.51, y: -69.54999}
-  m_SizeDelta: {x: 165.96, y: 80.5}
+  m_AnchoredPosition: {x: 0.025042, y: -87.00842}
+  m_SizeDelta: {x: 173.75, y: 115.4169}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2861357617242341592
 CanvasRenderer:
@@ -1734,12 +1735,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
+  m_fontSize: 12
   m_fontSizeBase: 16
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 6
+  m_fontSizeMax: 12
   m_fontStyle: 3
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -1770,7 +1771,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 5, y: 5, z: 5, w: 5}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
