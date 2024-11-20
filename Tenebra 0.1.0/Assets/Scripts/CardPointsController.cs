@@ -123,12 +123,17 @@ public class CardPointsController : MonoBehaviour
             damage *= effectiveness;
 
             defender.activeCard.DamageCard(Mathf.RoundToInt(damage));
-            Debug.Log("abuzer");
-            if(defender.activeCard != null)
+
+            // Decay özelliðini tetikleyin
+            if (attacker.activeCard.decay)
+            {
+                AbilityManager.instance.DecayCard(attacker.activeCard, defender.activeCard);
+            }
+
+            if (defender.activeCard != null)
             {
                 if (defender.activeCard.mend)
                 {
-                    Debug.Log("klarnet");
                     defender.activeCard.currentHealth += Mathf.RoundToInt(damage / 2);
                     defender.activeCard.UpdateCardDisplay();
                 }
@@ -138,7 +143,7 @@ public class CardPointsController : MonoBehaviour
                     BattleController.instance.enemyHealth += Mathf.RoundToInt(damage);
                     UIController.instance.SetEnemyHealthText(BattleController.instance.enemyHealth);
                 }
-            } 
+            }
         }
 
         // Saldýrý animasyonu

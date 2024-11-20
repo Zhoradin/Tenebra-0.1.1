@@ -1,11 +1,20 @@
 using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AbilityManager : MonoBehaviour
 {
     public int turnCount = 0;
     public int metamorphoseTurnCount;
+
+    private List<DecayedCard> decayedCards = new List<DecayedCard>();
+
+    private class DecayedCard
+    {
+        public Card card;         // Decayed olan kart
+        public Card sourceCard;   // Decayed yapan kart
+        public int turnCounter;   // Decay hasarýnýn artýþýný takip
+    }
 
     public static AbilityManager instance;
     private void Awake()
@@ -60,6 +69,9 @@ public class AbilityManager : MonoBehaviour
                     break;
                 case CardAbilitySO.AbilityType.Growth:
                     Growth(card);
+                    break;
+                case CardAbilitySO.AbilityType.Decay:
+                    Decay(card);
                     break;
             }
         }
@@ -214,6 +226,72 @@ public class AbilityManager : MonoBehaviour
             {
                 point.activeCard.currentHealth += point.activeCard.cardSO.abilities[0].value;
                 point.activeCard.UpdateCardDisplay(); // Kart görselini güncelle
+            }
+        }
+    }
+
+    public void Decay(Card card)
+    {
+        card.decay = true;
+    }
+
+    public void DecayCard(Card attackingCard, Card defendingCard)
+    {
+        if(defendingCard != null)
+        {
+            defendingCard.decayed = true;
+        }
+
+        DecayedCard decayedCard = new DecayedCard
+        {
+            card = defendingCard,
+            sourceCard = attackingCard,
+            turnCounter = 0
+        };
+
+        decayedCards.Add(decayedCard);
+    }
+
+    public void ProcessDecayDamage()
+    {
+        for (int i = decayedCards.Count - 1; i >= 0; i--)
+        {
+            DecayedCard decayedCard = decayedCards[i];
+
+            // Decayed yapan kart öldüyse hasarý durdur
+            if (decayedCard.sourceCard == null || !decayedCard.sourceCard.isActive)
+            {
+                decayedCards.RemoveAt(i);
+                continue;
+            }
+
+            // Aktif faz kontrolü
+            if (decayedCard.card != null && decayedCard.card.isActive)
+            {
+                bool isPlayerTurn = BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive;
+
+                // Faz uygun deðilse iþlemi atla
+                if ((decayedCard.card.isPlayer && !isPlayerTurn) || (!decayedCard.card.isPlayer && isPlayerTurn))
+                {
+                    continue;
+                }
+
+                // Ýlk turda hasar vermeme kontrolü
+                if (decayedCard.turnCounter > 0)
+                {
+                    int decayDamage = decayedCard.turnCounter;
+                    decayedCard.card.DamageCard(decayDamage);
+
+                    // Hasar sonrasý kart öldüyse listeden kaldýr
+                    if (!decayedCard.card.isActive)
+                    {
+                        decayedCards.RemoveAt(i);
+                        continue;
+                    }
+                }
+
+                // Her tur sonunda turnCounter artýrýlýr
+                decayedCard.turnCounter++;
             }
         }
     }

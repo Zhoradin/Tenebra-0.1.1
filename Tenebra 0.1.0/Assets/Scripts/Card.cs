@@ -57,8 +57,9 @@ public class Card : MonoBehaviour
     public Animator anim;
 
     [HideInInspector]
-    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot, growth = false;
-    public int metamorphosisTurnCount;
+    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot, growth, decay, decayed = false;
+    public int metamorphosisTurnCount, decayTurns;
+    public Card decayedBy;
 
     public bool multipleHit;
 

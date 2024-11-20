@@ -185,6 +185,7 @@ public class BattleController : MonoBehaviour
                     CheckMoonPhaseForAllCards(enemyCardPoints);
                     turnCount++;
                     AbilityManager.instance.MetamorphoseCard();
+                    AbilityManager.instance.ProcessDecayDamage();
 
                     // Growth yeteneği için kontrol (oyuncu kartları)
                     AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.playerCardPoints);
@@ -207,6 +208,7 @@ public class BattleController : MonoBehaviour
                     // Check moon phase for enemy cards
                     CheckMoonPhaseForAllCards(enemyCardPoints);
                     AbilityManager.instance.MetamorphoseCard();
+                    AbilityManager.instance.ProcessDecayDamage();
 
                     // Growth yeteneği için kontrol (düşman kartları)
                     AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.enemyCardPoints);

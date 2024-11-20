@@ -63,6 +63,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fce9eb92023d2fd46a570dff3baf87bf, type: 2}
   - {fileID: 11400000, guid: de68d3b7ba2699942a0fc676a98a83a4, type: 2}
   - {fileID: 11400000, guid: 88f79ab76f2839749aef2a41ceb86c63, type: 2}
+  - {fileID: 11400000, guid: 1d6b3e921128acc4ca38e98870604564, type: 2}
   pathwayRooms: []
   currentRoomName: 
   enemy: {fileID: 11400000, guid: 926c6e2bf115d3d4a8e757c366b80f12, type: 2}

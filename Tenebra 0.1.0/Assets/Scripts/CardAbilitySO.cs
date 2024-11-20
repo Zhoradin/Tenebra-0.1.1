@@ -17,6 +17,7 @@ public class CardAbilitySO : ScriptableObject
         PrimalPact,
         Scattershot,
         Growth,
+        Decay,
         HealingTouch
     }
 

@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21abf7f0a1b44eb4ba18b5cd5add9760, type: 3}
-  m_Name: Healing Touch
+  m_Name: Decay
   m_EditorClassIdentifier: 
-  abilityType: 13
-  value: 5
-  description: Heals the card that it is played on by 5
+  abilityType: 12
+  value: 0
+  description: Inflicts a decaying curse on the target, causing increasing damage
+    each turn until the source card is destroyed
