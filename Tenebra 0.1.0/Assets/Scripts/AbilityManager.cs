@@ -55,6 +55,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.PrimalPact:
                     PrimalPact(card);
                     break;
+                case CardAbilitySO.AbilityType.Scattershot:
+                    Scattershot(card);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -121,6 +124,12 @@ public class AbilityManager : MonoBehaviour
     public void PrimalPact(Card card)
     {
         card.primalPact = true;
+    }
+
+    public void Scattershot(Card card)
+    {
+        card.scattershot = true;
+        card.multipleHit = true;
     }
 
     public void HealingTouch(Card playedCard, Card effectedCard)

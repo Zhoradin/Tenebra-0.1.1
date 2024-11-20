@@ -15,6 +15,7 @@ public class CardAbilitySO : ScriptableObject
         Revelation,
         Metamorphosis,
         PrimalPact,
+        Scattershot,
         HealingTouch
     }
 

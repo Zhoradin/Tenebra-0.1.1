@@ -8,6 +8,7 @@ public class CardMarket : MonoBehaviour
 {
     public Image cardImage;
     public Image cardBgImage;
+    public Image cardMoonPhaseImage;
     public TMP_Text cardNameText;
     public TMP_Text cardDescriptionText;
     public TMP_Text healthText;
@@ -55,6 +56,16 @@ public class CardMarket : MonoBehaviour
         costText.text = card.essenceCost.ToString();
         coinText.text = card.coinCost.ToString();
         coinAmount = card.coinCost;
+
+        if (cardData.cardKind == CardKind.Field)
+        {
+            cardMoonPhaseImage.sprite = card.moonPhaseSprite;
+        }
+        else
+        {
+            cardMoonPhaseImage.gameObject.SetActive(false);
+        }
+
         UpdateAbilityDescription(card);
     }
 

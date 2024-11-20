@@ -17,7 +17,8 @@ public class Card : MonoBehaviour
     public CardSO cardSO;
 
     public int currentHealth, attackPower, essenceCost;
-    private int originalHealth, originalAttack, originalEssence;
+    [HideInInspector]
+    public int originalHealth, originalAttack, originalEssence;
 
     public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo, superEffectiveText, notEffectiveText;
 
@@ -56,8 +57,10 @@ public class Card : MonoBehaviour
     public Animator anim;
 
     [HideInInspector]
-    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, multipleHit, mend, leech, revelation, metamorphosis, primalPact = false;
+    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot = false;
     public int metamorphosisTurnCount;
+
+    public bool multipleHit;
 
     // Start is called before the first frame update
     void Start()
@@ -103,13 +106,20 @@ public class Card : MonoBehaviour
         cardKind = cardSO.cardKind;
         cardRarity = cardSO.cardRarity;
 
-        moonPhaseArt.sprite = cardSO.moonPhaseSprite;
+        if(cardKind == CardKind.Field)
+        {
+            moonPhaseArt.sprite = cardSO.moonPhaseSprite;
+        }
+        else
+        {
+            moonPhaseArt.gameObject.SetActive(false);
+        }
 
         isGraveyard = cardSO.isGraveyard;
 
         UpdateAbilityDescription();
 
-        CheckMoonPhase();
+        MoonPhaseController.instance.CheckMoonPhase(this);
     }
 
     // Update is called once per frame
@@ -167,7 +177,7 @@ public class Card : MonoBehaviour
 
                             BattleController.instance.SpendPlayerEssence(essenceCost);
                             isActive = true;
-                            CheckMoonPhase();
+                            MoonPhaseController.instance.CheckMoonPhase(this);
                             theCol.enabled = true;
                         }
                         else
@@ -229,7 +239,7 @@ public class Card : MonoBehaviour
                             AbilityManager.instance.ActivateEffectAbility(this, selectedPoint.activeCard);
                             BattleController.instance.SpendPlayerEssence(essenceCost);
                             isActive = true;
-                            CheckMoonPhase();
+                            MoonPhaseController.instance.CheckMoonPhase(this);
                             theCol.enabled = true;
                         }
                         else
@@ -581,115 +591,6 @@ public class Card : MonoBehaviour
         }
         
         quickAttack = false;
-    }
-
-    public void CheckMoonPhase()
-    {
-        if (cardSO.moonPhase == BattleController.instance.currentMoonPhase)
-        {
-            switch (cardSO.moonPhase)
-            {
-                case MoonPhase.NewMoon:
-                    // No effect for NewMoon
-                    break;
-
-                case MoonPhase.WaxingCrescent:
-                    // Increase health and attackPower by .33
-                    currentHealth += Mathf.RoundToInt(currentHealth * .33f);
-                    attackPower += Mathf.RoundToInt(attackPower * .33f);
-                    UpdateCardDisplay();
-                    break;
-
-                case MoonPhase.FirstQuarter:
-                    // Insta kill
-                    instaKill = true;
-                    break;
-
-                case MoonPhase.WaxingGibbous:
-                    // Decrease essence cost to half
-                    essenceCost /= 2;
-                    UpdateCardDisplay();
-                    break;
-
-                case MoonPhase.FullMoon:
-                    // Reflect the damage
-                    break;
-
-                case MoonPhase.WaningGibbous:
-                    // Increase overall essence by 1
-                    if (isActive)
-                    {
-                        if (isPlayer)
-                        {
-                            BattleController.instance.PlayerGainEssence(1);
-                        }
-                        else
-                        {
-                            BattleController.instance.EnemyGainEssence(1);
-                        }
-                    }
-                    break;
-
-                case MoonPhase.LastQuarter:
-                    // Attack 3 opponents
-                    multipleHit = true;
-                    break;
-
-                case MoonPhase.WaningCrescent:
-                    // Steal 1 health
-                    break;
-
-                default:
-                    Debug.Log("Eşleşen bir moon phase yok.");
-                    break;
-            }
-        }
-        else
-        {
-            switch (cardSO.moonPhase)
-            {
-                case MoonPhase.NewMoon:
-                    // No effect for NewMoon
-                    break;
-
-                case MoonPhase.WaxingCrescent:
-                    // Convert health and attack to its original
-                    currentHealth = originalHealth;
-                    attackPower = originalAttack;
-                    UpdateCardDisplay();
-                    break;
-
-                case MoonPhase.FirstQuarter:
-                    // No effect
-                    instaKill = false;
-                    break;
-
-                case MoonPhase.WaxingGibbous:
-                    essenceCost = originalEssence;
-                    UpdateCardDisplay();
-                    break;
-
-                case MoonPhase.FullMoon:
-                    // No effect
-                    break;
-
-                case MoonPhase.WaningGibbous:
-                    // No effect
-                    break;
-
-                case MoonPhase.LastQuarter:
-                    multipleHit = false;
-                    break;
-
-                case MoonPhase.WaningCrescent:
-                    // No effect
-                    break;
-
-                default:
-                    Debug.Log("Eşleşen bir moon phase yok.");
-                    break;
-            }
-        }
     }
 
     public bool CanMetamorphose()

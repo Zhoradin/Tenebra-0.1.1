@@ -75,18 +75,23 @@ public class CardPointsController : MonoBehaviour
     List<int> GetTargets(int index, CardPlacePoint[] attackingPoints, CardPlacePoint[] defendingPoints, bool multipleHit)
     {
         List<int> targets = new List<int>();
-        if (defendingPoints[index].activeCard != null)
-        {
-            targets.Add(index);
-        }
 
         if (multipleHit)
         {
-            if (index - 1 >= 0 && defendingPoints[index - 1].activeCard != null)
+            // Önce sol slot
+            if (index - 1 >= 0)
             {
                 targets.Add(index - 1);
             }
-            if (index + 1 < defendingPoints.Length && defendingPoints[index + 1].activeCard != null)
+        }
+
+        // Ana hedef (karþýdaki slot)
+        targets.Add(index);
+
+        if (multipleHit)
+        {
+            // Son olarak sað slot
+            if (index + 1 < defendingPoints.Length)
             {
                 targets.Add(index + 1);
             }
@@ -97,48 +102,48 @@ public class CardPointsController : MonoBehaviour
 
     IEnumerator PerformAttack(CardPlacePoint attacker, CardPlacePoint defender, int targetIndex)
     {
-        float effectiveness = TypeEffectiveness.GetEffectiveness(attacker.activeCard.cardType, defender.activeCard.cardType);
-        float damage = attacker.activeCard.attackPower * effectiveness;
+        float damage = attacker.activeCard.attackPower;
 
-        if (defender.activeCard.cardSO.moonPhase == BattleController.instance.currentMoonPhase &&
-            defender.activeCard.cardSO.moonPhase == MoonPhase.FullMoon)
+        if (defender.activeCard == null)
         {
-            defender.activeCard.DamageCard(0);
-            attacker.activeCard.DamageCard(Mathf.RoundToInt(damage));
+            // Slot boþ, ana düþmana hasar ver
+            if (defender == playerCardPoints[targetIndex])
+            {
+                BattleController.instance.DamagePlayer(Mathf.RoundToInt(damage));
+            }
+            else if (defender == enemyCardPoints[targetIndex])
+            {
+                BattleController.instance.DamageEnemy(Mathf.RoundToInt(damage));
+            }
         }
         else
         {
-            if (defender.activeCard.mend)
-            {
-                defender.activeCard.currentHealth += Mathf.RoundToInt(damage / 2);
-                defender.activeCard.UpdateCardDisplay();
-            }
-
-            if (defender.activeCard.leech)
-            {
-                BattleController.instance.enemyHealth += Mathf.RoundToInt(damage);
-                UIController.instance.SetEnemyHealthText(BattleController.instance.enemyHealth);
-            }
+            // Slot dolu, karta hasar ver
+            float effectiveness = TypeEffectiveness.GetEffectiveness(attacker.activeCard.cardType, defender.activeCard.cardType);
+            damage *= effectiveness;
 
             defender.activeCard.DamageCard(Mathf.RoundToInt(damage));
+            Debug.Log("abuzer");
+            if(defender.activeCard != null)
+            {
+                if (defender.activeCard.mend)
+                {
+                    Debug.Log("klarnet");
+                    defender.activeCard.currentHealth += Mathf.RoundToInt(damage / 2);
+                    defender.activeCard.UpdateCardDisplay();
+                }
+
+                if (defender.activeCard.leech)
+                {
+                    BattleController.instance.enemyHealth += Mathf.RoundToInt(damage);
+                    UIController.instance.SetEnemyHealthText(BattleController.instance.enemyHealth);
+                }
+            } 
         }
 
-        BattleController.instance.SetupActiveCards();
-
-        if(attacker.activeCard != null)
+        // Saldýrý animasyonu
+        if (attacker.activeCard != null)
         {
-            if (attacker.activeCard.cardSO.moonPhase == BattleController.instance.currentMoonPhase)
-            {
-                if (attacker.activeCard.cardSO.moonPhase == MoonPhase.WaningCrescent)
-                {
-                    AbilityManager.instance.Heal(attacker.activeCard ,1);
-                }
-                else if (attacker.activeCard.cardSO.moonPhase == MoonPhase.FirstQuarter)
-                {
-                    defender.activeCard.currentHealth = 0;
-                }
-            }
-
             if (attacker.activeCard.isPlayer)
             {
                 attacker.activeCard.anim.SetTrigger("Attack");

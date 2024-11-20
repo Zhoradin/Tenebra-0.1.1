@@ -39,12 +39,20 @@ public class CardSlot : MonoBehaviour
         cardData = card;
         cardImage.sprite = card.characterSprite;
         cardBgImage.sprite = card.bgSprite;
-        cardMoonPhaseImage.sprite = card.moonPhaseSprite;
         cardNameText.text = card.cardName;
         cardDescriptionText.text = card.cardDescription;
         healthText.text = card.currentHealth.ToString();
         attackText.text = card.attackPower.ToString();
         costText.text = card.essenceCost.ToString();
+
+        if(cardData.cardKind == CardKind.Field)
+        {
+            cardMoonPhaseImage.sprite = card.moonPhaseSprite;
+        }
+        else
+        {
+            cardMoonPhaseImage.gameObject.SetActive(false);
+        }
 
         UpdateAbilityDescription();
     }

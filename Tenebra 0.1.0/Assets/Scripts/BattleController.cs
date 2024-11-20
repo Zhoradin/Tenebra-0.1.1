@@ -234,7 +234,7 @@ public class BattleController : MonoBehaviour
         {
             if (point.activeCard != null)
             {
-                point.activeCard.CheckMoonPhase();
+                MoonPhaseController.instance.CheckMoonPhase(point.activeCard);
             }
         }
     }

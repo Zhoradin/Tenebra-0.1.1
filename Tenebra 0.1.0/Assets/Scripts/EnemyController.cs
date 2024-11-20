@@ -329,7 +329,7 @@ public class EnemyController : MonoBehaviour
         {
             StartCoroutine(Card.instance.QuickAttackCoroutine());
         }
-        Card.instance.CheckMoonPhase();
+        MoonPhaseController.instance.CheckMoonPhase(newCard);
 
         cardsInHand.Remove(cardSO);
 
