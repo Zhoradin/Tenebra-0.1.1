@@ -57,7 +57,7 @@ public class Card : MonoBehaviour
     public Animator anim;
 
     [HideInInspector]
-    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot = false;
+    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot, growth = false;
     public int metamorphosisTurnCount;
 
     public bool multipleHit;
@@ -216,6 +216,7 @@ public class Card : MonoBehaviour
                         if (BattleController.instance.playerEssence >= essenceCost)
                         {
                             Debug.Log("efect card");
+                            AbilityManager.instance.ActivateEffectAbility(this, selectedPoint.activeCard);
 
                             if (isPlayer)
                             {
@@ -236,7 +237,6 @@ public class Card : MonoBehaviour
                             returningToHand = false;
                             targetScale = originalScale;
                             theHC.RemoveCardFromHand(this);
-                            AbilityManager.instance.ActivateEffectAbility(this, selectedPoint.activeCard);
                             BattleController.instance.SpendPlayerEssence(essenceCost);
                             isActive = true;
                             MoonPhaseController.instance.CheckMoonPhase(this);

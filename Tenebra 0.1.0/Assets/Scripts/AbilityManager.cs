@@ -58,6 +58,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Scattershot:
                     Scattershot(card);
                     break;
+                case CardAbilitySO.AbilityType.Growth:
+                    Growth(card);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -69,11 +72,10 @@ public class AbilityManager : MonoBehaviour
         {
             switch (ability.abilityType)
             {
-                case CardAbilitySO.AbilityType.Revelation:
-                    Revelation(playedCard);
-                    break;
                 case CardAbilitySO.AbilityType.HealingTouch:
                     HealingTouch(playedCard, effectedCard);
+                    break;
+                case CardAbilitySO.AbilityType.Revelation:
                     break;
             }
         }
@@ -121,23 +123,6 @@ public class AbilityManager : MonoBehaviour
         card.metamorphosisTurnCount = BattleController.instance.turnCount; // Kartýn dönüþüm zamanýný kaydet
     }
 
-    public void PrimalPact(Card card)
-    {
-        card.primalPact = true;
-    }
-
-    public void Scattershot(Card card)
-    {
-        card.scattershot = true;
-        card.multipleHit = true;
-    }
-
-    public void HealingTouch(Card playedCard, Card effectedCard)
-    {
-        effectedCard.currentHealth += playedCard.cardSO.abilities[0].value;
-        effectedCard.UpdateCardDisplay();
-    }
-
     public void MetamorphoseCard()
     {
         CardPlacePoint[] cardPoints = null;
@@ -161,6 +146,11 @@ public class AbilityManager : MonoBehaviour
                 TransformCard(point.activeCard);
             }
         }
+    }
+
+    public void PrimalPact(Card card)
+    {
+        card.primalPact = true;
     }
 
     private void CheckPrimalPactInteractions(Card card)
@@ -203,6 +193,35 @@ public class AbilityManager : MonoBehaviour
         card.attackPower = card.cardSO.changedAttackPower;
         card.UpdateCardDisplay();
         card.isTransformed = true; // Kart dönüþmüþ olarak iþaretleniyor
+    }
+
+    public void Scattershot(Card card)
+    {
+        card.scattershot = true;
+        card.multipleHit = true;
+    }
+
+    public void Growth(Card card)
+    {
+        card.growth = true;
+    }
+
+    public void ApplyGrowthAbility(CardPlacePoint[] cardPoints)
+    {
+        foreach (var point in cardPoints)
+        {
+            if (point.activeCard != null && point.activeCard.growth)
+            {
+                point.activeCard.currentHealth += point.activeCard.cardSO.abilities[0].value;
+                point.activeCard.UpdateCardDisplay(); // Kart görselini güncelle
+            }
+        }
+    }
+
+    public void HealingTouch(Card playedCard, Card effectedCard)
+    {
+        effectedCard.currentHealth += playedCard.cardSO.abilities[0].value;
+        effectedCard.UpdateCardDisplay();
     }
 
     public IEnumerator QuickAttackCoroutine(Card card)

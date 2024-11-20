@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
+  m_Name: Test Growth 2
+  m_EditorClassIdentifier: 
+  cardName: Brain Parasite
+  isGraveyard: 0
+  cardDescription: A sinister entity that grows stronger each turn, feeding off its
+    host's mind.
+  currentHealth: 6
+  attackPower: 2
+  essenceCost: 2
+  coinCost: 100
+  changedHealth: 0
+  changedAttackPower: 0
+  characterSprite: {fileID: 21300000, guid: 796f7b1772d15a444b46158f746c9055, type: 3}
+  bgSprite: {fileID: 21300000, guid: ac44cb3326b919c4b93300164cde8661, type: 3}
+  changedCharacterSprite: {fileID: 0}
+  moonPhaseSprite: {fileID: 21300000, guid: 86fdf100d0bc5cb4c8bfd87919fb0d93, type: 3}
+  abilities:
+  - {fileID: 11400000, guid: 605b4c74bc5c8d045b8f37b0195235e5, type: 2}
+  moonPhase: 2
+  cardType: 2
+  cardKind: 0
+  cardRarity: 1

@@ -343,7 +343,7 @@ public class EnemyController : MonoBehaviour
         List<CardSO> cardsToPlay = new List<CardSO>();
         foreach (CardSO card in cardsInHand)
         {
-            if (card.essenceCost <= BattleController.instance.enemyEssence)
+            if (card.cardKind == CardKind.Field && card.essenceCost <= BattleController.instance.enemyEssence)
             {
                 cardsToPlay.Add(card);
             }
@@ -352,10 +352,10 @@ public class EnemyController : MonoBehaviour
         if (cardsToPlay.Count > 0)
         {
             int selected = Random.Range(0, cardsToPlay.Count);
-
             cardToPlay = cardsToPlay[selected];
         }
 
         return cardToPlay;
     }
+
 }
