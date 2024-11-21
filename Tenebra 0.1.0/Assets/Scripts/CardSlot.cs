@@ -47,7 +47,10 @@ public class CardSlot : MonoBehaviour
 
         if(cardData.cardKind == CardKind.Field)
         {
-            cardMoonPhaseImage.sprite = card.moonPhaseSprite;
+            if(cardMoonPhaseImage != null)
+            {
+                cardMoonPhaseImage.sprite = card.moonPhaseSprite;
+            }            
         }
         else
         {

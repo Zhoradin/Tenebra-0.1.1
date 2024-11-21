@@ -18,6 +18,7 @@ public class CardAbilitySO : ScriptableObject
         Scattershot,
         Growth,
         Decay,
+        Guardian,
         HealingTouch
     }
 

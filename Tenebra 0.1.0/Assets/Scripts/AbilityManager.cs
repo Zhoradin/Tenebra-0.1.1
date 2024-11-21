@@ -73,6 +73,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Decay:
                     Decay(card);
                     break;
+                case CardAbilitySO.AbilityType.Guardian:
+                    Guardian(card);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -294,6 +297,11 @@ public class AbilityManager : MonoBehaviour
                 decayedCard.turnCounter++;
             }
         }
+    }
+
+    public void Guardian(Card card)
+    {
+        card.guardian = true;
     }
 
     public void HealingTouch(Card playedCard, Card effectedCard)

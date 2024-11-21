@@ -76,6 +76,36 @@ public class CardPointsController : MonoBehaviour
     {
         List<int> targets = new List<int>();
 
+        // Guardian özelliði kontrolü
+        int guardianIndex = -1;
+        for (int i = 0; i < defendingPoints.Length; i++)
+        {
+            if (defendingPoints[i].activeCard != null && defendingPoints[i].activeCard.guardian)
+            {
+                guardianIndex = i;
+                break;
+            }
+        }
+
+        // Eðer Guardian varsa
+        if (guardianIndex != -1)
+        {
+            if (multipleHit)
+            {
+                // Multiple hit özelliði aktifse Guardian üç kez hedeflenir
+                targets.Add(guardianIndex);
+                targets.Add(guardianIndex);
+                targets.Add(guardianIndex);
+            }
+            else
+            {
+                // Normal saldýrý için Guardian bir kez hedeflenir
+                targets.Add(guardianIndex);
+            }
+            return targets;
+        }
+
+        // Guardian yoksa hedefleme normal þekilde devam eder
         if (multipleHit)
         {
             // Önce sol slot
