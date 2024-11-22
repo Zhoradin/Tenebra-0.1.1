@@ -1647,13 +1647,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardImage: {fileID: 7451863287436529473}
   cardBgImage: {fileID: 5152624281468275612}
+  cardMoonPhaseImage: {fileID: 8745824042738254961}
   cardNameText: {fileID: 3133440846332022921}
   cardDescriptionText: {fileID: 3214056918736584760}
   healthText: {fileID: 20200888337605962}
   attackText: {fileID: 1105218495926992895}
   costText: {fileID: 936583045685089685}
   coinText: {fileID: 1121580158959827951}
-  coinImage: {fileID: 3202947109039215713}
+  coinImage: {fileID: 8745824042738254961}
   saleImage: {fileID: 986658219382803226}
   abilityDescription1: {fileID: 7999898650783954510}
   abilityDescription2: {fileID: 1382735681872462106}
