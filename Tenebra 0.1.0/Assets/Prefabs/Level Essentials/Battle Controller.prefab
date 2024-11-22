@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d60618ad65b5314580dc1d221ab2557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnCount: 0
+  metamorphoseTurnCount: 0
 --- !u!1 &1730562568743532475
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,9 +167,10 @@ MonoBehaviour:
   discardPoint: {fileID: 8420260223434285748}
   graveyardPoint: {fileID: 3049950228687425037}
   playerHealth: 100
-  enemyHealth: 5
+  enemyHealth: 50
   battleEnded: 0
   resultScreenDelayTime: 1
+  turnCount: 0
   playerFirstChance: 0
   playerCardPoints: []
   enemyCardPoints: []

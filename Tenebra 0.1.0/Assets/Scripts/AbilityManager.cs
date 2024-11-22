@@ -6,6 +6,7 @@ public class AbilityManager : MonoBehaviour
 {
     public int turnCount = 0;
     public int metamorphoseTurnCount;
+    private int heldCardCount;
 
     private List<DecayedCard> decayedCards = new List<DecayedCard>();
 
@@ -75,6 +76,9 @@ public class AbilityManager : MonoBehaviour
                     break;
                 case CardAbilitySO.AbilityType.Guardian:
                     Guardian(card);
+                    break;
+                case CardAbilitySO.AbilityType.Reckoning:
+                    Reckoning(card);
                     break;
             }
         }
@@ -302,6 +306,15 @@ public class AbilityManager : MonoBehaviour
     public void Guardian(Card card)
     {
         card.guardian = true;
+    }
+
+    public void Reckoning(Card card)
+    {
+        card.reckoning = true;
+        heldCardCount = HandController.instance.heldCards.Count;
+        card.attackPower += heldCardCount;
+        HandController.instance.EmptyHand();
+        card.UpdateCardDisplay();
     }
 
     public void HealingTouch(Card playedCard, Card effectedCard)
