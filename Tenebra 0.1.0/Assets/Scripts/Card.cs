@@ -57,11 +57,11 @@ public class Card : MonoBehaviour
     public Animator anim;
 
     [HideInInspector]
-    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot, growth, decay, decayed, guardian, reckoning, benevolence = false;
+    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot, growth, decay, decayed, guardian, reckoning, benevolence,
+        snowball, multipleHit = false;
     public int metamorphosisTurnCount, decayTurns;
     public Card decayedBy;
-
-    public bool multipleHit;
+    public bool usedWaxingCrescent = false;
 
     // Start is called before the first frame update
     void Start()

@@ -234,6 +234,7 @@ public class MoonPhaseController : MonoBehaviour
 
                 case MoonPhase.WaxingCrescent:
                     // Increase health and attackPower by .33
+                    card.usedWaxingCrescent = true;
                     card.currentHealth += Mathf.RoundToInt(card.currentHealth * .33f);
                     card.attackPower += Mathf.RoundToInt(card.attackPower * .33f);
                     card.UpdateCardDisplay();
@@ -293,8 +294,12 @@ public class MoonPhaseController : MonoBehaviour
 
                 case MoonPhase.WaxingCrescent:
                     // Convert health and attack to its original
-                    card.currentHealth = card.originalHealth;
-                    card.attackPower = card.originalAttack;
+                    if(card.usedWaxingCrescent == true)
+                    {
+                        card.currentHealth = card.originalHealth;
+                        card.attackPower = card.originalAttack;
+                        card.usedWaxingCrescent = false;
+                    }
                     card.UpdateCardDisplay();
                     break;
 

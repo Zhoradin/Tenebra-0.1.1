@@ -22,6 +22,7 @@ public class CardAbilitySO : ScriptableObject
         Reckoning,
         Benevolence,
         HealingTouch,
+        Snowball
     }
 
     public AbilityType abilityType;

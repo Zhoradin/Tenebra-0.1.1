@@ -7,6 +7,7 @@ public class AbilityManager : MonoBehaviour
     public int turnCount = 0;
     public int metamorphoseTurnCount;
     private int heldCardCount;
+    private int snowballAmount = 0;
 
     private List<DecayedCard> decayedCards = new List<DecayedCard>();
 
@@ -82,6 +83,9 @@ public class AbilityManager : MonoBehaviour
                     break;
                 case CardAbilitySO.AbilityType.Benevolence:
                     Benevolence(card);
+                    break;
+                case CardAbilitySO.AbilityType.Snowball:
+                    Snowball(card);
                     break;
             }
         }
@@ -337,6 +341,14 @@ public class AbilityManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Snowball(Card card)
+    {
+        card.snowball = true;
+        card.attackPower += snowballAmount;
+        card.UpdateCardDisplay();
+        snowballAmount++;
     }
 
     public void HealingTouch(Card playedCard, Card effectedCard)
