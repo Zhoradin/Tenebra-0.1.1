@@ -21,7 +21,7 @@ public class CardAbilitySO : ScriptableObject
         Guardian,
         Reckoning,
         Benevolence,
-        HealingTouch
+        HealingTouch,
     }
 
     public AbilityType abilityType;

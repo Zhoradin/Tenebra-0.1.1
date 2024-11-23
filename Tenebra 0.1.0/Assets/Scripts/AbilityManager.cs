@@ -98,6 +98,7 @@ public class AbilityManager : MonoBehaviour
                     HealingTouch(playedCard, effectedCard);
                     break;
                 case CardAbilitySO.AbilityType.Revelation:
+                    Revelation(playedCard);
                     break;
             }
         }
@@ -132,11 +133,6 @@ public class AbilityManager : MonoBehaviour
     private void Leech(Card card)
     {
         card.leech = true;
-    }
-
-    public void Revelation(Card card)
-    {
-        card.revelation = true;
     }
 
     public void Metamorphosis(Card card)
@@ -342,10 +338,17 @@ public class AbilityManager : MonoBehaviour
             }
         }
     }
+
     public void HealingTouch(Card playedCard, Card effectedCard)
     {
         effectedCard.currentHealth += playedCard.cardSO.abilities[0].value;
         effectedCard.UpdateCardDisplay();
+    }
+
+    public void Revelation(Card card)
+    {
+        card.revelation = true;
+        DeckController.instance.DrawMultipleCards(2);
     }
 
     public IEnumerator QuickAttackCoroutine(Card card)
