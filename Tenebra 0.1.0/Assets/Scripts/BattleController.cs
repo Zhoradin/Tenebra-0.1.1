@@ -180,6 +180,10 @@ public class BattleController : MonoBehaviour
                     FillPlayerEssence();
                     HandController.instance.EmptyHand();
                     DeckController.instance.DrawMultipleCards(cardsToDrawPerTurn);
+
+                    // Benevolence kontrolü (oyuncu kartları)
+                    AbilityManager.instance.ApplyBenevolenceEffect(CardPointsController.instance.playerCardPoints);
+
                     // Check moon phase for player cards
                     CheckMoonPhaseForAllCards(playerCardPoints);
                     CheckMoonPhaseForAllCards(enemyCardPoints);
@@ -205,6 +209,10 @@ public class BattleController : MonoBehaviour
                 case TurnOrder.enemyActive:
                     FillEnemyEssence();
                     EnemyController.instance.StartAction();
+
+                    // Benevolence kontrolü (düşman kartları)
+                    AbilityManager.instance.ApplyBenevolenceEffect(CardPointsController.instance.enemyCardPoints);
+
                     // Check moon phase for enemy cards
                     CheckMoonPhaseForAllCards(enemyCardPoints);
                     AbilityManager.instance.MetamorphoseCard();
@@ -235,7 +243,6 @@ public class BattleController : MonoBehaviour
             }
         }
     }
-
     public void CheckMoonPhaseForAllCards(CardPlacePoint[] cardPoints)
     {
         foreach (var point in cardPoints)

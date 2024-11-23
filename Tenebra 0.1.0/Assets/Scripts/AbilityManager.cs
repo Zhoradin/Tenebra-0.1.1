@@ -80,6 +80,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Reckoning:
                     Reckoning(card);
                     break;
+                case CardAbilitySO.AbilityType.Benevolence:
+                    Benevolence(card);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -317,6 +320,28 @@ public class AbilityManager : MonoBehaviour
         card.UpdateCardDisplay();
     }
 
+    public void Benevolence(Card card)
+    {
+        card.benevolence = true;
+    }
+
+    public void ApplyBenevolenceEffect(CardPlacePoint[] cardPoints)
+    {
+        foreach (var point in cardPoints)
+        {
+            if (point.activeCard != null && point.activeCard.benevolence)
+            {
+                foreach (var targetPoint in cardPoints)
+                {
+                    if (targetPoint.activeCard != null)
+                    {
+                        targetPoint.activeCard.currentHealth += 1; // Can deðerini artýr
+                        targetPoint.activeCard.UpdateCardDisplay();
+                    }
+                }
+            }
+        }
+    }
     public void HealingTouch(Card playedCard, Card effectedCard)
     {
         effectedCard.currentHealth += playedCard.cardSO.abilities[0].value;

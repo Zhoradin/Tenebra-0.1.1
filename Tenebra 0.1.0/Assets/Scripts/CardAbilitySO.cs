@@ -20,6 +20,7 @@ public class CardAbilitySO : ScriptableObject
         Decay,
         Guardian,
         Reckoning,
+        Benevolence,
         HealingTouch
     }
 
