@@ -8,6 +8,7 @@ public class AbilityManager : MonoBehaviour
     public int metamorphoseTurnCount;
     private int heldCardCount;
     private int snowballAmount = 0;
+    private int tempHealth;
 
     private List<DecayedCard> decayedCards = new List<DecayedCard>();
 
@@ -86,6 +87,9 @@ public class AbilityManager : MonoBehaviour
                     break;
                 case CardAbilitySO.AbilityType.Snowball:
                     Snowball(card);
+                    break;
+                case CardAbilitySO.AbilityType.Duality:
+                    Duality(card);
                     break;
             }
         }
@@ -349,6 +353,32 @@ public class AbilityManager : MonoBehaviour
         card.attackPower += snowballAmount;
         card.UpdateCardDisplay();
         snowballAmount++;
+    }
+
+    public void Duality(Card card)
+    {
+        card.duality = true;
+    }
+
+    public void ApplyDuality(CardPlacePoint[] cardPoints)
+    {
+        foreach (var point in cardPoints)
+        {
+            if (point.activeCard != null && point.activeCard.duality)
+            {
+                Debug.Log("deneme");
+                foreach (var targetPoint in cardPoints)
+                {
+                    if(targetPoint.activeCard != null)
+                    {
+                        tempHealth = targetPoint.activeCard.currentHealth;
+                        targetPoint.activeCard.currentHealth = targetPoint.activeCard.attackPower;
+                        targetPoint.activeCard.attackPower = tempHealth;
+                        targetPoint.activeCard.UpdateCardDisplay();
+                    }
+                }
+            }
+        }
     }
 
     public void HealingTouch(Card playedCard, Card effectedCard)

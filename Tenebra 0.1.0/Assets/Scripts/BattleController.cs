@@ -183,6 +183,8 @@ public class BattleController : MonoBehaviour
 
                     // Benevolence kontrolü (oyuncu kartları)
                     AbilityManager.instance.ApplyBenevolenceEffect(CardPointsController.instance.playerCardPoints);
+                    AbilityManager.instance.ApplyDuality(CardPointsController.instance.playerCardPoints);
+                    AbilityManager.instance.ApplyDuality(CardPointsController.instance.enemyCardPoints);
 
                     // Check moon phase for player cards
                     CheckMoonPhaseForAllCards(playerCardPoints);
@@ -217,6 +219,9 @@ public class BattleController : MonoBehaviour
                     CheckMoonPhaseForAllCards(enemyCardPoints);
                     AbilityManager.instance.MetamorphoseCard();
                     AbilityManager.instance.ProcessDecayDamage();
+
+                    AbilityManager.instance.ApplyDuality(CardPointsController.instance.playerCardPoints);
+                    AbilityManager.instance.ApplyDuality(CardPointsController.instance.enemyCardPoints);
 
                     // Growth yeteneği için kontrol (düşman kartları)
                     AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.enemyCardPoints);

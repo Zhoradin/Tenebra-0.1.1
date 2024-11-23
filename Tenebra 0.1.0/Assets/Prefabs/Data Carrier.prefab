@@ -59,8 +59,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 17607c927ef400a4dbb24c84bc163d1c, type: 2}
   - {fileID: 11400000, guid: fce9eb92023d2fd46a570dff3baf87bf, type: 2}
   - {fileID: 11400000, guid: 922b0f7f5a4c6fc41930584643c108ea, type: 2}
-  - {fileID: 11400000, guid: 922b0f7f5a4c6fc41930584643c108ea, type: 2}
-  - {fileID: 11400000, guid: 922b0f7f5a4c6fc41930584643c108ea, type: 2}
+  - {fileID: 11400000, guid: c331c79125eeb0641a243efce9bdf902, type: 2}
   pathwayRooms: []
   currentRoomName: 
   enemy: {fileID: 11400000, guid: 926c6e2bf115d3d4a8e757c366b80f12, type: 2}
