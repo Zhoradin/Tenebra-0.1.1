@@ -327,7 +327,7 @@ public class EnemyController : MonoBehaviour
         Card.instance.isActive = true;
         if (Card.instance.instaKill == true)
         {
-            StartCoroutine(Card.instance.QuickAttackCoroutine());
+            StartCoroutine(AbilityManager.instance.QuickAttackCoroutine(newCard));
         }
         MoonPhaseController.instance.CheckMoonPhase(newCard);
 

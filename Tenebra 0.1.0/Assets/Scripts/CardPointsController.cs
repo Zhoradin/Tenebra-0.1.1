@@ -15,18 +15,6 @@ public class CardPointsController : MonoBehaviour
 
     public float timeBetweenAttacks = .25f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void PlayerAttack()
     {
         StartCoroutine(PlayerAttackCo());
@@ -265,17 +253,25 @@ public class CardPointsController : MonoBehaviour
     {
         if (attackCard)
         {
-            if (attacker.instaKill)
+            if(defender.activeCard != null)
             {
-                defender.activeCard.DamageCard(100);
+                if (attacker.instaKill)
+                {
+                    defender.activeCard.DamageCard(100);
+                }
+                else
+                {
+                    float effectiveness = TypeEffectiveness.GetEffectiveness(attacker.cardType, defender.activeCard.cardType);
+                    float damage = attacker.attackPower * effectiveness;
+                    Debug.Log("Effectiveness: " + effectiveness);
+                    defender.activeCard.DamageCard(Mathf.RoundToInt(damage));
+                    BattleController.instance.SetupActiveCards();
+                }
             }
             else
             {
-                float effectiveness = TypeEffectiveness.GetEffectiveness(attacker.cardType, defender.activeCard.cardType);
-                float damage = attacker.attackPower * effectiveness;
-                Debug.Log("Effectiveness: " + effectiveness);
-                defender.activeCard.DamageCard(Mathf.RoundToInt(damage));
-                BattleController.instance.SetupActiveCards();
+                BattleController.instance.DamagePlayer(attacker.attackPower);
+                attacker.directHit = false;
             }
         }
         else

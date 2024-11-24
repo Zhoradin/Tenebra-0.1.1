@@ -107,6 +107,14 @@ public class UIController : MonoBehaviour, IDataPersistence
     public void DrawCard()
     {
         DeckController.instance.DrawCardForEssence();
+        drawCardButton.GetComponent<Button>().interactable = false;
+        StartCoroutine(DrawButtonCo());
+    }
+
+    public IEnumerator DrawButtonCo()
+    {
+        yield return new WaitForSeconds(.2f);
+        drawCardButton.GetComponent<Button>().interactable = true;
     }
 
     public void EndPlayerTurn()

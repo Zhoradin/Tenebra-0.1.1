@@ -195,9 +195,13 @@ public class BattleController : MonoBehaviour
 
                     // Growth yeteneği için kontrol (oyuncu kartları)
                     AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.playerCardPoints);
+                    UIController.instance.drawCardButton.GetComponent<Button>().interactable = true;
+                    UIController.instance.endTurnButton.GetComponent<Button>().interactable = true;
                     break;
 
                 case TurnOrder.playerCardAttacks:
+                    UIController.instance.drawCardButton.GetComponent<Button>().interactable = false;
+                    UIController.instance.endTurnButton.GetComponent<Button>().interactable = false;
                     if (turnCount >= 2)
                     {
                         CardPointsController.instance.PlayerAttack();
@@ -209,6 +213,8 @@ public class BattleController : MonoBehaviour
                     break;
 
                 case TurnOrder.enemyActive:
+                    UIController.instance.drawCardButton.GetComponent<Button>().interactable = false;
+                    UIController.instance.endTurnButton.GetComponent<Button>().interactable = false;
                     FillEnemyEssence();
                     EnemyController.instance.StartAction();
 

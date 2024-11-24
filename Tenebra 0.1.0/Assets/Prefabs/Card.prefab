@@ -2229,6 +2229,11 @@ MonoBehaviour:
   currentHealth: 3
   attackPower: 2
   essenceCost: 3
+  originalHealth: 0
+  originalAttack: 0
+  originalEssence: 0
+  metamorphosisTurnCount: 0
+  decayTurns: 0
   healthText: {fileID: 3879388240674363398}
   attackText: {fileID: 1405380575387372888}
   costText: {fileID: 3308657388656934253}
@@ -2249,6 +2254,7 @@ MonoBehaviour:
   isPlayer: 1
   isGraveyard: 0
   isLocked: 0
+  isTransformed: 0
   handPosition: 0
   abilityDescription: {fileID: 7778786355584961167}
   abilityDescriptionToo: {fileID: 205070032946060294}
@@ -2274,13 +2280,23 @@ MonoBehaviour:
   quickAttack: 0
   glassCannon: 0
   instaKill: 0
-  multipleHit: 0
   mend: 0
   leech: 0
   revelation: 0
   metamorphosis: 0
   primalPact: 0
-  metamorphosisTurnCount: 0
+  scattershot: 0
+  growth: 0
+  decay: 0
+  decayed: 0
+  guardian: 0
+  reckoning: 0
+  benevolence: 0
+  snowball: 0
+  multipleHit: 0
+  duality: 0
+  usedWaxingCrescent: 0
+  decayedBy: {fileID: 0}
 --- !u!61 &311820245305926517
 BoxCollider2D:
   m_ObjectHideFlags: 0

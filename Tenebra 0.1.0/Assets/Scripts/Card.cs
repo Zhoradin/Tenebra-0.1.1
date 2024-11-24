@@ -18,7 +18,7 @@ public class Card : MonoBehaviour
 
     public int currentHealth, attackPower, essenceCost;
     [HideInInspector]
-    public int originalHealth, originalAttack, originalEssence;
+    public int originalHealth, originalAttack, originalEssence, metamorphosisTurnCount, decayTurns;
 
     public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo, superEffectiveText, notEffectiveText;
 
@@ -58,10 +58,9 @@ public class Card : MonoBehaviour
 
     [HideInInspector]
     public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot, growth, decay, decayed, guardian, reckoning, benevolence,
-        snowball, multipleHit, duality = false;
-    public int metamorphosisTurnCount, decayTurns;
+        snowball, multipleHit, duality, usedWaxingCrescent = false;
+    [HideInInspector]
     public Card decayedBy;
-    public bool usedWaxingCrescent = false;
 
     // Start is called before the first frame update
     void Start()
@@ -92,9 +91,6 @@ public class Card : MonoBehaviour
         originalAttack = attackPower;
         originalEssence = essenceCost;
 
-        /*healthText.text = currentHealth.ToString();
-        attackText.text = attackPower.ToString();
-        costText.text = essenceCost.ToString();*/
         UpdateCardDisplay();
 
         nameText.text = cardSO.cardName;
@@ -173,7 +169,7 @@ public class Card : MonoBehaviour
 
                             if (instaKill == true)
                             {
-                                StartCoroutine(QuickAttackCoroutine());
+                                StartCoroutine(AbilityManager.instance.QuickAttackCoroutine(this));
                             }
 
                             BattleController.instance.SpendPlayerEssence(essenceCost);
@@ -351,7 +347,7 @@ public class Card : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if ((inHand || isActive) && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false 
+        if ((inHand || isActive) && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false 
             && UIController.instance.graveyardPileOpen == false && UIController.instance.encyclopediaPanelOpen == false && UIController.instance.inventoryPanelOpen == false)
         {
             targetScale = hoverScale;
@@ -392,7 +388,7 @@ public class Card : MonoBehaviour
     private void OnMouseExit()
     {
         targetScale = originalScale;
-        if ((inHand && !isActive) && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
+        if ((inHand && !isActive) && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
             if (isLocked)
             {
@@ -409,12 +405,11 @@ public class Card : MonoBehaviour
 
             theHC.ResetCardPositions();
         }
-        else if (isActive && !isSelected && isPlayer && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
+        else if (isActive && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
             abilityDescription.SetActive(false);
             abilityDescriptionToo.SetActive(false);
         }
-
         superEffectiveText.gameObject.SetActive(false);
         notEffectiveText.gameObject.SetActive(false);
     }
@@ -436,13 +431,14 @@ public class Card : MonoBehaviour
                 assignedPlace = null;
             }
         }
+        abilityDescription.SetActive(false);
+        abilityDescriptionToo.SetActive(false);
     }
 
     public void ReturnToHand()
     {
         isSelected = false;
         returningToHand = true;
-        theCol.enabled = true;
 
         if (isLocked)
         {
@@ -463,7 +459,16 @@ public class Card : MonoBehaviour
             targetRot = theHC.cardRotations[handPosition];
             MoveToPoint(theHC.cardPositions[handPosition], targetRot);
         }
+
         targetScale = originalScale;
+
+        StartCoroutine(EnableColliderWithDelay());
+    }
+
+    private IEnumerator EnableColliderWithDelay()
+    {
+        yield return new WaitForSeconds(.2f);
+        theCol.enabled = true;
     }
 
     public void DamageCard(int damageAmount)
@@ -494,7 +499,6 @@ public class Card : MonoBehaviour
 
         UpdateCardDisplay();
     }
-
 
     IEnumerator WaitJumpAfterDeadCo()
     {
@@ -537,7 +541,6 @@ public class Card : MonoBehaviour
         transform.localScale = targetScale; // Son boyutu ayarla
     }
 
-
     public void UpdateCardDisplay()
     {
         healthText.text = currentHealth.ToString();
@@ -576,22 +579,6 @@ public class Card : MonoBehaviour
         }
 
         return newAbilityName.ToString();
-    }
-
-    public IEnumerator QuickAttackCoroutine()
-    {
-        quickAttack = true;
-        yield return new WaitForSeconds(0.5f);
-        if (isPlayer)
-        {
-            CardPointsController.instance.PlayerSingleCardAttack(this);
-        }
-        else
-        {
-            CardPointsController.instance.EnemySingleCardAttack(this);
-        }
-        
-        quickAttack = false;
     }
 
     public bool CanMetamorphose()
