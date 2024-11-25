@@ -27,7 +27,7 @@ public class GraveyardPileController : MonoBehaviour
     {
         
     }
-    private void CreateGraveyardPileCardSlots()
+    public void CreateGraveyardPileCardSlots()
     {
         ClearCardSlots();
         UIController.instance.ShowDiscardPileCount();

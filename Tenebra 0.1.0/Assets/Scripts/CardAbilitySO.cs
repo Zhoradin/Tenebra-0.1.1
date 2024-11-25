@@ -23,7 +23,8 @@ public class CardAbilitySO : ScriptableObject
         Benevolence,
         HealingTouch,
         Snowball,
-        Duality
+        Duality, 
+        Resurrect
     }
 
     public AbilityType abilityType;

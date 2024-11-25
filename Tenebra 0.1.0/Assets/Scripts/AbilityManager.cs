@@ -108,6 +108,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Revelation:
                     Revelation(playedCard);
                     break;
+                case CardAbilitySO.AbilityType.Resurrect:
+                    Resurrect(playedCard);
+                    break;
             }
         }
     }
@@ -401,6 +404,14 @@ public class AbilityManager : MonoBehaviour
     {
         card.revelation = true;
         DeckController.instance.DrawMultipleCards(2);
+    }
+
+    public void Resurrect(Card card)
+    {
+        DrawPileController.instance.drawPile.AddRange(GraveyardPileController.instance.graveyardPile);
+        DrawPileController.instance.CreateDrawPileCardSlots();
+        GraveyardPileController.instance.graveyardPile.Clear();
+        GraveyardPileController.instance.CreateGraveyardPileCardSlots();
     }
 
     public IEnumerator QuickAttackCoroutine(Card card)
