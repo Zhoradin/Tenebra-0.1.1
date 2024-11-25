@@ -18,7 +18,7 @@ public class Card : MonoBehaviour
 
     public int currentHealth, attackPower, essenceCost;
     [HideInInspector]
-    public int originalHealth, originalAttack, originalEssence, metamorphosisTurnCount, decayTurns;
+    public int originalHealth, originalAttack, originalEssence, metamorphosisTurnCount, decayTurns, waxingCrescentCount;
 
     public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo, superEffectiveText, notEffectiveText;
 

@@ -62,6 +62,7 @@ public class SaveSlot : MonoBehaviour
         else if(MainMenu.instance.isNewGame && !saveLoadSystem.SaveFileExists(slotNumber))
         {
             deleteButton.GetComponent<Button>().interactable = false;
+            editButton.GetComponent<Button>().interactable = true;
         }
         else
         {

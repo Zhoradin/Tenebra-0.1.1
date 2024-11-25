@@ -232,17 +232,22 @@ public class MoonPhaseController : MonoBehaviour
                     // No effect for NewMoon
                     break;
 
-                case MoonPhase.WaxingCrescent:
-                    // Increase health and attackPower by .33
-                    card.usedWaxingCrescent = true;
-                    card.currentHealth += Mathf.RoundToInt(card.currentHealth * .33f);
-                    card.attackPower += Mathf.RoundToInt(card.attackPower * .33f);
-                    card.UpdateCardDisplay();
+                case MoonPhase.WaxingCrescent:                   
+                    card.waxingCrescentCount++;
+                    if(card.waxingCrescentCount < 2)
+                    {
+                        Debug.Log("faruk");
+                        // Increase health and attackPower by .33
+                        card.currentHealth += Mathf.RoundToInt(card.currentHealth * .33f);
+                        card.attackPower += Mathf.RoundToInt(card.attackPower * .33f);
+                        card.UpdateCardDisplay();
+                    }
                     break;
 
                 case MoonPhase.FirstQuarter:
                     // Insta kill
                     card.instaKill = true;
+                    card.waxingCrescentCount = 0;
                     break;
 
                 case MoonPhase.WaxingGibbous:

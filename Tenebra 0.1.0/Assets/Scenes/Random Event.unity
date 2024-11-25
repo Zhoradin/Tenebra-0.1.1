@@ -1929,7 +1929,7 @@ MonoBehaviour:
   eventImage: {fileID: 1364124514}
   lastStory: 
   storyNumber: 1
-  randomEventData: {fileID: 11400000, guid: 867ab5f45385fc84d9220f9c4472f1fd, type: 2}
+  randomEventData: {fileID: 11400000, guid: 956a6a44bcfb7ae4da006f4e14fbf36d, type: 2}
 --- !u!1 &1934274252
 GameObject:
   m_ObjectHideFlags: 0

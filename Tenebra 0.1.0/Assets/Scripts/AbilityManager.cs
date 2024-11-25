@@ -7,7 +7,7 @@ public class AbilityManager : MonoBehaviour
     public int turnCount = 0;
     public int metamorphoseTurnCount;
     private int heldCardCount;
-    private int snowballAmount = 0;
+    private int playerSnowballAmount, enemySnowballAmount = 0;
     private int tempHealth;
 
     private List<DecayedCard> decayedCards = new List<DecayedCard>();
@@ -349,10 +349,20 @@ public class AbilityManager : MonoBehaviour
 
     public void Snowball(Card card)
     {
-        card.snowball = true;
-        card.attackPower += snowballAmount;
-        card.UpdateCardDisplay();
-        snowballAmount++;
+        if (card.isPlayer)
+        {
+            card.snowball = true;
+            card.attackPower += playerSnowballAmount;
+            card.UpdateCardDisplay();
+            playerSnowballAmount++;
+        }
+        else
+        {
+            card.snowball = true;
+            card.attackPower += enemySnowballAmount;
+            card.UpdateCardDisplay();
+            enemySnowballAmount++;
+        }  
     }
 
     public void Duality(Card card)
