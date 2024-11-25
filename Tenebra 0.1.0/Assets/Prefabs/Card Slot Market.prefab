@@ -1648,6 +1648,8 @@ MonoBehaviour:
   cardImage: {fileID: 7451863287436529473}
   cardBgImage: {fileID: 5152624281468275612}
   cardMoonPhaseImage: {fileID: 8745824042738254961}
+  attackImage: {fileID: 7752354882261761569}
+  healthImage: {fileID: 327739893646270468}
   cardNameText: {fileID: 3133440846332022921}
   cardDescriptionText: {fileID: 3214056918736584760}
   healthText: {fileID: 20200888337605962}

@@ -105,6 +105,16 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.HealingTouch:
                     HealingTouch(playedCard, effectedCard);
                     break;
+            }
+        }
+    }
+
+    public void ActivateImpactAbility(Card playedCard)
+    {
+        foreach (CardAbilitySO ability in playedCard.cardSO.abilities)
+        {
+            switch (ability.abilityType)
+            {
                 case CardAbilitySO.AbilityType.Revelation:
                     Revelation(playedCard);
                     break;

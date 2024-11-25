@@ -259,7 +259,7 @@ public class UIController : MonoBehaviour, IDataPersistence
         }
     }
 
-    public void OpenInventoryPanel()
+    /*public void OpenInventoryPanel()
     {
         if (inventoryPanelOpen == false)
         {
@@ -278,6 +278,22 @@ public class UIController : MonoBehaviour, IDataPersistence
             drawPileButton.GetComponent<Button>().interactable = true;
             encyclopediaButton.GetComponent<Button>().interactable = true;
             inventoryPanelOpen = false;
+        }
+    }*/
+
+    public void OpenInventory()
+    {
+        if (inventoryPanelOpen == false)
+        {
+            inventoryPanel.transform.localPosition = inventoryOpenPosition;
+            inventoryPanelOpen = true;
+            pauseScreen.SetActive(false);
+        }
+        else if (inventoryPanelOpen == true)
+        {
+            inventoryPanel.transform.localPosition = inventoryClosedPosition;
+            inventoryPanelOpen = false;
+            pauseScreen.SetActive(true);
         }
     }
 

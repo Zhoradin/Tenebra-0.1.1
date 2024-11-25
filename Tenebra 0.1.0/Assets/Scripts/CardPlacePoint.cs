@@ -7,4 +7,6 @@ public class CardPlacePoint : MonoBehaviour
     public Card activeCard;
     public bool isFieldPoint;
     public bool isPlayerPoint;
+    public bool isImpactPoint;
+    public bool isLockedPoint;
 }

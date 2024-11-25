@@ -29,5 +29,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7814713ea54ae814d9bca5643348e845, type: 2}
   moonPhase: 0
   cardType: 2
-  cardKind: 1
+  cardKind: 2
   cardRarity: 2

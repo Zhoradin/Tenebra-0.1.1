@@ -9,6 +9,8 @@ public class CardMarket : MonoBehaviour
     public Image cardImage;
     public Image cardBgImage;
     public Image cardMoonPhaseImage;
+    public Image attackImage;
+    public Image healthImage;
     public TMP_Text cardNameText;
     public TMP_Text cardDescriptionText;
     public TMP_Text healthText;
@@ -64,6 +66,10 @@ public class CardMarket : MonoBehaviour
         else
         {
             cardMoonPhaseImage.gameObject.SetActive(false);
+            healthImage.gameObject.SetActive(false);
+            attackImage.gameObject.SetActive(false);
+            healthText.gameObject.SetActive(false);
+            attackText.gameObject.SetActive(false);
         }
 
         UpdateAbilityDescription(card);

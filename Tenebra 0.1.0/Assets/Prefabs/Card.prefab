@@ -2234,6 +2234,7 @@ MonoBehaviour:
   originalEssence: 0
   metamorphosisTurnCount: 0
   decayTurns: 0
+  waxingCrescentCount: 0
   healthText: {fileID: 3879388240674363398}
   attackText: {fileID: 1405380575387372888}
   costText: {fileID: 3308657388656934253}
@@ -2246,6 +2247,8 @@ MonoBehaviour:
   characterArt: {fileID: 2357040949159273376}
   bgArt: {fileID: 6582079235945193437}
   moonPhaseArt: {fileID: 5165075588857808217}
+  healthArt: {fileID: 8998018017247289241}
+  attackArt: {fileID: 5102010733064853763}
   inHand: 0
   isActive: 0
   isSelected: 0
@@ -2265,8 +2268,8 @@ MonoBehaviour:
   rotateSpeed: 540
   selectedRotateSpeed: 30
   scaleSpeed: 10
-  hoverScale: {x: 1.1, y: 1.1, z: 1}
-  selectedScale: {x: 1.2, y: 1.2, z: 1}
+  hoverScale: {x: 1.2, y: 1.2, z: 1}
+  selectedScale: {x: 1.3, y: 1.3, z: 1}
   whatIsDesktop:
     serializedVersion: 2
     m_Bits: 64

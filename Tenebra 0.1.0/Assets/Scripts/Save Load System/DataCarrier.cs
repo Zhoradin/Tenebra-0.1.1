@@ -16,6 +16,16 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
     public EnemySO enemy;
     public string lastGod;
 
+    public bool hasCaerulisnBadge;
+    public bool hasAmarunisBadge;
+    public bool hasPoulviBadge;
+    public bool hasArstelloBadge;
+    public bool hasLogiumBadge;
+    public bool hasRohvBadge;
+    public bool hasSoliriaBadge;
+    public bool hasTenebraBadge;
+    public bool hasAbororBadge;
+
     private void Awake()
     {
         if (instance == null)
@@ -76,6 +86,16 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
         pathwayRooms = new List<Room>(data.rooms);
         currentRoomName = data.currentRoom;
         lastGod = data.lastGod;
+
+        hasCaerulisnBadge = data.hasCaerulisnBadge;
+        hasAmarunisBadge = data.hasAmarunisBadge;
+        hasPoulviBadge = data.hasPoulviBadge;
+        hasArstelloBadge = data.hasArstelloBadge;
+        hasLogiumBadge = data.hasLogiumBadge;
+        hasRohvBadge = data.hasRohvBadge;
+        hasSoliriaBadge = data.hasSoliriaBadge;
+        hasTenebraBadge = data.hasTenebraBadge;
+        hasAbororBadge = data.hasAbororBadge;
     }
 
     public void SaveData(PlayerData data)
@@ -98,5 +118,15 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
         */
 
         data.lastGod = lastGod;
+
+        data.hasCaerulisnBadge = hasCaerulisnBadge;
+        data.hasAmarunisBadge = hasAmarunisBadge;
+        data.hasPoulviBadge =  hasPoulviBadge;
+        data.hasArstelloBadge = hasArstelloBadge;
+        data.hasLogiumBadge = hasLogiumBadge;
+        data.hasRohvBadge =  hasRohvBadge;
+        data.hasSoliriaBadge = hasSoliriaBadge;
+        data.hasTenebraBadge = hasTenebraBadge;
+        data.hasAbororBadge = hasAbororBadge;
     }
 }
