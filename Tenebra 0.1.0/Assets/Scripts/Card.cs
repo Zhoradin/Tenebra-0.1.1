@@ -58,7 +58,7 @@ public class Card : MonoBehaviour
 
     [HideInInspector]
     public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot, growth, decay, decayed, guardian, reckoning, benevolence,
-        snowball, multipleHit, duality, usedWaxingCrescent = false;
+        snowball, multipleHit, duality, doppelganger, usedWaxingCrescent = false;
     [HideInInspector]
     public Card decayedBy;
 
@@ -150,36 +150,33 @@ public class Card : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, whatIsPlacement);
 
                 //Check for Field Card
-                if (hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Field)
+                if (hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Field )
                 {
                     CardPlacePoint selectedPoint = hit.collider.GetComponent<CardPlacePoint>();
                     if (selectedPoint.activeCard == null && selectedPoint.isPlayerPoint && selectedPoint.isFieldPoint)
                     {
+                        FieldUsage(selectedPoint);
+                    }
+                    //Check for Doppelganger
+                    else if (selectedPoint.activeCard != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Field &&
+    cardSO.abilities[0].name == "Doppelganger")
+                    {
                         if (BattleController.instance.playerEssence >= essenceCost)
                         {
-                            selectedPoint.activeCard = this;
-                            assignedPlace = selectedPoint;
+                            // Oynandığı kartı ele geri gönder
+                            HandController.instance.AddCardToHand(selectedPoint.activeCard);
+                            selectedPoint.activeCard.ReturnToHand();
+                            selectedPoint.activeCard.isActive = false;
+                            selectedPoint.activeCard.returningToHand = false;
 
-                            MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 0.75f, 0f), Quaternion.identity);
+                            // Hedef kartı alanı boşalt
+                            selectedPoint.activeCard = null;
 
-                            inHand = false;
-                            isSelected = false;
-                            returningToHand = false;
-                            targetScale = originalScale;
+                            // Doppelganger kartını yerine yerleştir
+                            FieldUsage(selectedPoint);
 
-                            theHC.RemoveCardFromHand(this);
-
-                            AbilityManager.instance.ActivateAbility(this);
-
-                            if (instaKill == true)
-                            {
-                                StartCoroutine(AbilityManager.instance.QuickAttackCoroutine(this));
-                            }
-
-                            BattleController.instance.SpendPlayerEssence(essenceCost);
-                            isActive = true;
-                            MoonPhaseController.instance.CheckMoonPhase(this);
-                            theCol.enabled = true;
+                            // Essence azalt
+                            BattleController.instance.playerEssence -= essenceCost;
                         }
                         else
                         {
@@ -187,8 +184,27 @@ public class Card : MonoBehaviour
                             UIController.instance.ShowEssenceWarning();
                         }
                     }
+                    // Check if a Field card can replace a Doppelganger card
+                    else if (selectedPoint.activeCard != null && selectedPoint.activeCard.cardSO.abilities[0].name == "Doppelganger" && cardKind == CardKind.Field)
+                    {
+                        if (BattleController.instance.playerEssence >= essenceCost)
+                        {
+                            // Doppelganger kartını sahadan kaldır ve discard pile'a ekle
+                            Card currentCard = selectedPoint.activeCard;
+                            DiscardPileController.instance.AddToDiscardPile(currentCard.cardSO);
+
+                            // Doppelganger kartının animasyon ve yok olma işlemi
+                            StartCoroutine(RemoveDoppelgangerAndPlaceField(currentCard, selectedPoint, this));
+                        }
+                        else
+                        {
+                            ReturnToHand();
+                            UIController.instance.ShowEssenceWarning();
+                        }
+                    }
+
                     //Check for Locking Down
-                    else if(selectedPoint.activeCard == null && selectedPoint.isPlayerPoint && selectedPoint.isLockedPoint)
+                    else if (selectedPoint.activeCard == null && selectedPoint.isPlayerPoint && selectedPoint.isLockedPoint)
                     {
                         LockedDownCheck(selectedPoint);
                     }
@@ -199,7 +215,7 @@ public class Card : MonoBehaviour
                 }
 
                 //Check for Efect card
-                else if(hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Efect)
+                else if(hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Effect)
                 {
                     CardPlacePoint selectedPoint = hit.collider.GetComponent<CardPlacePoint>();
                     if (selectedPoint.activeCard != null && selectedPoint.isPlayerPoint && selectedPoint.isFieldPoint)
@@ -229,7 +245,7 @@ public class Card : MonoBehaviour
                 // Impact Card Check
                 else if (hit.collider != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Impact)
                 {
-                    Debug.Log("impact card");
+                    
                     CardPlacePoint selectedPoint = hit.collider.GetComponent<CardPlacePoint>();
                     if (selectedPoint.isImpactPoint)
                     {
@@ -309,6 +325,60 @@ public class Card : MonoBehaviour
         isActive = true;
         MoonPhaseController.instance.CheckMoonPhase(this);
         theCol.enabled = true;
+    }
+
+    private void FieldUsage(CardPlacePoint selectedPoint)
+    {
+        if (BattleController.instance.playerEssence >= essenceCost)
+        {
+            selectedPoint.activeCard = this;
+            assignedPlace = selectedPoint;
+
+            MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 0.75f, 0f), Quaternion.identity);
+
+            inHand = false;
+            isSelected = false;
+            returningToHand = false;
+            targetScale = originalScale;
+
+            theHC.RemoveCardFromHand(this);
+
+            AbilityManager.instance.ActivateAbility(this);
+
+            if (instaKill == true)
+            {
+                StartCoroutine(AbilityManager.instance.QuickAttackCoroutine(this));
+            }
+
+            BattleController.instance.SpendPlayerEssence(essenceCost);
+            isActive = true;
+            MoonPhaseController.instance.CheckMoonPhase(this);
+            theCol.enabled = true;
+        }
+        else
+        {
+            ReturnToHand();
+            UIController.instance.ShowEssenceWarning();
+        }
+    }
+
+    private IEnumerator RemoveDoppelgangerAndPlaceField(Card doppelgangerCard, CardPlacePoint selectedPoint, Card playedCard)
+    {
+        doppelgangerCard.theCol.enabled = false;
+        playedCard.theCol.enabled = false;
+        // Yeni Field kartını yerleştir
+        FieldUsage(selectedPoint);
+
+        // Doppelganger yok olma animasyonu
+        doppelgangerCard.StartCoroutine(doppelgangerCard.WaitJumpAfterDeadCo());
+
+        // Doppelganger'ın tamamen yok olmasını bekle
+        yield return new WaitForSeconds(0.7f); // Animasyon sürelerine göre ayarlayın
+
+        // Sahadaki referansı sıfırla
+        selectedPoint.activeCard = null;
+
+        playedCard.theCol.enabled = true;
     }
 
     private void CheckForSuperEffectiveText()

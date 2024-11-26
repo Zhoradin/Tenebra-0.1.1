@@ -91,6 +91,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Duality:
                     Duality(card);
                     break;
+                case CardAbilitySO.AbilityType.Doppelganger:
+                    Doppelganger(card);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -422,6 +425,11 @@ public class AbilityManager : MonoBehaviour
         DrawPileController.instance.CreateDrawPileCardSlots();
         GraveyardPileController.instance.graveyardPile.Clear();
         GraveyardPileController.instance.CreateGraveyardPileCardSlots();
+    }
+
+    public void Doppelganger(Card card)
+    {
+
     }
 
     public IEnumerator QuickAttackCoroutine(Card card)

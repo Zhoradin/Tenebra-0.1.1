@@ -44,7 +44,7 @@ public enum MoonPhase
 public enum CardKind
 {
     Field,
-    Efect,
+    Effect,
     Impact
 }
 
