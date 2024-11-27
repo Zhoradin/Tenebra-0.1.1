@@ -25,7 +25,8 @@ public class CardAbilitySO : ScriptableObject
         Snowball,
         Duality, 
         Resurrect,
-        Doppelganger
+        Doppelganger,
+        Gratis
     }
 
     public AbilityType abilityType;

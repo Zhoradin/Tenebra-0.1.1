@@ -236,7 +236,6 @@ public class MoonPhaseController : MonoBehaviour
                     card.waxingCrescentCount++;
                     if(card.waxingCrescentCount < 2)
                     {
-                        Debug.Log("faruk");
                         // Increase health and attackPower by .33
                         card.currentHealth += Mathf.RoundToInt(card.currentHealth * .33f);
                         card.attackPower += Mathf.RoundToInt(card.attackPower * .33f);

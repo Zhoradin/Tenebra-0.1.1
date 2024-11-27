@@ -92,7 +92,6 @@ public class AbilityManager : MonoBehaviour
                     Duality(card);
                     break;
                 case CardAbilitySO.AbilityType.Doppelganger:
-                    Doppelganger(card);
                     break;
             }
         }
@@ -124,6 +123,10 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Resurrect:
                     Resurrect(playedCard);
                     break;
+                case CardAbilitySO.AbilityType.Gratis:
+                    Gratis(playedCard);
+                    break;
+                    
             }
         }
     }
@@ -427,9 +430,32 @@ public class AbilityManager : MonoBehaviour
         GraveyardPileController.instance.CreateGraveyardPileCardSlots();
     }
 
-    public void Doppelganger(Card card)
+    public void Gratis(Card card)
     {
+        card.gratis = true; // Bu kart artýk Gratis oldu
+        int randomNumber;
 
+        // Eðer elde sadece Gratis kartý varsa random kart seçmeden iþlemi durdur
+        if (HandController.instance.heldCards.Count == 1)
+        {
+            Debug.LogWarning("Only Gratis card in hand. No other card to apply Gratis effect.");
+            return;
+        }
+
+        // Random bir kart seç ve Gratis kartýný dýþla
+        do
+        {
+            randomNumber = Random.Range(0, HandController.instance.heldCards.Count);
+        }
+        while (HandController.instance.heldCards[randomNumber].gratis); // Gratis olmayan bir kart bulana kadar döngü
+
+        // Seçilen kartýn essence cost'unu 0 yap
+        Card selectedCard = HandController.instance.heldCards[randomNumber];
+        selectedCard.essenceCost = 0;
+        selectedCard.costText.color = Color.green;
+        selectedCard.UpdateCardDisplay();
+
+        //Debug.Log($"Gratis applied to: {selectedCard.cardSO.name}");
     }
 
     public IEnumerator QuickAttackCoroutine(Card card)
