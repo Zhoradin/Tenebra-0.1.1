@@ -58,7 +58,7 @@ public class Card : MonoBehaviour
 
     [HideInInspector]
     public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot, growth, decay, decayed, guardian, reckoning, benevolence,
-        snowball, multipleHit, duality, doppelganger, usedWaxingCrescent, gratis, stun, stunned = false;
+        snowball, multipleHit, duality, doppelganger, usedWaxingCrescent, gratis, stun, stunned, healBlock = false;
     [HideInInspector]
     public Card decayedBy;
 

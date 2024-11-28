@@ -27,7 +27,8 @@ public class CardAbilitySO : ScriptableObject
         Resurrect,
         Doppelganger,
         Gratis,
-        Stun
+        Stun,
+        HealBlock
     }
 
     public AbilityType abilityType;

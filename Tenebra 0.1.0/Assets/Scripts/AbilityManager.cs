@@ -96,6 +96,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Stun:
                     Stun(card);
                     break;
+                case CardAbilitySO.AbilityType.HealBlock:
+                    HealBlock(card);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -260,8 +263,22 @@ public class AbilityManager : MonoBehaviour
         {
             if (point.activeCard != null && point.activeCard.growth)
             {
-                point.activeCard.currentHealth += point.activeCard.cardSO.abilities[0].value;
-                point.activeCard.UpdateCardDisplay(); // Kart görselini güncelle
+                if (point.activeCard.isPlayer)
+                {
+                    if (CanHeal(CardPointsController.instance.enemyCardPoints))
+                    {
+                        point.activeCard.currentHealth += point.activeCard.cardSO.abilities[0].value;
+                        point.activeCard.UpdateCardDisplay(); // Kart görselini güncelle
+                    }
+                }
+                else
+                {
+                    if (CanHeal(CardPointsController.instance.playerCardPoints))
+                    {
+                        point.activeCard.currentHealth += point.activeCard.cardSO.abilities[0].value;
+                        point.activeCard.UpdateCardDisplay(); // Kart görselini güncelle
+                    }
+                } 
             }
         }
     }
@@ -361,8 +378,22 @@ public class AbilityManager : MonoBehaviour
                 {
                     if (targetPoint.activeCard != null)
                     {
-                        targetPoint.activeCard.currentHealth += 1; // Can deðerini artýr
-                        targetPoint.activeCard.UpdateCardDisplay();
+                        if (targetPoint.activeCard.isPlayer)
+                        {
+                            if (CanHeal(CardPointsController.instance.enemyCardPoints))
+                            {
+                                targetPoint.activeCard.currentHealth += 1; // Can deðerini artýr
+                                targetPoint.activeCard.UpdateCardDisplay();
+                            }
+                        }
+                        else
+                        {
+                            if (CanHeal(CardPointsController.instance.playerCardPoints))
+                            {
+                                targetPoint.activeCard.currentHealth += 1; // Can deðerini artýr
+                                targetPoint.activeCard.UpdateCardDisplay();
+                            }
+                        }   
                     }
                 }
             }
@@ -425,8 +456,22 @@ public class AbilityManager : MonoBehaviour
 
     public void HealingTouch(Card playedCard, Card effectedCard)
     {
-        effectedCard.currentHealth += playedCard.cardSO.abilities[0].value;
-        effectedCard.UpdateCardDisplay();
+        if (playedCard.isPlayer)
+        {
+            if (CanHeal(CardPointsController.instance.enemyCardPoints))
+            {
+                effectedCard.currentHealth += playedCard.cardSO.abilities[0].value;
+                effectedCard.UpdateCardDisplay();
+            }
+        }
+        else
+        {
+            if (CanHeal(CardPointsController.instance.playerCardPoints))
+            {
+                effectedCard.currentHealth += playedCard.cardSO.abilities[0].value;
+                effectedCard.UpdateCardDisplay();
+            }
+        }   
     }
 
     public void Revelation(Card card)
@@ -505,6 +550,23 @@ public class AbilityManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void HealBlock(Card card)
+    {
+        card.healBlock = true;
+    }
+
+    public bool CanHeal(CardPlacePoint[] cardPoints)
+    {
+        foreach (CardPlacePoint point in cardPoints)
+        {
+            if (point.activeCard != null && point.activeCard.healBlock)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public IEnumerator QuickAttackCoroutine(Card card)
