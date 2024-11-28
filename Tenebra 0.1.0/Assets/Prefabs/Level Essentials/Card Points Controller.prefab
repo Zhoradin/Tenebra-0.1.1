@@ -168,6 +168,10 @@ MonoBehaviour:
   activeCard: {fileID: 0}
   isFieldPoint: 0
   isPlayerPoint: 0
+  isImpactPoint: 0
+  isLockedPoint: 0
+  placePointOrder: 2
+  oppositeCardPlacePoint: {fileID: 2950629122239523693}
 --- !u!1 &2110220578906968254
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,6 +318,10 @@ MonoBehaviour:
   activeCard: {fileID: 0}
   isFieldPoint: 0
   isPlayerPoint: 1
+  isImpactPoint: 0
+  isLockedPoint: 1
+  placePointOrder: 0
+  oppositeCardPlacePoint: {fileID: 0}
 --- !u!1 &2159621448997930785
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,6 +638,10 @@ MonoBehaviour:
   activeCard: {fileID: 0}
   isFieldPoint: 1
   isPlayerPoint: 1
+  isImpactPoint: 0
+  isLockedPoint: 0
+  placePointOrder: 4
+  oppositeCardPlacePoint: {fileID: 5887326231126772319}
 --- !u!1 &2885808032650653460
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,6 +848,10 @@ MonoBehaviour:
   activeCard: {fileID: 0}
   isFieldPoint: 1
   isPlayerPoint: 1
+  isImpactPoint: 0
+  isLockedPoint: 0
+  placePointOrder: 5
+  oppositeCardPlacePoint: {fileID: 8748503725811338158}
 --- !u!1 &4554907781916956355
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,6 +899,10 @@ MonoBehaviour:
   activeCard: {fileID: 0}
   isFieldPoint: 0
   isPlayerPoint: 0
+  isImpactPoint: 0
+  isLockedPoint: 0
+  placePointOrder: 33
+  oppositeCardPlacePoint: {fileID: 7788021857795727827}
 --- !u!1 &4675119621701366192
 GameObject:
   m_ObjectHideFlags: 0
@@ -1029,6 +1049,10 @@ MonoBehaviour:
   activeCard: {fileID: 0}
   isFieldPoint: 1
   isPlayerPoint: 1
+  isImpactPoint: 0
+  isLockedPoint: 0
+  placePointOrder: 3
+  oppositeCardPlacePoint: {fileID: 5958290631849011673}
 --- !u!1 &4720996221869916649
 GameObject:
   m_ObjectHideFlags: 0
@@ -1076,6 +1100,10 @@ MonoBehaviour:
   activeCard: {fileID: 0}
   isFieldPoint: 0
   isPlayerPoint: 0
+  isImpactPoint: 0
+  isLockedPoint: 0
+  placePointOrder: 1
+  oppositeCardPlacePoint: {fileID: 6706507743917079382}
 --- !u!1 &5369576759142327764
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,6 +1250,10 @@ MonoBehaviour:
   activeCard: {fileID: 0}
   isFieldPoint: 1
   isPlayerPoint: 1
+  isImpactPoint: 0
+  isLockedPoint: 0
+  placePointOrder: 1
+  oppositeCardPlacePoint: {fileID: 1857649514877219708}
 --- !u!1 &5608695459918683687
 GameObject:
   m_ObjectHideFlags: 0
@@ -1368,6 +1400,10 @@ MonoBehaviour:
   activeCard: {fileID: 0}
   isFieldPoint: 1
   isPlayerPoint: 1
+  isImpactPoint: 0
+  isLockedPoint: 0
+  placePointOrder: 2
+  oppositeCardPlacePoint: {fileID: 2249367607798617294}
 --- !u!1 &6094945579063853644
 GameObject:
   m_ObjectHideFlags: 0
@@ -1585,6 +1621,10 @@ MonoBehaviour:
   activeCard: {fileID: 0}
   isFieldPoint: 0
   isPlayerPoint: 0
+  isImpactPoint: 0
+  isLockedPoint: 0
+  placePointOrder: 5
+  oppositeCardPlacePoint: {fileID: 5609554525098559160}
 --- !u!1 &7711954529148548830
 GameObject:
   m_ObjectHideFlags: 0
@@ -1668,3 +1708,7 @@ MonoBehaviour:
   activeCard: {fileID: 0}
   isFieldPoint: 0
   isPlayerPoint: 0
+  isImpactPoint: 0
+  isLockedPoint: 0
+  placePointOrder: 4
+  oppositeCardPlacePoint: {fileID: 340617163485292985}

@@ -18,11 +18,11 @@ public class Card : MonoBehaviour
 
     public int currentHealth, attackPower, essenceCost;
     [HideInInspector]
-    public int originalHealth, originalAttack, originalEssence, metamorphosisTurnCount, decayTurns, waxingCrescentCount;
+    public int originalHealth, originalAttack, originalEssence, metamorphosisTurnCount, decayTurns, waxingCrescentCount, stunDuration;
 
     public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo, superEffectiveText, notEffectiveText;
 
-    public Image characterArt, bgArt, moonPhaseArt, healthArt, attackArt;
+    public Image characterArt, bgArt, moonPhaseArt, healthArt, attackArt, stunImage;
 
     public bool inHand, isActive, isSelected, returningToHand, justPressed, isPlayer, isGraveyard, isLocked, isTransformed;
     public int handPosition;
@@ -58,7 +58,7 @@ public class Card : MonoBehaviour
 
     [HideInInspector]
     public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot, growth, decay, decayed, guardian, reckoning, benevolence,
-        snowball, multipleHit, duality, doppelganger, usedWaxingCrescent, gratis = false;
+        snowball, multipleHit, duality, doppelganger, usedWaxingCrescent, gratis, stun, stunned = false;
     [HideInInspector]
     public Card decayedBy;
 
@@ -92,6 +92,7 @@ public class Card : MonoBehaviour
         originalEssence = essenceCost;
 
         UpdateCardDisplay();
+        stunImage.gameObject.SetActive(false);
 
         nameText.text = cardSO.cardName;
         descriptionText.text = cardSO.cardDescription;

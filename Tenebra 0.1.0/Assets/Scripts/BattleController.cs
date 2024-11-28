@@ -162,6 +162,7 @@ public class BattleController : MonoBehaviour
             switch (currentPhase)
             {
                 case TurnOrder.playerActive:
+
                     MoonPhaseController.instance.AdvanceMoonPhase();
                     moonPhaseCount++;
                     if (moonPhaseCount > 15)
@@ -192,6 +193,7 @@ public class BattleController : MonoBehaviour
                     turnCount++;
                     AbilityManager.instance.MetamorphoseCard();
                     AbilityManager.instance.ProcessDecayDamage();
+                    AbilityManager.instance.CheckStun(CardPointsController.instance.enemyCardPoints);
 
                     // Growth yeteneği için kontrol (oyuncu kartları)
                     AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.playerCardPoints);
@@ -200,6 +202,7 @@ public class BattleController : MonoBehaviour
                     break;
 
                 case TurnOrder.playerCardAttacks:
+
                     UIController.instance.drawCardButton.GetComponent<Button>().interactable = false;
                     UIController.instance.endTurnButton.GetComponent<Button>().interactable = false;
                     if (turnCount >= 2)
@@ -213,6 +216,7 @@ public class BattleController : MonoBehaviour
                     break;
 
                 case TurnOrder.enemyActive:
+
                     UIController.instance.drawCardButton.GetComponent<Button>().interactable = false;
                     UIController.instance.endTurnButton.GetComponent<Button>().interactable = false;
                     FillEnemyEssence();
@@ -225,6 +229,7 @@ public class BattleController : MonoBehaviour
                     CheckMoonPhaseForAllCards(enemyCardPoints);
                     AbilityManager.instance.MetamorphoseCard();
                     AbilityManager.instance.ProcessDecayDamage();
+                    AbilityManager.instance.CheckStun(CardPointsController.instance.playerCardPoints);
 
                     AbilityManager.instance.ApplyDuality(CardPointsController.instance.playerCardPoints);
                     AbilityManager.instance.ApplyDuality(CardPointsController.instance.enemyCardPoints);
@@ -234,6 +239,7 @@ public class BattleController : MonoBehaviour
                     break;
 
                 case TurnOrder.enemyCardAttacks:
+
                     if (turnCount >= 2)
                     {
                         CardPointsController.instance.EnemyAttack();

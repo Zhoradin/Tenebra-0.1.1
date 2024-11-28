@@ -184,6 +184,8 @@ MonoBehaviour:
   isPlayerPoint: 1
   isImpactPoint: 1
   isLockedPoint: 0
+  placePointOrder: 0
+  oppositeCardPlacePoint: {fileID: 0}
 --- !u!61 &226709246
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -289,14 +291,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
-      propertyPath: deckToUse.Array.size
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
-      propertyPath: deckToUse.Array.data[14]
-      value: 
-      objectReference: {fileID: 11400000, guid: b9800b390e331174ba801c976966aae6, type: 2}
     - target: {fileID: 2727439233793707573, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: m_Name
       value: Data Carrier
@@ -1225,7 +1219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6974295416594867197, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00015475776
+      value: 0.000005756682
       objectReference: {fileID: 0}
     - target: {fileID: 7144904438898860329, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
       propertyPath: m_Name
@@ -1279,10 +1273,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8072300866365099800, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
-      propertyPath: m_TagString
-      value: Portrait
-      objectReference: {fileID: 0}
     - target: {fileID: 8619580979122307541, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1312,8 +1302,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 8072300866365099800, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3ad2dd3882f97a488e2832242ff40cd, type: 3}
@@ -1500,10 +1489,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1418903346462105962, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
-      propertyPath: isLockedPoint
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2885808032650653460, guid: f72fe3e6b29531c4e8db1f3600169ba4, type: 3}
       propertyPath: m_Name
       value: Card Points Controller

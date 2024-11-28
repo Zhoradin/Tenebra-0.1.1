@@ -26,7 +26,7 @@ public class CardPointsController : MonoBehaviour
 
         for (int i = 0; i < playerCardPoints.Length; i++)
         {
-            if (playerCardPoints[i].activeCard != null)
+            if (playerCardPoints[i].activeCard != null && playerCardPoints[i].activeCard.stunned == false)
             {
                 int attackCount = playerCardPoints[i].activeCard.doubleTap ? 2 : 1;
 
@@ -191,7 +191,7 @@ public class CardPointsController : MonoBehaviour
 
         for (int i = 0; i < enemyCardPoints.Length; i++)
         {
-            if (enemyCardPoints[i].activeCard != null)
+            if (enemyCardPoints[i].activeCard != null && enemyCardPoints[i].activeCard.stunned == false)
             {
                 int attackCount = enemyCardPoints[i].activeCard.doubleTap ? 2 : 1;
 

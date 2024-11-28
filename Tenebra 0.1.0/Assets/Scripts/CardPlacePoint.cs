@@ -9,4 +9,6 @@ public class CardPlacePoint : MonoBehaviour
     public bool isPlayerPoint;
     public bool isImpactPoint;
     public bool isLockedPoint;
+    public int placePointOrder;
+    public CardPlacePoint oppositeCardPlacePoint;
 }

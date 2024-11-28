@@ -93,6 +93,9 @@ public class AbilityManager : MonoBehaviour
                     break;
                 case CardAbilitySO.AbilityType.Doppelganger:
                     break;
+                case CardAbilitySO.AbilityType.Stun:
+                    Stun(card);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -391,11 +394,10 @@ public class AbilityManager : MonoBehaviour
 
     public void ApplyDuality(CardPlacePoint[] cardPoints)
     {
-        foreach (var point in cardPoints)
+        /*foreach (var point in cardPoints)
         {
             if (point.activeCard != null && point.activeCard.duality)
             {
-                Debug.Log("deneme");
                 foreach (var targetPoint in cardPoints)
                 {
                     if(targetPoint.activeCard != null)
@@ -406,6 +408,17 @@ public class AbilityManager : MonoBehaviour
                         targetPoint.activeCard.UpdateCardDisplay();
                     }
                 }
+            }
+        }*/
+
+        for (int i = 0; i < cardPoints.Length; i++)
+        {
+            if(cardPoints[i].activeCard != null && cardPoints[i].activeCard.duality)
+            {
+                tempHealth = cardPoints[i].activeCard.currentHealth;
+                cardPoints[i].activeCard.currentHealth = cardPoints[i].activeCard.attackPower;
+                cardPoints[i].activeCard.attackPower = tempHealth;
+                cardPoints[i].activeCard.UpdateCardDisplay();
             }
         }
     }
@@ -456,6 +469,42 @@ public class AbilityManager : MonoBehaviour
         selectedCard.UpdateCardDisplay();
 
         //Debug.Log($"Gratis applied to: {selectedCard.cardSO.name}");
+    }
+
+    public void Stun(Card card)
+    {
+        card.stun = true;
+        ApplyStun(card, card.assignedPlace.oppositeCardPlacePoint.activeCard);
+    }
+
+    public void ApplyStun(Card attackerCard, Card defenderCard)
+    {
+        if(attackerCard.assignedPlace != null)
+        {
+            if(attackerCard.assignedPlace.oppositeCardPlacePoint.activeCard != null)
+            {
+                defenderCard.stunned = true;
+                defenderCard.stunImage.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    public void CheckStun(CardPlacePoint[] cardPoints)
+    {
+        foreach (var point in cardPoints)
+        {
+            if (point.activeCard != null && point.activeCard.duality)
+            {
+                foreach (var targetPoint in cardPoints)
+                {
+                    if (targetPoint.activeCard != null)
+                    {
+                        targetPoint.activeCard.stunned = false;
+                        targetPoint.activeCard.stunImage.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
     }
 
     public IEnumerator QuickAttackCoroutine(Card card)
