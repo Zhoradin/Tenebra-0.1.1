@@ -117,7 +117,7 @@ public class MoonPhaseController : MonoBehaviour
         switch (BattleController.instance.moonPhaseCount)
         {
             case 0:
-                BattleController.instance.currentMoonPhase = MoonPhase.NewMoon;
+                BattleController.instance.currentMoonPhase = MoonPhase.FullMoon;
                 moonPhaseTillNextRound = 1;
                 break;
 
@@ -257,6 +257,7 @@ public class MoonPhaseController : MonoBehaviour
 
                 case MoonPhase.FullMoon:
                     // Reflect the damage
+                    card.fullMoon = true;
                     break;
 
                 case MoonPhase.WaningGibbous:
@@ -318,7 +319,8 @@ public class MoonPhaseController : MonoBehaviour
                     break;
 
                 case MoonPhase.FullMoon:
-                    // No effect
+                    // Reverse full moon
+                    card.fullMoon = false;
                     break;
 
                 case MoonPhase.WaningGibbous:

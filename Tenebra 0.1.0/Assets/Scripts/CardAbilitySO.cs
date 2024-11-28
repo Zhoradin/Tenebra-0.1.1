@@ -28,7 +28,8 @@ public class CardAbilitySO : ScriptableObject
         Doppelganger,
         Gratis,
         Stun,
-        HealBlock
+        HealBlock,
+        Mirror
     }
 
     public AbilityType abilityType;

@@ -64,7 +64,7 @@ public class CardPointsController : MonoBehaviour
     {
         List<int> targets = new List<int>();
 
-        // Guardian özelliði kontrolü
+        // Guardian check
         int guardianIndex = -1;
         for (int i = 0; i < defendingPoints.Length; i++)
         {
@@ -140,33 +140,74 @@ public class CardPointsController : MonoBehaviour
             float effectiveness = TypeEffectiveness.GetEffectiveness(attacker.activeCard.cardType, defender.activeCard.cardType);
             damage *= effectiveness;
 
-            defender.activeCard.DamageCard(Mathf.RoundToInt(damage));
-
-            // Decay özelliðini tetikleyin
-            if (attacker.activeCard.decay)
+            //Full Moon Check (Reflect if full moon)
+            if (defender.activeCard.fullMoon)
             {
-                AbilityManager.instance.DecayCard(attacker.activeCard, defender.activeCard);
+                defender.activeCard.DamageCard(0);
+                attacker.activeCard.DamageCard(Mathf.RoundToInt(damage));
+                if (defender.activeCard.isPlayer)
+                {
+                    defender.activeCard.anim.SetTrigger("Attack");
+                }
+                else
+                {
+                    defender.activeCard.anim.SetTrigger("Enemy Attack");
+                }
+            }
+            //No Full Moon No Reflect
+            else
+            {
+                defender.activeCard.DamageCard(Mathf.RoundToInt(damage));
+                //Mirror Check
+                if(defender.activeCard != null)
+                {
+                    if (defender.activeCard.mirror)
+                    {
+                        attacker.activeCard.DamageCard(Mathf.RoundToInt(damage));
+                    }
+                }
             }
 
-            if (defender.activeCard != null)
+            if(defender.activeCard != null)
             {
+                //Mend Check
                 if (defender.activeCard.mend)
                 {
                     defender.activeCard.currentHealth += Mathf.RoundToInt(damage / 2);
                     defender.activeCard.UpdateCardDisplay();
                 }
-
+                //Leech Check
                 if (defender.activeCard.leech)
                 {
                     BattleController.instance.enemyHealth += Mathf.RoundToInt(damage);
                     UIController.instance.SetEnemyHealthText(BattleController.instance.enemyHealth);
                 }
-            }
+            }  
         }
 
         // Saldýrý animasyonu
         if (attacker.activeCard != null)
         {
+            // Decay Check
+            if (attacker.activeCard.decay)
+            {
+                AbilityManager.instance.DecayCard(attacker.activeCard, defender.activeCard);
+            }
+
+            if (attacker.activeCard.cardSO.moonPhase == BattleController.instance.currentMoonPhase)
+            {
+                //Waning Crescent Check (steal 1 health)
+                if (attacker.activeCard.cardSO.moonPhase == MoonPhase.WaningCrescent)
+                {
+                    AbilityManager.instance.Heal(attacker.activeCard, 1);
+                }
+                //First Qaurter Check (insta kill)
+                else if (attacker.activeCard.cardSO.moonPhase == MoonPhase.FirstQuarter)
+                {
+                    defender.activeCard.currentHealth = 0;
+                }
+            }
+
             if (attacker.activeCard.isPlayer)
             {
                 attacker.activeCard.anim.SetTrigger("Attack");
@@ -265,7 +306,6 @@ public class CardPointsController : MonoBehaviour
                     float damage = attacker.attackPower * effectiveness;
                     Debug.Log("Effectiveness: " + effectiveness);
                     defender.activeCard.DamageCard(Mathf.RoundToInt(damage));
-                    BattleController.instance.SetupActiveCards();
                 }
             }
             else

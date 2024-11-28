@@ -70,8 +70,6 @@ public class BattleController : MonoBehaviour
             currentPhase = TurnOrder.enemyCardAttacks;
             AdvanceTurn();
         }
-
-        SetupActiveCards();
     }
 
     void Update()
@@ -92,12 +90,6 @@ public class BattleController : MonoBehaviour
     {
         enemyEssence = EnemyController.instance.enemyEssence;
         UIController.instance.SetEnemyEssenceText(EnemyController.instance.enemyEssence);
-    }
-
-    public void SetupActiveCards()
-    {
-        playerCardPoints = CardPointsController.instance.playerCardPoints;
-        enemyCardPoints = CardPointsController.instance.enemyCardPoints;
     }
 
     public void SpendPlayerEssence(int amountToSpend)
@@ -188,8 +180,8 @@ public class BattleController : MonoBehaviour
                     AbilityManager.instance.ApplyDuality(CardPointsController.instance.enemyCardPoints);
 
                     // Check moon phase for player cards
-                    CheckMoonPhaseForAllCards(playerCardPoints);
-                    CheckMoonPhaseForAllCards(enemyCardPoints);
+                    CheckMoonPhaseForAllCards(CardPointsController.instance.playerCardPoints);
+                    CheckMoonPhaseForAllCards(CardPointsController.instance.enemyCardPoints);
                     turnCount++;
                     AbilityManager.instance.MetamorphoseCard();
                     AbilityManager.instance.ProcessDecayDamage();

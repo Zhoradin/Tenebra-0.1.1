@@ -99,6 +99,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.HealBlock:
                     HealBlock(card);
                     break;
+                case CardAbilitySO.AbilityType.Mirror:
+                    Mirror(card);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -158,12 +161,12 @@ public class AbilityManager : MonoBehaviour
         card.glassCannon = true;
     }
 
-    private void Mend(Card card)
+    public void Mend(Card card)
     {
         card.mend = true;
     }
 
-    private void Leech(Card card)
+    public void Leech(Card card)
     {
         card.leech = true;
     }
@@ -567,6 +570,11 @@ public class AbilityManager : MonoBehaviour
             }
         }
         return true;
+    }
+
+    public void Mirror(Card card)
+    {
+        card.mirror = true;
     }
 
     public IEnumerator QuickAttackCoroutine(Card card)
