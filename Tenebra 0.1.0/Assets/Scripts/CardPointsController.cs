@@ -204,7 +204,10 @@ public class CardPointsController : MonoBehaviour
                 //First Qaurter Check (insta kill)
                 else if (attacker.activeCard.cardSO.moonPhase == MoonPhase.FirstQuarter)
                 {
-                    defender.activeCard.currentHealth = 0;
+                    if(defender.activeCard != null)
+                    {
+                        defender.activeCard.currentHealth = 0;
+                    }
                 }
             }
 

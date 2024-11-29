@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
+  m_Name: Test Harvester
+  m_EditorClassIdentifier: 
+  cardName: Wasteland Ravager
+  isGraveyard: 0
+  cardDescription: It roams the barren lands, draining life to fuel its relentless
+    hunger
+  currentHealth: 1
+  attackPower: 3
+  essenceCost: 1
+  coinCost: 50
+  changedHealth: 0
+  changedAttackPower: 0
+  characterSprite: {fileID: 21300000, guid: 113ca8e3dbe04a54c8bb62f17604a1ab, type: 3}
+  bgSprite: {fileID: 21300000, guid: 46f156a0b42e41c4ca888a5c41d625b3, type: 3}
+  changedCharacterSprite: {fileID: 0}
+  moonPhaseSprite: {fileID: 21300000, guid: 86fdf100d0bc5cb4c8bfd87919fb0d93, type: 3}
+  abilities:
+  - {fileID: 11400000, guid: 272f48903dabd324891977e154f9f3ec, type: 2}
+  moonPhase: 2
+  cardType: 4
+  cardKind: 0
+  cardRarity: 0

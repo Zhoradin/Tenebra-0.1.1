@@ -102,6 +102,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Mirror:
                     Mirror(card);
                     break;
+                case CardAbilitySO.AbilityType.Harvester:
+                    Harvester(card);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -575,6 +578,46 @@ public class AbilityManager : MonoBehaviour
     public void Mirror(Card card)
     {
         card.mirror = true;
+    }
+
+    public void Harvester(Card card)
+    {
+        card.harvester = true;
+    }
+
+    public void ApplyHarvesterAbility(CardPlacePoint[] cardPoints)
+    {
+        foreach (CardPlacePoint point in cardPoints)
+        {
+            if (point.activeCard != null && point.activeCard.harvester)
+            {
+                if (point.activeCard.assignedPlace.oppositeCardPlacePoint.activeCard)
+                {
+                    if (point.activeCard.isPlayer)
+                    {
+                        if (CanHeal(CardPointsController.instance.enemyCardPoints))
+                        {
+                            point.activeCard.currentHealth += 1;
+                            point.activeCard.UpdateCardDisplay();
+                            point.activeCard.assignedPlace.oppositeCardPlacePoint.activeCard.currentHealth -= 1;
+                            point.activeCard.assignedPlace.oppositeCardPlacePoint.activeCard.UpdateCardDisplay();
+                        }
+                    }
+                    else
+                    {
+                        if (CanHeal(CardPointsController.instance.playerCardPoints))
+                        {
+                            point.activeCard.currentHealth += 1;
+                            point.activeCard.UpdateCardDisplay();
+                            point.activeCard.assignedPlace.oppositeCardPlacePoint.activeCard.currentHealth -= 1;
+                            point.activeCard.assignedPlace.oppositeCardPlacePoint.activeCard.UpdateCardDisplay();
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
     }
 
     public IEnumerator QuickAttackCoroutine(Card card)

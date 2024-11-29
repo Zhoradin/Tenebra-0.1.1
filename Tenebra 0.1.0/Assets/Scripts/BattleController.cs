@@ -186,6 +186,7 @@ public class BattleController : MonoBehaviour
                     AbilityManager.instance.MetamorphoseCard();
                     AbilityManager.instance.ProcessDecayDamage();
                     AbilityManager.instance.CheckStun(CardPointsController.instance.enemyCardPoints);
+                    AbilityManager.instance.ApplyHarvesterAbility(CardPointsController.instance.playerCardPoints);
 
                     // Growth yeteneği için kontrol (oyuncu kartları)
                     AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.playerCardPoints);
@@ -228,6 +229,7 @@ public class BattleController : MonoBehaviour
 
                     // Growth yeteneği için kontrol (düşman kartları)
                     AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.enemyCardPoints);
+                    AbilityManager.instance.ApplyHarvesterAbility(CardPointsController.instance.enemyCardPoints);
                     break;
 
                 case TurnOrder.enemyCardAttacks:

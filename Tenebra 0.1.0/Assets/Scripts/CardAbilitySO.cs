@@ -29,7 +29,8 @@ public class CardAbilitySO : ScriptableObject
         Gratis,
         Stun,
         HealBlock,
-        Mirror
+        Mirror,
+        Harvester
     }
 
     public AbilityType abilityType;
