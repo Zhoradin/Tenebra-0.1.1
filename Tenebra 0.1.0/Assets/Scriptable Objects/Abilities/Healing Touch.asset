@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21abf7f0a1b44eb4ba18b5cd5add9760, type: 3}
   m_Name: Healing Touch
   m_EditorClassIdentifier: 
-  abilityType: 16
+  abilityType: 15
   value: 5
   description: Heals the card that it is played on by 5

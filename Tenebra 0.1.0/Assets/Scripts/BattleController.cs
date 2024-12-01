@@ -171,31 +171,20 @@ public class BattleController : MonoBehaviour
                     UIController.instance.drawCardButton.GetComponent<Button>().interactable = true;
 
                     FillPlayerEssence();
-                    HandController.instance.EmptyHand();
+
                     DeckController.instance.DrawMultipleCards(cardsToDrawPerTurn);
-
-                    // Benevolence kontrolü (oyuncu kartları)
-                    AbilityManager.instance.ApplyBenevolenceEffect(CardPointsController.instance.playerCardPoints);
-                    AbilityManager.instance.ApplyDuality(CardPointsController.instance.playerCardPoints);
-                    AbilityManager.instance.ApplyDuality(CardPointsController.instance.enemyCardPoints);
-
-                    // Check moon phase for player cards
                     CheckMoonPhaseForAllCards(CardPointsController.instance.playerCardPoints);
                     CheckMoonPhaseForAllCards(CardPointsController.instance.enemyCardPoints);
+                    PlayerAbilityControl();
                     turnCount++;
-                    AbilityManager.instance.MetamorphoseCard();
-                    AbilityManager.instance.ProcessDecayDamage();
-                    AbilityManager.instance.CheckStun(CardPointsController.instance.enemyCardPoints);
-                    AbilityManager.instance.ApplyHarvesterAbility(CardPointsController.instance.playerCardPoints);
 
-                    // Growth yeteneği için kontrol (oyuncu kartları)
-                    AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.playerCardPoints);
                     UIController.instance.drawCardButton.GetComponent<Button>().interactable = true;
                     UIController.instance.endTurnButton.GetComponent<Button>().interactable = true;
                     break;
 
                 case TurnOrder.playerCardAttacks:
 
+                    HandController.instance.EmptyHand();
                     UIController.instance.drawCardButton.GetComponent<Button>().interactable = false;
                     UIController.instance.endTurnButton.GetComponent<Button>().interactable = false;
                     if (turnCount >= 2)
@@ -214,22 +203,8 @@ public class BattleController : MonoBehaviour
                     UIController.instance.endTurnButton.GetComponent<Button>().interactable = false;
                     FillEnemyEssence();
                     EnemyController.instance.StartAction();
-
-                    // Benevolence kontrolü (düşman kartları)
-                    AbilityManager.instance.ApplyBenevolenceEffect(CardPointsController.instance.enemyCardPoints);
-
-                    // Check moon phase for enemy cards
                     CheckMoonPhaseForAllCards(enemyCardPoints);
-                    AbilityManager.instance.MetamorphoseCard();
-                    AbilityManager.instance.ProcessDecayDamage();
-                    AbilityManager.instance.CheckStun(CardPointsController.instance.playerCardPoints);
-
-                    AbilityManager.instance.ApplyDuality(CardPointsController.instance.playerCardPoints);
-                    AbilityManager.instance.ApplyDuality(CardPointsController.instance.enemyCardPoints);
-
-                    // Growth yeteneği için kontrol (düşman kartları)
-                    AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.enemyCardPoints);
-                    AbilityManager.instance.ApplyHarvesterAbility(CardPointsController.instance.enemyCardPoints);
+                    EnemyAbilityControl();
                     break;
 
                 case TurnOrder.enemyCardAttacks:
@@ -265,6 +240,29 @@ public class BattleController : MonoBehaviour
         }
     }
 
+    public void PlayerAbilityControl()
+    {
+        AbilityManager.instance.ApplyBenevolenceEffect(CardPointsController.instance.playerCardPoints);
+        AbilityManager.instance.ApplyDuality(CardPointsController.instance.playerCardPoints);
+        AbilityManager.instance.ApplyDuality(CardPointsController.instance.enemyCardPoints);
+        AbilityManager.instance.MetamorphoseCard();
+        AbilityManager.instance.ProcessDecayDamage();
+        AbilityManager.instance.CheckStun(CardPointsController.instance.enemyCardPoints);
+        AbilityManager.instance.ApplyHarvesterAbility(CardPointsController.instance.playerCardPoints);
+        AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.playerCardPoints);
+    }
+
+    public void EnemyAbilityControl()
+    {
+        AbilityManager.instance.ApplyBenevolenceEffect(CardPointsController.instance.enemyCardPoints);
+        AbilityManager.instance.MetamorphoseCard();
+        AbilityManager.instance.ProcessDecayDamage();
+        AbilityManager.instance.CheckStun(CardPointsController.instance.playerCardPoints);
+        AbilityManager.instance.ApplyDuality(CardPointsController.instance.playerCardPoints);
+        AbilityManager.instance.ApplyDuality(CardPointsController.instance.enemyCardPoints);
+        AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.enemyCardPoints);
+        AbilityManager.instance.ApplyHarvesterAbility(CardPointsController.instance.enemyCardPoints);
+    }
 
     public void EndPlayerTurn()
     {
@@ -284,7 +282,6 @@ public class BattleController : MonoBehaviour
             {
                 playerHealth = 0;
 
-                //End Battle
                 EndBattle();
             }
 

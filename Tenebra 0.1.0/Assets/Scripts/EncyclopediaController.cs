@@ -269,4 +269,18 @@ public class CardInfo
     }
 }
 
+[System.Serializable]
+public class MoonPhaseInfo
+{
+    public string phaseName;
+    [TextArea(5, 10)]
+    public string phaseDescription;
+    public Image phaseImage;
 
+    public MoonPhaseInfo(string phaseName, string phaseDescription, Image phaseImage)
+    {
+        this.phaseName = phaseName;
+        this.phaseDescription = phaseDescription;
+        this.phaseImage = phaseImage;
+    }
+}

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21abf7f0a1b44eb4ba18b5cd5add9760, type: 3}
   m_Name: Stun
   m_EditorClassIdentifier: 
-  abilityType: 22
+  abilityType: 21
   value: 0
   description: Stuns the opposite card for 1 turn

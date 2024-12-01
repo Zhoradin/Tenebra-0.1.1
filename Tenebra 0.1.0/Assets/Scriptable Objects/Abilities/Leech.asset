@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21abf7f0a1b44eb4ba18b5cd5add9760, type: 3}
   m_Name: Leech
   m_EditorClassIdentifier: 
-  abilityType: 6
+  abilityType: 5
   value: 0
   description: Absorbs the taken damage and adds to overall health

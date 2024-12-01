@@ -44,52 +44,49 @@ public class AbilityManager : MonoBehaviour
                     Heal(card, ability.value);
                     break;
                 case CardAbilitySO.AbilityType.DirectHit:
-                    DirectHit(card);
+                    card.directHit = true;
                     break;
                 case CardAbilitySO.AbilityType.DoubleTap:
-                    DoubleTap(card);
+                    card.doubleTap = true;
                     break;
                 case CardAbilitySO.AbilityType.QuickAttack:
                     StartCoroutine(QuickAttackCoroutine(card));
                     break;
-                case CardAbilitySO.AbilityType.GlassCannon:
-                    GlassCannon(card);
-                    break;
                 case CardAbilitySO.AbilityType.Mend:
-                    Mend(card);
+                    card.mend = true;
                     break;
                 case CardAbilitySO.AbilityType.Leech:
-                    Leech(card);
+                    card.leech = true;
                     break;
                 case CardAbilitySO.AbilityType.Metamorphosis:
                     Metamorphosis(card);
                     break;
                 case CardAbilitySO.AbilityType.PrimalPact:
-                    PrimalPact(card);
+                    card.primalPact = true;
                     break;
                 case CardAbilitySO.AbilityType.Scattershot:
                     Scattershot(card);
                     break;
                 case CardAbilitySO.AbilityType.Growth:
-                    Growth(card);
+                    card.growth = true;
                     break;
                 case CardAbilitySO.AbilityType.Decay:
-                    Decay(card);
+                    card.decay = true;
                     break;
                 case CardAbilitySO.AbilityType.Guardian:
-                    Guardian(card);
+                    card.guardian = true;
                     break;
                 case CardAbilitySO.AbilityType.Reckoning:
                     Reckoning(card);
                     break;
                 case CardAbilitySO.AbilityType.Benevolence:
-                    Benevolence(card);
+                    card.benevolence = true;
                     break;
                 case CardAbilitySO.AbilityType.Snowball:
                     Snowball(card);
                     break;
                 case CardAbilitySO.AbilityType.Duality:
-                    Duality(card);
+                    card.duality = true;
                     break;
                 case CardAbilitySO.AbilityType.Doppelganger:
                     break;
@@ -97,13 +94,13 @@ public class AbilityManager : MonoBehaviour
                     Stun(card);
                     break;
                 case CardAbilitySO.AbilityType.HealBlock:
-                    HealBlock(card);
+                    card.healBlock = true;
                     break;
                 case CardAbilitySO.AbilityType.Mirror:
-                    Mirror(card);
+                    card.mirror = true;
                     break;
                 case CardAbilitySO.AbilityType.Harvester:
-                    Harvester(card);
+                    card.harvester = true;
                     break;
             }
         }
@@ -137,8 +134,7 @@ public class AbilityManager : MonoBehaviour
                     break;
                 case CardAbilitySO.AbilityType.Gratis:
                     Gratis(playedCard);
-                    break;
-                    
+                    break;            
             }
         }
     }
@@ -149,42 +145,17 @@ public class AbilityManager : MonoBehaviour
         card.UpdateCardDisplay();
     }
 
-    private void DirectHit(Card card)
-    {
-        card.directHit = true;
-    }
-
-    private void DoubleTap(Card card)
-    {
-        card.doubleTap = true;
-    }
-
-    private void GlassCannon(Card card)
-    {
-        card.glassCannon = true;
-    }
-
-    public void Mend(Card card)
-    {
-        card.mend = true;
-    }
-
-    public void Leech(Card card)
-    {
-        card.leech = true;
-    }
-
     public void Metamorphosis(Card card)
     {
         card.metamorphosis = true;
-        card.metamorphosisTurnCount = BattleController.instance.turnCount; // Kartýn dönüþüm zamanýný kaydet
+        card.metamorphosisTurnCount = BattleController.instance.turnCount; // Save the turn count of the card
     }
 
     public void MetamorphoseCard()
     {
         CardPlacePoint[] cardPoints = null;
 
-        // Þu anki tura göre metamorphose iþlemini uygun kartlar için yap
+        // Metamorphose the cards that are available
         if (BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive)
         {
             cardPoints = CardPointsController.instance.playerCardPoints;
@@ -198,30 +169,30 @@ public class AbilityManager : MonoBehaviour
 
         foreach (var point in cardPoints)
         {
-            if (point.activeCard != null && point.activeCard.CanMetamorphose())
+            if (point.activeCard != null && CanMetamorphose(point.activeCard))
             {
                 TransformCard(point.activeCard);
             }
         }
     }
 
-    public void PrimalPact(Card card)
+    public bool CanMetamorphose(Card card)
     {
-        card.primalPact = true;
+        return card.metamorphosis && !card.isTransformed && (BattleController.instance.turnCount - card.metamorphosisTurnCount) >= 2; // Wait 2 turns to metamorphose
     }
 
     private void CheckPrimalPactInteractions(Card card)
     {
         if (!card.primalPact || card.isTransformed) return;
 
-        // Ýlgili kart türü (oyuncu veya düþman) için sahadaki tüm kartlarý kontrol et
+        // Check the all cards on the field
         var cardPoints = card.isPlayer
             ? CardPointsController.instance.playerCardPoints
             : CardPointsController.instance.enemyCardPoints;
 
         int primalPactCount = 0;
 
-        // Sahadaki `PrimalPact` kartlarýnýn sayýsýný kontrol et
+        // Check the amount of Primal Pact cards on the field
         foreach (var point in cardPoints)
         {
             if (point.activeCard != null && point.activeCard.primalPact)
@@ -230,7 +201,7 @@ public class AbilityManager : MonoBehaviour
             }
         }
 
-        // Eðer sahada birden fazla `PrimalPact` kartý varsa dönüþümü baþlat
+        // If there are more than 1 Primal Pact cards on the field, transform the card
         if (primalPactCount > 1)
         {
             foreach (var point in cardPoints)
@@ -249,18 +220,13 @@ public class AbilityManager : MonoBehaviour
         card.currentHealth = card.cardSO.changedHealth;
         card.attackPower = card.cardSO.changedAttackPower;
         card.UpdateCardDisplay();
-        card.isTransformed = true; // Kart dönüþmüþ olarak iþaretleniyor
+        card.isTransformed = true;
     }
 
     public void Scattershot(Card card)
     {
         card.scattershot = true;
         card.multipleHit = true;
-    }
-
-    public void Growth(Card card)
-    {
-        card.growth = true;
     }
 
     public void ApplyGrowthAbility(CardPlacePoint[] cardPoints)
@@ -274,7 +240,7 @@ public class AbilityManager : MonoBehaviour
                     if (CanHeal(CardPointsController.instance.enemyCardPoints))
                     {
                         point.activeCard.currentHealth += point.activeCard.cardSO.abilities[0].value;
-                        point.activeCard.UpdateCardDisplay(); // Kart görselini güncelle
+                        point.activeCard.UpdateCardDisplay();
                     }
                 }
                 else
@@ -282,16 +248,11 @@ public class AbilityManager : MonoBehaviour
                     if (CanHeal(CardPointsController.instance.playerCardPoints))
                     {
                         point.activeCard.currentHealth += point.activeCard.cardSO.abilities[0].value;
-                        point.activeCard.UpdateCardDisplay(); // Kart görselini güncelle
+                        point.activeCard.UpdateCardDisplay();
                     }
                 } 
             }
         }
-    }
-
-    public void Decay(Card card)
-    {
-        card.decay = true;
     }
 
     public void DecayCard(Card attackingCard, Card defendingCard)
@@ -355,23 +316,12 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    public void Guardian(Card card)
-    {
-        card.guardian = true;
-    }
-
     public void Reckoning(Card card)
     {
-        card.reckoning = true;
         heldCardCount = HandController.instance.heldCards.Count;
         card.attackPower += heldCardCount;
         HandController.instance.EmptyHand();
         card.UpdateCardDisplay();
-    }
-
-    public void Benevolence(Card card)
-    {
-        card.benevolence = true;
     }
 
     public void ApplyBenevolenceEffect(CardPlacePoint[] cardPoints)
@@ -424,30 +374,8 @@ public class AbilityManager : MonoBehaviour
         }  
     }
 
-    public void Duality(Card card)
-    {
-        card.duality = true;
-    }
-
     public void ApplyDuality(CardPlacePoint[] cardPoints)
     {
-        /*foreach (var point in cardPoints)
-        {
-            if (point.activeCard != null && point.activeCard.duality)
-            {
-                foreach (var targetPoint in cardPoints)
-                {
-                    if(targetPoint.activeCard != null)
-                    {
-                        tempHealth = targetPoint.activeCard.currentHealth;
-                        targetPoint.activeCard.currentHealth = targetPoint.activeCard.attackPower;
-                        targetPoint.activeCard.attackPower = tempHealth;
-                        targetPoint.activeCard.UpdateCardDisplay();
-                    }
-                }
-            }
-        }*/
-
         for (int i = 0; i < cardPoints.Length; i++)
         {
             if(cardPoints[i].activeCard != null && cardPoints[i].activeCard.duality)
@@ -482,7 +410,6 @@ public class AbilityManager : MonoBehaviour
 
     public void Revelation(Card card)
     {
-        card.revelation = true;
         DeckController.instance.DrawMultipleCards(2);
     }
 
@@ -496,7 +423,7 @@ public class AbilityManager : MonoBehaviour
 
     public void Gratis(Card card)
     {
-        card.gratis = true; // Bu kart artýk Gratis oldu
+        card.gratis = true;
         int randomNumber;
 
         // Eðer elde sadece Gratis kartý varsa random kart seçmeden iþlemi durdur
@@ -518,8 +445,6 @@ public class AbilityManager : MonoBehaviour
         selectedCard.essenceCost = 0;
         selectedCard.costText.color = Color.green;
         selectedCard.UpdateCardDisplay();
-
-        //Debug.Log($"Gratis applied to: {selectedCard.cardSO.name}");
     }
 
     public void Stun(Card card)
@@ -558,11 +483,6 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    public void HealBlock(Card card)
-    {
-        card.healBlock = true;
-    }
-
     public bool CanHeal(CardPlacePoint[] cardPoints)
     {
         foreach (CardPlacePoint point in cardPoints)
@@ -573,16 +493,6 @@ public class AbilityManager : MonoBehaviour
             }
         }
         return true;
-    }
-
-    public void Mirror(Card card)
-    {
-        card.mirror = true;
-    }
-
-    public void Harvester(Card card)
-    {
-        card.harvester = true;
     }
 
     public void ApplyHarvesterAbility(CardPlacePoint[] cardPoints)
@@ -622,7 +532,6 @@ public class AbilityManager : MonoBehaviour
 
     public IEnumerator QuickAttackCoroutine(Card card)
     {
-        card.quickAttack = true;
         yield return new WaitForSeconds(0.5f);
         if (card.isPlayer)
         {
@@ -632,7 +541,24 @@ public class AbilityManager : MonoBehaviour
         {
             CardPointsController.instance.EnemySingleCardAttack(card);
         }
+    }
 
-        card.quickAttack = false;
+    public IEnumerator RemoveDoppelgangerAndPlaceField(Card doppelgangerCard, CardPlacePoint selectedPoint, Card playedCard)
+    {
+        doppelgangerCard.theCol.enabled = false;
+        playedCard.theCol.enabled = false;
+        // Yeni Field kartýný yerleþtir
+        playedCard.FieldUsage(selectedPoint);
+
+        // Doppelganger yok olma animasyonu
+        doppelgangerCard.StartCoroutine(doppelgangerCard.WaitJumpAfterDeadCo());
+
+        // Doppelganger'ýn tamamen yok olmasýný bekle
+        yield return new WaitForSeconds(0.7f); // Animasyon sürelerine göre ayarlayýn
+
+        // Sahadaki referansý sýfýrla
+        selectedPoint.activeCard = null;
+
+        playedCard.theCol.enabled = true;
     }
 }

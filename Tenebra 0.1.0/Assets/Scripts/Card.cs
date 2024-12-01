@@ -48,7 +48,8 @@ public class Card : MonoBehaviour
 
     private HandController theHC;
 
-    private Collider2D theCol;
+    [HideInInspector]
+    public Collider2D theCol;
 
     public LayerMask whatIsDesktop, whatIsPlacement;
 
@@ -57,8 +58,8 @@ public class Card : MonoBehaviour
     public Animator anim;
 
     [HideInInspector]
-    public bool directHit, doubleTap, quickAttack, glassCannon, instaKill, mend, leech, revelation, metamorphosis, primalPact, scattershot, growth, decay, decayed, guardian, reckoning, benevolence,
-        snowball, multipleHit, duality, doppelganger, usedWaxingCrescent, gratis, stun, stunned, healBlock, mirror, harvester = false;
+    public bool directHit, doubleTap, glassCannon, instaKill, mend, leech, metamorphosis, primalPact, scattershot, growth, decay, decayed, guardian, benevolence, snowball, multipleHit, duality, 
+        doppelganger, usedWaxingCrescent, gratis, stun, stunned, healBlock, mirror, harvester = false;
     [HideInInspector]
     public Card decayedBy;
 
@@ -161,8 +162,8 @@ public class Card : MonoBehaviour
                         FieldUsage(selectedPoint);
                     }
                     //Check for Doppelganger
-                    else if (selectedPoint.activeCard != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Field &&
-    cardSO.abilities[0].name == "Doppelganger")
+                    else if (selectedPoint.activeCard != null && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && cardKind == CardKind.Field && 
+                        cardSO.abilities[0].name == "Doppelganger")
                     {
                         if (BattleController.instance.playerEssence >= essenceCost)
                         {
@@ -197,7 +198,7 @@ public class Card : MonoBehaviour
                             DiscardPileController.instance.AddToDiscardPile(currentCard.cardSO);
 
                             // Doppelganger kartının animasyon ve yok olma işlemi
-                            StartCoroutine(RemoveDoppelgangerAndPlaceField(currentCard, selectedPoint, this));
+                            StartCoroutine(AbilityManager.instance.RemoveDoppelgangerAndPlaceField(currentCard, selectedPoint, this));
                         }
                         else
                         {
@@ -330,7 +331,7 @@ public class Card : MonoBehaviour
         theCol.enabled = true;
     }
 
-    private void FieldUsage(CardPlacePoint selectedPoint)
+    public void FieldUsage(CardPlacePoint selectedPoint)
     {
         if (BattleController.instance.playerEssence >= essenceCost)
         {
@@ -363,25 +364,6 @@ public class Card : MonoBehaviour
             ReturnToHand();
             UIController.instance.ShowEssenceWarning();
         }
-    }
-
-    private IEnumerator RemoveDoppelgangerAndPlaceField(Card doppelgangerCard, CardPlacePoint selectedPoint, Card playedCard)
-    {
-        doppelgangerCard.theCol.enabled = false;
-        playedCard.theCol.enabled = false;
-        // Yeni Field kartını yerleştir
-        FieldUsage(selectedPoint);
-
-        // Doppelganger yok olma animasyonu
-        doppelgangerCard.StartCoroutine(doppelgangerCard.WaitJumpAfterDeadCo());
-
-        // Doppelganger'ın tamamen yok olmasını bekle
-        yield return new WaitForSeconds(0.7f); // Animasyon sürelerine göre ayarlayın
-
-        // Sahadaki referansı sıfırla
-        selectedPoint.activeCard = null;
-
-        playedCard.theCol.enabled = true;
     }
 
     private void CheckForSuperEffectiveText()
@@ -606,7 +588,7 @@ public class Card : MonoBehaviour
         UpdateCardDisplay();
     }
 
-    IEnumerator WaitJumpAfterDeadCo()
+    public IEnumerator WaitJumpAfterDeadCo()
     {
         yield return new WaitForSeconds(.2f);
 
@@ -685,12 +667,5 @@ public class Card : MonoBehaviour
         }
 
         return newAbilityName.ToString();
-    }
-
-    public bool CanMetamorphose()
-    {
-        return metamorphosis &&
-               !isTransformed &&
-               (BattleController.instance.turnCount - metamorphosisTurnCount) >= 2; // Örnek olarak dönüşüm için 2 tur bekleme
     }
 }

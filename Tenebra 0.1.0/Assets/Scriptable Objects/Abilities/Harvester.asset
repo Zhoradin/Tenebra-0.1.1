@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21abf7f0a1b44eb4ba18b5cd5add9760, type: 3}
   m_Name: Harvester
   m_EditorClassIdentifier: 
-  abilityType: 25
+  abilityType: 24
   value: 0
   description: Every turn steals 1 health from the opposing card

@@ -9,7 +9,6 @@ public class CardAbilitySO : ScriptableObject
         DirectHit,
         DoubleTap,
         QuickAttack,
-        GlassCannon,
         Mend,
         Leech,
         Revelation,

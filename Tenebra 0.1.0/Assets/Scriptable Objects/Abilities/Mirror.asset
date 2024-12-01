@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21abf7f0a1b44eb4ba18b5cd5add9760, type: 3}
   m_Name: Mirror
   m_EditorClassIdentifier: 
-  abilityType: 24
+  abilityType: 23
   value: 0
   description: Reflects the same amount of damage received back to the attacker if
     it survives

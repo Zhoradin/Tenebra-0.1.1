@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21abf7f0a1b44eb4ba18b5cd5add9760, type: 3}
   m_Name: Growth 2
   m_EditorClassIdentifier: 
-  abilityType: 11
+  abilityType: 10
   value: 2
   description: Heals itself by the time by 2

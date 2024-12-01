@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21abf7f0a1b44eb4ba18b5cd5add9760, type: 3}
   m_Name: Doppelganger
   m_EditorClassIdentifier: 
-  abilityType: 20
+  abilityType: 19
   value: 0
   description: Can be placed on a card to return a card to hand. Will return to hand
     after a card being placed on it

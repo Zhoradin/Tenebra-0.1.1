@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21abf7f0a1b44eb4ba18b5cd5add9760, type: 3}
   m_Name: Snowball
   m_EditorClassIdentifier: 
-  abilityType: 17
+  abilityType: 16
   value: 0
   description: Each use strengthens the attached card by 1, snowballing its power
