@@ -561,6 +561,7 @@ public class Card : MonoBehaviour
 
     public void DamageCard(int damageAmount)
     {
+        int remainingDamage = damageAmount - currentHealth;
         currentHealth -= damageAmount;
         if (currentHealth <= 0)
         {
@@ -570,6 +571,8 @@ public class Card : MonoBehaviour
 
             if (isPlayer)
             {
+                BattleController.instance.DamagePlayer(remainingDamage);
+
                 if (isGraveyard)
                 {
                     GraveyardPileController.instance.AddToGraveyardPile(cardSO);
@@ -578,6 +581,10 @@ public class Card : MonoBehaviour
                 {
                     DiscardPileController.instance.AddToDiscardPile(cardSO);
                 }
+            }
+            else
+            {
+                BattleController.instance.DamageEnemy(remainingDamage);
             }
 
             StartCoroutine(WaitJumpAfterDeadCo());
