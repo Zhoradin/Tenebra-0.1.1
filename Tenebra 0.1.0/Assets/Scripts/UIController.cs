@@ -47,6 +47,9 @@ public class UIController : MonoBehaviour, IDataPersistence
     public bool coinSelected = false;
 
     public string whichTower;
+    private bool isDrawKeyActive = true;
+    [HideInInspector]
+    public bool isEndTurnKeyActive = false;
 
     void Start()
     {
@@ -75,6 +78,16 @@ public class UIController : MonoBehaviour, IDataPersistence
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PauseUnpause();
+        }
+
+        if (Input.GetKeyDown(KeyCode.D) && isDrawKeyActive && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive)
+        {
+            DrawCard();
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && isEndTurnKeyActive && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive)
+        {
+            EndPlayerTurn();
         }
     }
 
@@ -108,6 +121,7 @@ public class UIController : MonoBehaviour, IDataPersistence
     {
         DeckController.instance.DrawCardForEssence();
         drawCardButton.GetComponent<Button>().interactable = false;
+        isDrawKeyActive = false;
         StartCoroutine(DrawButtonCo());
     }
 
@@ -115,11 +129,13 @@ public class UIController : MonoBehaviour, IDataPersistence
     {
         yield return new WaitForSeconds(.2f);
         drawCardButton.GetComponent<Button>().interactable = true;
+        isDrawKeyActive = true;
     }
 
     public void EndPlayerTurn()
     {
         BattleController.instance.EndPlayerTurn();
+        isEndTurnKeyActive = false;
     }
 
     public void MainMenu()

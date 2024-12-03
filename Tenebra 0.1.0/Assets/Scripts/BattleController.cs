@@ -178,8 +178,7 @@ public class BattleController : MonoBehaviour
                     PlayerAbilityControl();
                     turnCount++;
 
-                    UIController.instance.drawCardButton.GetComponent<Button>().interactable = true;
-                    UIController.instance.endTurnButton.GetComponent<Button>().interactable = true;
+                    StartCoroutine(WaitForButtonAvailabilityCo());
                     break;
 
                 case TurnOrder.playerCardAttacks:
@@ -262,6 +261,14 @@ public class BattleController : MonoBehaviour
         AbilityManager.instance.ApplyDuality(CardPointsController.instance.enemyCardPoints);
         AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.enemyCardPoints);
         AbilityManager.instance.ApplyHarvesterAbility(CardPointsController.instance.enemyCardPoints);
+    }
+
+    public IEnumerator WaitForButtonAvailabilityCo()
+    {
+        yield return new WaitForSeconds(3f);
+        UIController.instance.drawCardButton.GetComponent<Button>().interactable = true;
+        UIController.instance.endTurnButton.GetComponent<Button>().interactable = true;
+        UIController.instance.isEndTurnKeyActive = true;
     }
 
     public void EndPlayerTurn()

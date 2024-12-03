@@ -479,8 +479,8 @@ public class Card : MonoBehaviour
         {
             if (isLocked)
             {
-                targetScale = originalScale / 1.75f;
-                MoveToPoint(theHC.lockedPosition + new Vector3(0f, .4f, -2f), targetRot);
+                targetScale = originalScale / 1.3f;
+                MoveToPoint(theHC.lockedPosition + new Vector3(0f, .55f, -2f), targetRot);
             }
             else
             {

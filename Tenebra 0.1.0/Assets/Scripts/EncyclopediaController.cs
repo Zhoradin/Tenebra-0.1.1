@@ -8,11 +8,12 @@ public class EncyclopediaController : MonoBehaviour
     public List<TypeInfo> TypeList = new List<TypeInfo>();
     public List<GodInfo> GodsList = new List<GodInfo>();
     public List<CardInfo> CardsList = new List<CardInfo>();
+    public List<MoonPhaseInfo> PhasesList = new List<MoonPhaseInfo>();
 
-    public TMP_Text typeTitle, typeInfoDescription, godTitle, godInfoDescription, cardTitle, cardInfoDescription;
-    public Image typeImage;
+    public TMP_Text typeTitle, typeInfoDescription, godTitle, godInfoDescription, cardTitle, cardInfoDescription, phaseTitle, phaseInfoDescription;
+    public Image typeImage, phaseImage;
 
-    public GameObject typesPanel, cardInfoPanel, godsPanel;
+    public GameObject typesPanel, cardInfoPanel, godsPanel, moonPhasePanel;
 
     // TMP Sprite Asset for replacing type names with sprites in text
     public TMP_SpriteAsset typeSpriteAsset;
@@ -26,9 +27,9 @@ public class EncyclopediaController : MonoBehaviour
         dataCarrier = FindObjectOfType<DataCarrier>();
 
         CheckCardButtons();
-
         ActivateTypeInfo(TypeList[0]);
         ActivateGodInfo(GodsList[0]);
+        ActivatePhaseInfo(PhasesList[0]);
 
         foreach (var cardInfo in CardsList)
         {
@@ -47,6 +48,7 @@ public class EncyclopediaController : MonoBehaviour
         typesPanel.SetActive(true);
         cardInfoPanel.SetActive(false);
         godsPanel.SetActive(false);
+        moonPhasePanel.SetActive(false);
     }
 
     public void OnCardInfoClicked()
@@ -54,13 +56,32 @@ public class EncyclopediaController : MonoBehaviour
         typesPanel.SetActive(false);
         cardInfoPanel.SetActive(true);
         godsPanel.SetActive(false);
+        moonPhasePanel.SetActive(false);
     }
 
     public void OnGodsClicked()
     {
         typesPanel.SetActive(false);
         cardInfoPanel.SetActive(false);
+        moonPhasePanel.SetActive(false);
         godsPanel.SetActive(true);
+    }
+
+    public void OnPhaseClicked()
+    {
+        typesPanel.SetActive(false);
+        cardInfoPanel.SetActive(false);
+        godsPanel.SetActive(false);
+        moonPhasePanel.SetActive(true);
+    }
+
+    public void OnMoonPhaseClicked()
+    {
+        UIController.instance.OpenEncyclopediaPanel();
+        typesPanel.SetActive(false);
+        cardInfoPanel.SetActive(false);
+        godsPanel.SetActive(false);
+        moonPhasePanel.SetActive(true);
     }
 
     public void ActivateTypeInfo(TypeInfo typeInfo)
@@ -215,6 +236,53 @@ public class EncyclopediaController : MonoBehaviour
     {
         ActivateGodInfo(GodsList.Find(god => god.godName == "Abor'or"));
     }
+
+    public void ActivatePhaseInfo(MoonPhaseInfo phaseInfo)
+    {
+        phaseTitle.text = phaseInfo.phaseName;
+        phaseInfoDescription.text = phaseInfo.phaseDescription;
+        phaseImage.sprite = phaseInfo.phaseSprite;
+    }
+
+    public void OnNewMoonClicked()
+    {
+        ActivatePhaseInfo(PhasesList.Find(moonPhase => moonPhase.phaseName == "New Moon"));
+    }
+
+    public void OnWaxingCrescentClicked()
+    {
+        ActivatePhaseInfo(PhasesList.Find(moonPhase => moonPhase.phaseName == "Waxing Crescent"));
+    }
+
+    public void OnFirstQuarterClicked()
+    {
+        ActivatePhaseInfo(PhasesList.Find(moonPhase => moonPhase.phaseName == "First Quarter"));
+    }
+
+    public void OnWaxingGibbousClicked()
+    {
+        ActivatePhaseInfo(PhasesList.Find(moonPhase => moonPhase.phaseName == "Waxing Gibbous"));
+    }
+
+    public void OnFullMoonClicked()
+    {
+        ActivatePhaseInfo(PhasesList.Find(moonPhase => moonPhase.phaseName == "Full Moon"));
+    }
+
+    public void OnWaningGibbousClicked()
+    {
+        ActivatePhaseInfo(PhasesList.Find(moonPhase => moonPhase.phaseName == "Waning Gibbous"));
+    }
+
+    public void OnLastQuarterClicked()
+    {
+        ActivatePhaseInfo(PhasesList.Find(moonPhase => moonPhase.phaseName == "Last Quarter"));
+    }
+
+    public void OnWaningCrescentClicked()
+    {
+        ActivatePhaseInfo(PhasesList.Find(moonPhase => moonPhase.phaseName == "Waning Crescent"));
+    }
 }
 
 [System.Serializable]
@@ -275,12 +343,12 @@ public class MoonPhaseInfo
     public string phaseName;
     [TextArea(5, 10)]
     public string phaseDescription;
-    public Image phaseImage;
+    public Sprite phaseSprite;
 
-    public MoonPhaseInfo(string phaseName, string phaseDescription, Image phaseImage)
+    public MoonPhaseInfo(string phaseName, string phaseDescription, Sprite phaseSprite)
     {
         this.phaseName = phaseName;
         this.phaseDescription = phaseDescription;
-        this.phaseImage = phaseImage;
+        this.phaseSprite = phaseSprite;
     }
 }

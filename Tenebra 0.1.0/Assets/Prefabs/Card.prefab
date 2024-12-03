@@ -612,7 +612,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 06d52996028b9114fb7c35513a24ee20, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3df0185171d1b804ca11f557c48a2d83, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -683,7 +683,7 @@ MonoBehaviour:
   m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1554,7 +1554,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 05772aeaa036055459abf9525d835cde, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5bf22bc13e1a0f842b82742d28c6eccf, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2364,6 +2364,7 @@ MonoBehaviour:
   scaleSpeed: 10
   hoverScale: {x: 1.2, y: 1.2, z: 1}
   selectedScale: {x: 1.3, y: 1.3, z: 1}
+  theCol: {fileID: 0}
   whatIsDesktop:
     serializedVersion: 2
     m_Bits: 64
@@ -2374,12 +2375,10 @@ MonoBehaviour:
   anim: {fileID: 7977741196874239274}
   directHit: 0
   doubleTap: 0
-  quickAttack: 0
   glassCannon: 0
   instaKill: 0
   mend: 0
   leech: 0
-  revelation: 0
   metamorphosis: 0
   primalPact: 0
   scattershot: 0
@@ -2387,7 +2386,6 @@ MonoBehaviour:
   decay: 0
   decayed: 0
   guardian: 0
-  reckoning: 0
   benevolence: 0
   snowball: 0
   multipleHit: 0
@@ -2397,7 +2395,11 @@ MonoBehaviour:
   gratis: 0
   stun: 0
   stunned: 0
+  healBlock: 0
+  mirror: 0
+  harvester: 0
   decayedBy: {fileID: 0}
+  fullMoon: 0
 --- !u!61 &311820245305926517
 BoxCollider2D:
   m_ObjectHideFlags: 0
