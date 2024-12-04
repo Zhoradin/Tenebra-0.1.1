@@ -72,14 +72,6 @@ public class BattleController : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            AdvanceTurn();
-        }
-    }
-
     public void SetEnemyHealth()
     {
         enemyHealth = EnemyController.instance.enemyHealth;
@@ -207,7 +199,7 @@ public class BattleController : MonoBehaviour
                     break;
 
                 case TurnOrder.enemyCardAttacks:
-
+                    EnemyController.instance.isStarting = false;
                     if (turnCount >= 2)
                     {
                         CardPointsController.instance.EnemyAttack();
@@ -265,7 +257,7 @@ public class BattleController : MonoBehaviour
 
     public IEnumerator WaitForButtonAvailabilityCo()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
         UIController.instance.drawCardButton.GetComponent<Button>().interactable = true;
         UIController.instance.endTurnButton.GetComponent<Button>().interactable = true;
         UIController.instance.isEndTurnKeyActive = true;

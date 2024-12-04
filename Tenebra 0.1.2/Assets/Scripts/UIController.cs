@@ -85,7 +85,7 @@ public class UIController : MonoBehaviour, IDataPersistence
             DrawCard();
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && isEndTurnKeyActive && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive)
+        if (Input.GetKeyDown(KeyCode.T) && isEndTurnKeyActive && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive)
         {
             EndPlayerTurn();
         }

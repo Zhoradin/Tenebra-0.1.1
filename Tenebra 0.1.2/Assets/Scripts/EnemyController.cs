@@ -15,7 +15,8 @@ public class EnemyController : MonoBehaviour
     public EnemySO enemySO;
 
     public List<CardSO> deckToUse = new List<CardSO>();
-    private List<CardSO> activeCards = new List<CardSO>();
+    public List<CardSO> activeCards = new List<CardSO>();
+    public List<CardSO> cardsInHand = new List<CardSO>();
 
     public Card cardToSpawn;
     public Transform cardSpawnPoint;
@@ -23,13 +24,15 @@ public class EnemyController : MonoBehaviour
     public enum AIType { placeFromDeck, handRandomPlace, handDefensive, handAttacking }
     public AIType enemyAIType;
 
-    private List<CardSO> cardsInHand = new List<CardSO>();
     public int startHandSize;
+    public int cardsToDrawEachTurn = 1;
 
     [HideInInspector]
-    public int enemyHealth;
-    public int enemyEssence;
+    public int enemyHealth, enemyEssence;
+    [HideInInspector]
     public Image enemyImage;
+    [HideInInspector]
+    public bool isStarting = true;
 
     // Start is called before the first frame update
     void Start()
@@ -66,12 +69,6 @@ public class EnemyController : MonoBehaviour
         enemyImage.sprite = enemySO.enemySprite;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SetupDeck()
     {
         activeCards.Clear();
@@ -90,6 +87,19 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    void SetupHand()
+    {
+        for (int i = 0; i < startHandSize; i++)
+        {
+            if (activeCards.Count == 0)
+            {
+                SetupDeck();
+            }
+            cardsInHand.Add(activeCards[0]);
+            activeCards.RemoveAt(0);
+        }
+    }
+
     public void StartAction()
     {
         StartCoroutine(EnemyActionCo());
@@ -104,9 +114,9 @@ public class EnemyController : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        if (enemyAIType != AIType.placeFromDeck)
+        if (enemyAIType != AIType.placeFromDeck && isStarting == false)
         {
-            for (int i = 0; i < BattleController.instance.cardsToDrawPerTurn; i++)
+            for (int i = 0; i < cardsToDrawEachTurn; i++)
             {
                 cardsInHand.Add(activeCards[0]);
                 activeCards.RemoveAt(0);
@@ -143,7 +153,6 @@ public class EnemyController : MonoBehaviour
 
         switch (enemyAIType)
         {
-
             case AIType.placeFromDeck:
 
                 if (selectedPoint.activeCard == null)
@@ -296,20 +305,6 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(.5f);
 
         BattleController.instance.AdvanceTurn();
-    }
-
-    void SetupHand()
-    {
-        for (int i = 0; i < startHandSize; i++)
-        {
-            if (activeCards.Count == 0)
-            {
-                SetupDeck();
-            }
-
-            cardsInHand.Add(activeCards[0]);
-            activeCards.RemoveAt(0);
-        }
     }
 
     public void PlayCard(CardSO cardSO, CardPlacePoint placePoint)

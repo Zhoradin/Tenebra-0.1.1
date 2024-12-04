@@ -16,7 +16,7 @@ MonoBehaviour:
   isGraveyard: 0
   cardDescription: It roams the barren lands, draining life to fuel its relentless
     hunger
-  currentHealth: 1
+  currentHealth: 2
   attackPower: 3
   essenceCost: 1
   coinCost: 50

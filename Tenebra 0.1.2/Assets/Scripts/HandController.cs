@@ -11,13 +11,13 @@ public class HandController : MonoBehaviour
         instance = this;
     }
 
-    public List<Card> heldCards = new List<Card>();
+    public List<Card> playerHeldCards = new List<Card>();
 
     public Transform minPos, maxPos;
     public Vector3 lockedPosition;
     public Quaternion lockedRotation;
-    public List<Vector3> cardPositions = new List<Vector3>();
-    public List<Quaternion> cardRotations = new List<Quaternion>();
+    public List<Vector3> playerCardPositions = new List<Vector3>();
+    public List<Quaternion> playerCardRotations = new List<Quaternion>();
     public float curveHeight = 2f; // Kartlarýn y eksenindeki þiþkinlik miktarý
     public float maxSpacing = 2f; // Maksimum kartlar arasýndaki mesafe, Inspector'da ayarlanabilir
     public float minSpacing = 0.5f; // Minimum kartlar arasýndaki mesafe, Inspector'da ayarlanabilir
@@ -36,21 +36,21 @@ public class HandController : MonoBehaviour
 
     public void SetCardPositionsInHand()
     {
-        cardPositions.Clear();
-        cardRotations.Clear();
+        playerCardPositions.Clear();
+        playerCardRotations.Clear();
 
         float spacing = maxSpacing;
-        if (heldCards.Count > 1)
+        if (playerHeldCards.Count > 1)
         {
-            spacing = Mathf.Lerp(maxSpacing, minSpacing, (float)(heldCards.Count - 1) / (heldCards.Count));
+            spacing = Mathf.Lerp(maxSpacing, minSpacing, (float)(playerHeldCards.Count - 1) / (playerHeldCards.Count));
         }
 
         Vector3 midpoint = (minPos.position + maxPos.position) / 2;
 
-        for (int i = 0; i < heldCards.Count; i++)
+        for (int i = 0; i < playerHeldCards.Count; i++)
         {
-            float t = heldCards.Count > 1 ? (float)i / (heldCards.Count - 1) : 0.5f;
-            Vector3 straightPosition = midpoint + new Vector3((i - (heldCards.Count - 1) / 2f) * spacing, 0, 0);
+            float t = playerHeldCards.Count > 1 ? (float)i / (playerHeldCards.Count - 1) : 0.5f;
+            Vector3 straightPosition = midpoint + new Vector3((i - (playerHeldCards.Count - 1) / 2f) * spacing, 0, 0);
 
             // Kenar kartlar minPos ve maxPos'a göre z konumunu alacak
             float zPos = Mathf.Lerp(minPos.position.z, maxPos.position.z, t);
@@ -59,22 +59,22 @@ public class HandController : MonoBehaviour
             // Create a parabolic curve
             float parabolicOffset = curveHeight * Mathf.Sin(t * Mathf.PI);
             Vector3 curvedPosition = new Vector3(straightPosition.x, straightPosition.y + parabolicOffset, straightPosition.z);
-            cardPositions.Add(curvedPosition);
+            playerCardPositions.Add(curvedPosition);
 
             // Interpolating rotation between minPos and maxPos
             Quaternion interpolatedRotation = Quaternion.Lerp(minPos.rotation, maxPos.rotation, t);
-            cardRotations.Add(interpolatedRotation);
+            playerCardRotations.Add(interpolatedRotation);
 
-            heldCards[i].MoveToPoint(cardPositions[i], interpolatedRotation);
+            playerHeldCards[i].MoveToPoint(playerCardPositions[i], interpolatedRotation);
 
-            heldCards[i].inHand = true;
-            heldCards[i].handPosition = i;
+            playerHeldCards[i].inPlayerHand = true;
+            playerHeldCards[i].handPosition = i;
         }
     }
 
     public void SpreadCards(int hoveredIndex, float spreadAmount)
     {
-        for (int i = 0; i < heldCards.Count; i++)
+        for (int i = 0; i < playerHeldCards.Count; i++)
         {
             if (i == hoveredIndex)
             {
@@ -83,27 +83,27 @@ public class HandController : MonoBehaviour
             }
 
             float offset = (i < hoveredIndex) ? -spreadAmount : spreadAmount;
-            Vector3 newPosition = cardPositions[i] + new Vector3(offset, 0, 0);
-            heldCards[i].MoveToPoint(newPosition, cardRotations[i]);
+            Vector3 newPosition = playerCardPositions[i] + new Vector3(offset, 0, 0);
+            playerHeldCards[i].MoveToPoint(newPosition, playerCardRotations[i]);
         }
     }
 
     public void ResetCardPositions()
     {
-        for (int i = 0; i < heldCards.Count; i++)
+        for (int i = 0; i < playerHeldCards.Count; i++)
         {
-            heldCards[i].MoveToPoint(cardPositions[i], cardRotations[i]);
+            playerHeldCards[i].MoveToPoint(playerCardPositions[i], playerCardRotations[i]);
         }
     }
 
 
     public void RemoveCardFromHand(Card cardToRemove)
     {
-        if (heldCards.Contains(cardToRemove))
+        if (playerHeldCards.Contains(cardToRemove))
         {
-            if (heldCards[cardToRemove.handPosition] == cardToRemove)
+            if (playerHeldCards[cardToRemove.handPosition] == cardToRemove)
             {
-                heldCards.RemoveAt(cardToRemove.handPosition);
+                playerHeldCards.RemoveAt(cardToRemove.handPosition);
             }
         }
         else if(cardToRemove.isLocked)
@@ -120,15 +120,15 @@ public class HandController : MonoBehaviour
 
     public void AddCardToHand(Card cardToAdd)
     {
-        heldCards.Add(cardToAdd);
+        playerHeldCards.Add(cardToAdd);
         SetCardPositionsInHand();
     }
 
     public void EmptyHand()
     {
-        foreach (Card heldCard in heldCards)
+        foreach (Card heldCard in playerHeldCards)
         {
-            heldCard.inHand = false;
+            heldCard.inPlayerHand = false;
             heldCard.MoveToPoint(BattleController.instance.discardPoint.position, Quaternion.identity);
 
             // Eðer bu kart isPlayer'a aitse discardPile'a ekle
@@ -141,7 +141,7 @@ public class HandController : MonoBehaviour
             StartCoroutine(DestroyCardAfterMove(heldCard));
         }
 
-        heldCards.Clear();
+        playerHeldCards.Clear();
     }
 
     private IEnumerator DestroyCardAfterMove(Card card)
