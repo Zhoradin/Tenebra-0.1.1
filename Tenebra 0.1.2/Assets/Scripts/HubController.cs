@@ -13,12 +13,12 @@ public class HubController : MonoBehaviour
     {
         caerulisnButton.GetComponent<Button>().interactable = true;
         logiumButton.GetComponent<Button>().interactable = true;
-        rohvButton.GetComponent<Button>().interactable = true;
+        arstelloButton.GetComponent<Button>().interactable = true;
 
         soliriaButton.GetComponent<Button>().interactable = false;
         amarunisButton.GetComponent<Button>().interactable = false;
         poulviButton.GetComponent<Button>().interactable = false;
-        arstelloButton.GetComponent<Button>().interactable = false;
+        rohvButton.GetComponent<Button>().interactable = false;
         tenebraButton.GetComponent<Button>().interactable = false;
         abororButton.GetComponent<Button>().interactable = false;
 
@@ -41,9 +41,9 @@ public class HubController : MonoBehaviour
         {
             poulviButton.GetComponent<Button>().interactable = true;
         }
-        if (DataCarrier.instance.hasRohvBadge)
+        if (DataCarrier.instance.hasArstelloBadge)
         {
-            amarunisButton.GetComponent<Button>().interactable = true;
+            rohvButton.GetComponent<Button>().interactable = true;
         }
 
         if(DataCarrier.instance.hasAmarunisBadge && DataCarrier.instance.hasArstelloBadge && DataCarrier.instance.hasCaerulisnBadge && DataCarrier.instance.hasCaerulisnBadge && DataCarrier.instance.hasLogiumBadge

@@ -41,8 +41,8 @@ public class Card : MonoBehaviour
     public float selectedRotateSpeed = 720f;
     public float scaleSpeed = 5f;
 
-    private Vector3 originalScale;
-    private Vector3 targetScale;
+    [HideInInspector]
+    public Vector3 originalScale, targetScale;
     public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f);
     public Vector3 selectedScale = new Vector3(1.2f, 1.2f, 1f);
 
@@ -338,7 +338,7 @@ public class Card : MonoBehaviour
             selectedPoint.activeCard = this;
             assignedPlace = selectedPoint;
 
-            MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 0.75f, 0f), Quaternion.identity);
+            MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 0.65f, 0f), Quaternion.identity);
 
             inPlayerHand = false;
             isSelected = false;
@@ -457,6 +457,7 @@ public class Card : MonoBehaviour
 
             if (isActive)
             {
+                MoveToPoint(this.assignedPlace.transform.position + new Vector3(0f, .85f, -2f), Quaternion.identity);
                 CheckForSuperEffectiveText();
             }
 
@@ -494,6 +495,8 @@ public class Card : MonoBehaviour
         }
         else if (isActive && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
+            targetScale = originalScale / 1.2f;
+            MoveToPoint(assignedPlace.transform.position + new Vector3(0f, 0.65f, 0f), Quaternion.identity);
             abilityDescription.SetActive(false);
             abilityDescriptionToo.SetActive(false);
         }
