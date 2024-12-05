@@ -24,7 +24,7 @@ public class Card : MonoBehaviour
 
     public Image characterArt, bgArt, moonPhaseArt, healthArt, attackArt, stunImage;
 
-    public bool inHand, isActive, isSelected, returningToHand, justPressed, isPlayer, isGraveyard, isLocked, isTransformed;
+    public bool inPlayerHand, inEnemyHand, isActive, isSelected, returningToHand, justPressed, isPlayer, isGraveyard, isLocked, isTransformed;
     public int handPosition;
 
     public GameObject abilityDescription, abilityDescriptionToo;
@@ -320,7 +320,7 @@ public class Card : MonoBehaviour
 
         StartCoroutine(WaitJumpAfterDeadCo());
 
-        inHand = false;
+        inPlayerHand = false;
         isSelected = false;
         returningToHand = false;
         targetScale = originalScale;
@@ -340,7 +340,7 @@ public class Card : MonoBehaviour
 
             MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 0.75f, 0f), Quaternion.identity);
 
-            inHand = false;
+            inPlayerHand = false;
             isSelected = false;
             returningToHand = false;
             targetScale = originalScale;
@@ -434,12 +434,12 @@ public class Card : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if ((inHand || isActive) && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false 
+        if ((inPlayerHand || isActive) && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false 
             && UIController.instance.graveyardPileOpen == false && UIController.instance.encyclopediaPanelOpen == false && UIController.instance.inventoryPanelOpen == false)
         {
             targetScale = hoverScale;
 
-            if (inHand)
+            if (inPlayerHand)
             {
                 Vector3 hoverPosition;
 
@@ -449,7 +449,7 @@ public class Card : MonoBehaviour
                 }
                 else
                 {
-                    hoverPosition = theHC.cardPositions[handPosition] + new Vector3(0f, 1f, -2f);
+                    hoverPosition = theHC.playerCardPositions[handPosition] + new Vector3(0f, 1.5f, -2f);
                     theHC.SpreadCards(handPosition, 1f); 
                 }
                 MoveToPoint(hoverPosition, targetRot);
@@ -475,7 +475,7 @@ public class Card : MonoBehaviour
     private void OnMouseExit()
     {
         targetScale = originalScale;
-        if ((inHand && !isActive) && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
+        if ((inPlayerHand && !isActive) && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
         {
             if (isLocked)
             {
@@ -484,7 +484,7 @@ public class Card : MonoBehaviour
             }
             else
             {
-                MoveToPoint(theHC.cardPositions[handPosition] , targetRot);
+                MoveToPoint(theHC.playerCardPositions[handPosition] , targetRot);
             }
 
             abilityDescription.SetActive(false);
@@ -503,7 +503,7 @@ public class Card : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (inHand && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && isPlayer && BattleController.instance.battleEnded == false && Time.timeScale != 0f
+        if (inPlayerHand && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive && isPlayer && BattleController.instance.battleEnded == false && Time.timeScale != 0f
             && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false && UIController.instance.graveyardPileOpen == false)
         {
             isSelected = true;
@@ -539,13 +539,13 @@ public class Card : MonoBehaviour
 
             isLocked = false;
             theHC.AddCardToHand(this);
-            targetRot = theHC.cardRotations[handPosition];
-            MoveToPoint(theHC.cardPositions[handPosition], targetRot);
+            targetRot = theHC.playerCardRotations[handPosition];
+            MoveToPoint(theHC.playerCardPositions[handPosition], targetRot);
         }
         else
         {
-            targetRot = theHC.cardRotations[handPosition];
-            MoveToPoint(theHC.cardPositions[handPosition], targetRot);
+            targetRot = theHC.playerCardRotations[handPosition];
+            MoveToPoint(theHC.playerCardPositions[handPosition], targetRot);
         }
 
         targetScale = originalScale;
@@ -561,6 +561,7 @@ public class Card : MonoBehaviour
 
     public void DamageCard(int damageAmount)
     {
+        int remainingDamage = damageAmount - currentHealth;
         currentHealth -= damageAmount;
         if (currentHealth <= 0)
         {
@@ -570,6 +571,8 @@ public class Card : MonoBehaviour
 
             if (isPlayer)
             {
+                BattleController.instance.DamagePlayer(remainingDamage);
+
                 if (isGraveyard)
                 {
                     GraveyardPileController.instance.AddToGraveyardPile(cardSO);
@@ -578,6 +581,10 @@ public class Card : MonoBehaviour
                 {
                     DiscardPileController.instance.AddToDiscardPile(cardSO);
                 }
+            }
+            else
+            {
+                BattleController.instance.DamageEnemy(remainingDamage);
             }
 
             StartCoroutine(WaitJumpAfterDeadCo());

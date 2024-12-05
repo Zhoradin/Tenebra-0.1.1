@@ -318,7 +318,7 @@ public class AbilityManager : MonoBehaviour
 
     public void Reckoning(Card card)
     {
-        heldCardCount = HandController.instance.heldCards.Count;
+        heldCardCount = HandController.instance.playerHeldCards.Count;
         card.attackPower += heldCardCount;
         HandController.instance.EmptyHand();
         card.UpdateCardDisplay();
@@ -427,7 +427,7 @@ public class AbilityManager : MonoBehaviour
         int randomNumber;
 
         // Eðer elde sadece Gratis kartý varsa random kart seçmeden iþlemi durdur
-        if (HandController.instance.heldCards.Count == 1)
+        if (HandController.instance.playerHeldCards.Count == 1)
         {
             Debug.LogWarning("Only Gratis card in hand. No other card to apply Gratis effect.");
             return;
@@ -436,12 +436,12 @@ public class AbilityManager : MonoBehaviour
         // Random bir kart seç ve Gratis kartýný dýþla
         do
         {
-            randomNumber = Random.Range(0, HandController.instance.heldCards.Count);
+            randomNumber = Random.Range(0, HandController.instance.playerHeldCards.Count);
         }
-        while (HandController.instance.heldCards[randomNumber].gratis); // Gratis olmayan bir kart bulana kadar döngü
+        while (HandController.instance.playerHeldCards[randomNumber].gratis); // Gratis olmayan bir kart bulana kadar döngü
 
         // Seçilen kartýn essence cost'unu 0 yap
-        Card selectedCard = HandController.instance.heldCards[randomNumber];
+        Card selectedCard = HandController.instance.playerHeldCards[randomNumber];
         selectedCard.essenceCost = 0;
         selectedCard.costText.color = Color.green;
         selectedCard.UpdateCardDisplay();

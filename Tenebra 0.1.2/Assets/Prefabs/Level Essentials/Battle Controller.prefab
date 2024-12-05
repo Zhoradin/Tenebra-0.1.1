@@ -102,7 +102,7 @@ Transform:
   m_GameObject: {fileID: 3951437703915489097}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 8.57, y: -3.2, z: 0}
+  m_LocalPosition: {x: 8.82, y: -4.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -141,6 +141,7 @@ Transform:
   - {fileID: 8420260223434285748}
   - {fileID: 3049950228687425037}
   - {fileID: 5327119996568820078}
+  - {fileID: 1419782131382437488}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3960611633036151820
@@ -165,6 +166,7 @@ MonoBehaviour:
   currentMoonPhase: 0
   moonPhaseCount: 0
   discardPoint: {fileID: 8420260223434285748}
+  enemyDiscardPoint: {fileID: 1419782131382437488}
   graveyardPoint: {fileID: 3049950228687425037}
   playerHealth: 100
   enemyHealth: 50
@@ -174,3 +176,34 @@ MonoBehaviour:
   playerFirstChance: 0
   playerCardPoints: []
   enemyCardPoints: []
+--- !u!1 &5122528253542551504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1419782131382437488}
+  m_Layer: 0
+  m_Name: Enemy Discard Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1419782131382437488
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5122528253542551504}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 7.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4019797948704510020}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

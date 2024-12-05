@@ -15,7 +15,9 @@ public class EnemyController : MonoBehaviour
     public EnemySO enemySO;
 
     public List<CardSO> deckToUse = new List<CardSO>();
-    private List<CardSO> activeCards = new List<CardSO>();
+    public List<CardSO> activeCards = new List<CardSO>();
+    public List<CardSO> cardsInHand = new List<CardSO>();
+    public List<Card> wannabeHeldCards = new List<Card>();
 
     public Card cardToSpawn;
     public Transform cardSpawnPoint;
@@ -23,13 +25,15 @@ public class EnemyController : MonoBehaviour
     public enum AIType { placeFromDeck, handRandomPlace, handDefensive, handAttacking }
     public AIType enemyAIType;
 
-    private List<CardSO> cardsInHand = new List<CardSO>();
     public int startHandSize;
+    public int cardsToDrawEachTurn = 1;
 
     [HideInInspector]
-    public int enemyHealth;
-    public int enemyEssence;
+    public int enemyHealth, enemyEssence;
+    [HideInInspector]
     public Image enemyImage;
+    [HideInInspector]
+    public bool isStarting = true;
 
     // Start is called before the first frame update
     void Start()
@@ -66,12 +70,6 @@ public class EnemyController : MonoBehaviour
         enemyImage.sprite = enemySO.enemySprite;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SetupDeck()
     {
         activeCards.Clear();
@@ -90,6 +88,37 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    public void SetupHand()
+    {
+        StartCoroutine(SetupHandCo());
+    }
+
+    private IEnumerator SetupHandCo()
+    {
+        for (int i = 0; i < startHandSize; i++)
+        {
+            if (activeCards.Count == 0)
+            {
+                SetupDeck();
+            }
+
+            cardsInHand.Add(activeCards[0]);
+            StartCoroutine(InstantiateCardCo(activeCards[0]));
+            activeCards.RemoveAt(0);
+
+            yield return new WaitForSeconds(.3f); // Her kart eklenmeden önce bekleme süresi
+        }
+    }
+
+    private IEnumerator InstantiateCardCo(CardSO cardSO)
+    {
+        Card newCard = Instantiate(cardToSpawn, cardSpawnPoint.position, cardSpawnPoint.rotation);
+        newCard.cardSO = cardSO; // Kart Scriptable Object'ini ata
+        newCard.SetupCard(); // Kartýn görsel ve diðer özelliklerini ayarla
+        EnemyHandController.instance.AddCardToHand(newCard); // Yeni kartý düþman eline ekle
+        yield return null; // Coroutine'den çýkýþ
+    }
+
     public void StartAction()
     {
         StartCoroutine(EnemyActionCo());
@@ -104,9 +133,9 @@ public class EnemyController : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        if (enemyAIType != AIType.placeFromDeck)
+        if (enemyAIType != AIType.placeFromDeck && isStarting == false)
         {
-            for (int i = 0; i < BattleController.instance.cardsToDrawPerTurn; i++)
+            for (int i = 0; i < cardsToDrawEachTurn; i++)
             {
                 cardsInHand.Add(activeCards[0]);
                 activeCards.RemoveAt(0);
@@ -143,7 +172,6 @@ public class EnemyController : MonoBehaviour
 
         switch (enemyAIType)
         {
-
             case AIType.placeFromDeck:
 
                 if (selectedPoint.activeCard == null)
@@ -298,64 +326,89 @@ public class EnemyController : MonoBehaviour
         BattleController.instance.AdvanceTurn();
     }
 
-    void SetupHand()
-    {
-        for (int i = 0; i < startHandSize; i++)
-        {
-            if (activeCards.Count == 0)
-            {
-                SetupDeck();
-            }
-
-            cardsInHand.Add(activeCards[0]);
-            activeCards.RemoveAt(0);
-        }
-    }
-
     public void PlayCard(CardSO cardSO, CardPlacePoint placePoint)
     {
-        Card newCard = Instantiate(cardToSpawn, cardSpawnPoint.position, cardSpawnPoint.rotation);
-        newCard.cardSO = cardSO;
-
-        newCard.SetupCard();
-        newCard.MoveToPoint(placePoint.transform.position + new Vector3(0f, 0.75f, 0f), placePoint.transform.rotation);
-
-        placePoint.activeCard = newCard;
-        newCard.assignedPlace = placePoint;
-
-        AbilityManager.instance.ActivateAbility(newCard);
-        Card.instance.isActive = true;
-        if (Card.instance.instaKill == true)
+        // EnemyHandController'daki kartý bul
+        Card selectedCard = null;
+        foreach (Card card in EnemyHandController.instance.enemyHeldCards)
         {
-            StartCoroutine(AbilityManager.instance.QuickAttackCoroutine(newCard));
+            if (card.cardSO == cardSO)
+            {
+                selectedCard = card;
+                break;
+            }
         }
-        MoonPhaseController.instance.CheckMoonPhase(newCard);
 
-        cardsInHand.Remove(cardSO);
+        // Eðer kart bulunamadýysa iþlemi sonlandýr
+        if (selectedCard == null)
+        {
+            Debug.LogError("Selected card not found in enemyHeldCards.");
+            return;
+        }
 
+        // Kartý hedef noktaya taþý
+        selectedCard.MoveToPoint(placePoint.transform.position + new Vector3(0f, 0.75f, 0f), placePoint.transform.rotation);
+        placePoint.activeCard = selectedCard;
+        selectedCard.assignedPlace = placePoint;
+
+        // Kartýn özelliklerini aktive et
+        AbilityManager.instance.ActivateAbility(selectedCard);
+        selectedCard.isActive = true;
+        if (selectedCard.instaKill == true)
+        {
+            StartCoroutine(AbilityManager.instance.QuickAttackCoroutine(selectedCard));
+        }
+        MoonPhaseController.instance.CheckMoonPhase(selectedCard);
+
+        // Kartý eldeki kartlar listesinden kaldýr
+        EnemyHandController.instance.enemyHeldCards.Remove(selectedCard);
+        EnemyHandController.instance.SetCardPositionsInHand();
+
+        // Essence harcama
         BattleController.instance.SpendEnemyEssence(cardSO.essenceCost);
     }
 
     CardSO SelectedCardToPlay()
     {
-        CardSO cardToPlay = null;
+        Card selectedCard = null;
 
-        List<CardSO> cardsToPlay = new List<CardSO>();
-        foreach (CardSO card in cardsInHand)
+        // essenceCost ve diðer uygunluk kriterlerine uyan kartlarý filtreleyelim
+        List<Card> cardsToPlay = new List<Card>();
+        foreach (Card card in EnemyHandController.instance.enemyHeldCards)
         {
-            if (card.cardKind == CardKind.Field && card.essenceCost <= BattleController.instance.enemyEssence)
+            if (card.cardSO.cardKind == CardKind.Field && card.cardSO.essenceCost <= BattleController.instance.enemyEssence)
             {
                 cardsToPlay.Add(card);
             }
         }
 
+        // Uygun kartlar varsa rastgele birini seç
         if (cardsToPlay.Count > 0)
         {
             int selected = Random.Range(0, cardsToPlay.Count);
-            cardToPlay = cardsToPlay[selected];
+            selectedCard = cardsToPlay[selected];
+        }
+        else
+        {
+            Debug.Log("No valid card to play.");
         }
 
-        return cardToPlay;
+        // Kart bulunamadýðýnda null kontrolü yapýyoruz
+        if (selectedCard != null && selectedCard.cardSO != null)
+        {
+            return selectedCard.cardSO;
+        }
+        else
+        {
+            // Eðer geçerli bir kart seçilemediyse null döndür
+            return null;
+        }
     }
 
+    //Hide the informations of the enemy card, will flip the card later
+    /*
+    public void HideEssentials(Card card)
+    {
+        card.abilityDescriptionText.gameObject.SetActive(false);
+    }*/
 }

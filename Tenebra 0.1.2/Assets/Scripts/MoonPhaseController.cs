@@ -117,7 +117,7 @@ public class MoonPhaseController : MonoBehaviour
         switch (BattleController.instance.moonPhaseCount)
         {
             case 0:
-                BattleController.instance.currentMoonPhase = MoonPhase.FullMoon;
+                BattleController.instance.currentMoonPhase = MoonPhase.NewMoon;
                 moonPhaseTillNextRound = 1;
                 break;
 
@@ -244,8 +244,8 @@ public class MoonPhaseController : MonoBehaviour
                     break;
 
                 case MoonPhase.FirstQuarter:
-                    // Insta kill
-                    card.instaKill = true;
+                    // Attack 3 opponents
+                    card.multipleHit = true;
                     card.waxingCrescentCount = 0;
                     break;
 
@@ -276,8 +276,8 @@ public class MoonPhaseController : MonoBehaviour
                     break;
 
                 case MoonPhase.LastQuarter:
-                    // Attack 3 opponents
-                    card.multipleHit = true;
+                    // Insta kill
+                    card.instaKill = true;
                     break;
 
                 case MoonPhase.WaningCrescent:
