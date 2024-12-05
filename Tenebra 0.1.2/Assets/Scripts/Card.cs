@@ -590,9 +590,44 @@ public class Card : MonoBehaviour
             StartCoroutine(WaitJumpAfterDeadCo());
         }
 
+        StartCoroutine(FadeHealthArtCo());
         anim.SetTrigger("Hurt");
 
         UpdateCardDisplay();
+    }
+
+    private IEnumerator FadeHealthArtCo()
+    {
+        Color originalColor = healthArt.color; // Orijinal rengi kaydedin
+        Color fadedColor = originalColor;
+        fadedColor.a = 0.5f; // Hedef saydamlık (ör. 0.5)
+
+        float duration = 0.2f; // Saydamlaşma süresi
+        float elapsedTime = 0f;
+
+        // Yavaşça saydamlaştır
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            healthArt.color = Color.Lerp(originalColor, fadedColor, elapsedTime / duration);
+            yield return null; // Bir sonraki frame'i bekle
+        }
+
+        // Bekleme süresi (tam saydam durumda kalma süresi)
+        yield return new WaitForSeconds(0.2f);
+
+        elapsedTime = 0f;
+
+        // Yavaşça eski haline dön
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            healthArt.color = Color.Lerp(fadedColor, originalColor, elapsedTime / duration);
+            yield return null;
+        }
+
+        // Son renk ayarını garantiye alın
+        healthArt.color = originalColor;
     }
 
     public IEnumerator WaitJumpAfterDeadCo()

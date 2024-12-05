@@ -2343,7 +2343,8 @@ MonoBehaviour:
   healthArt: {fileID: 8998018017247289241}
   attackArt: {fileID: 5102010733064853763}
   stunImage: {fileID: 8943982380965072773}
-  inHand: 0
+  inPlayerHand: 0
+  inEnemyHand: 0
   isActive: 0
   isSelected: 0
   returningToHand: 0

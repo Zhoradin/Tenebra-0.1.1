@@ -275,7 +275,7 @@ public class CardPointsController : MonoBehaviour
         {
             if (playerCardPoints[i].activeCard == card)
             {
-                PerformSingleCardAttack(card, enemyCardPoints[i], playerCardPoints[i].activeCard != null && card.directHit == false);
+                PerformSingleCardAttack(card, enemyCardPoints[i]);
                 break;
             }
         }
@@ -287,41 +287,42 @@ public class CardPointsController : MonoBehaviour
         {
             if (enemyCardPoints[i].activeCard == card)
             {
-                PerformSingleCardAttack(card, playerCardPoints[i], playerCardPoints[i].activeCard != null && card.directHit == false);
+                PerformSingleCardAttack(card, playerCardPoints[i]);
                 break;
             }
         }
     }
 
-    void PerformSingleCardAttack(Card attacker, CardPlacePoint defender, bool attackCard)
+    void PerformSingleCardAttack(Card attacker, CardPlacePoint defender)
     {
-        if (attackCard)
+        if (defender.activeCard != null)
         {
-            if(defender.activeCard != null)
+            if (attacker.instaKill)
             {
-                if (attacker.instaKill)
-                {
-                    defender.activeCard.DamageCard(100);
-                }
-                else
-                {
-                    float effectiveness = TypeEffectiveness.GetEffectiveness(attacker.cardType, defender.activeCard.cardType);
-                    float damage = attacker.attackPower * effectiveness;
-                    Debug.Log("Effectiveness: " + effectiveness);
-                    defender.activeCard.DamageCard(Mathf.RoundToInt(damage));
-                }
+                defender.activeCard.DamageCard(100);
             }
             else
             {
-                BattleController.instance.DamagePlayer(attacker.attackPower);
-                attacker.directHit = false;
+                float effectiveness = TypeEffectiveness.GetEffectiveness(attacker.cardType, defender.activeCard.cardType);
+                float damage = attacker.attackPower * effectiveness;
+                Debug.Log("Effectiveness: " + effectiveness);
+                defender.activeCard.DamageCard(Mathf.RoundToInt(damage));
             }
         }
         else
         {
-            BattleController.instance.DamagePlayer(attacker.attackPower);
-            attacker.directHit = false;
+            if (attacker.isPlayer == false)
+            {
+                BattleController.instance.DamagePlayer(attacker.attackPower);
+                attacker.directHit = false;
+            }
+            else
+            {
+                BattleController.instance.DamageEnemy(attacker.attackPower);
+                attacker.directHit = false;
+            }
         }
+        
 
         attacker.anim.SetTrigger("Attack");
     }
