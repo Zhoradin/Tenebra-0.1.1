@@ -77,11 +77,29 @@ public class EncyclopediaController : MonoBehaviour
 
     public void OnMoonPhaseClicked()
     {
+        string formattedPhaseName = FormatMoonPhaseName(MoonPhaseController.instance.currentMoonPhase.ToString());
+
+        MoonPhaseInfo phaseInfo = PhasesList.Find(moonPhase => moonPhase.phaseName == formattedPhaseName);
+        if (phaseInfo != null)
+        {
+            ActivatePhaseInfo(phaseInfo);
+        }
+        else
+        {
+            Debug.LogError($"Phase info for '{formattedPhaseName}' not found in PhasesList.");
+        }
+
+        // Moon Phase panelini aktif yap
         UIController.instance.OpenEncyclopediaPanel();
         typesPanel.SetActive(false);
         cardInfoPanel.SetActive(false);
         godsPanel.SetActive(false);
         moonPhasePanel.SetActive(true);
+    }
+
+    private string FormatMoonPhaseName(string moonPhase)
+    {
+        return System.Text.RegularExpressions.Regex.Replace(moonPhase, "([a-z])([A-Z])", "$1 $2");
     }
 
     public void ActivateTypeInfo(TypeInfo typeInfo)

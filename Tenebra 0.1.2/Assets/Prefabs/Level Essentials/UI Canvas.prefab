@@ -26498,7 +26498,7 @@ PrefabInstance:
       objectReference: {fileID: 8247309629645961527}
     - target: {fileID: 8519049778335791468, guid: 5b550159277b0464c812a52bebc9fbf1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChooseNewBattle
+      value: OnReturnHubClicked
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

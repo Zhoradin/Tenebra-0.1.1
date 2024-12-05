@@ -31,6 +31,7 @@ public class BattleController : MonoBehaviour
 
     public float resultScreenDelayTime = 1f;
 
+    private List<Card> lostSideCards = new List<Card>();
     
     public int turnCount = 0;
 
@@ -268,7 +269,7 @@ public class BattleController : MonoBehaviour
 
     public IEnumerator WaitForEnemyHandCo()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         EnemyController.instance.StartAction();
         CheckMoonPhaseForAllCards(enemyCardPoints);
         EnemyAbilityControl();
@@ -339,12 +340,14 @@ public class BattleController : MonoBehaviour
 
             foreach (CardPlacePoint point in CardPointsController.instance.enemyCardPoints)
             {
+                lostSideCards.Clear();
                 if (point.activeCard != null)
                 {
-                    point.activeCard.MoveToPoint(discardPoint.position, Quaternion.identity);
+                    point.activeCard.MoveToPoint(enemyDiscardPoint.position, Quaternion.identity);
+                    lostSideCards.Add(point.activeCard);
                 }
             }
-
+            StartCoroutine(DestroyLostSideCardsCo());
             CardSelectController.instance.ShowRandomCards();
         }
         else
@@ -360,6 +363,15 @@ public class BattleController : MonoBehaviour
             }
 
             StartCoroutine(ShowResultsCo());
+        }
+    }
+
+    private IEnumerator DestroyLostSideCardsCo()
+    {
+        yield return new WaitForSeconds(1f);
+        foreach (Card card in lostSideCards)
+        {
+            StartCoroutine(card.ScaleDownCo());
         }
     }
 
