@@ -20,6 +20,9 @@ public class EnemyHandController : MonoBehaviour
     public float maxSpacing = 2f; // Maksimum kartlar arasýndaki mesafe, Inspector'da ayarlanabilir
     public float minSpacing = 0.5f; // Minimum kartlar arasýndaki mesafe, Inspector'da ayarlanabilir
 
+    [HideInInspector]
+    public bool isHandReady = false;
+
     void Start()
     {
         SetCardPositionsInHand();
@@ -29,25 +32,31 @@ public class EnemyHandController : MonoBehaviour
     {
         enemyCardPositions.Clear();
 
-        // Aralýðý ayarla
-        float spacing = maxSpacing;
-        if (enemyHeldCards.Count > 1)
-        {
-            spacing = Mathf.Lerp(maxSpacing, minSpacing, (float)(enemyHeldCards.Count - 1) / (enemyHeldCards.Count));
-        }
+        if (enemyHeldCards.Count == 0) return;
 
-        // Kart pozisyonlarýný hesapla ve kartlarý konumlandýr
+        // Ýlk kart minPos'ta, son kart maxPos'ta olacak þekilde daðýlým
+        Vector3 minPosition = minPos.position;
+        Vector3 maxPosition = maxPos.position;
+
+        // Kartlar arasýndaki aralýðý hesapla
+        float totalSpacing = maxSpacing * (enemyHeldCards.Count - 1); // Toplam mesafe
+        float midPointX = (minPosition.x + maxPosition.x) / 2; // Ortada bir referans noktasý oluþturuyoruz
+
+        // Kartlar arasýndaki mesafeyi dinamik olarak hesapla
+        float spacing = Mathf.Clamp((maxPosition.x - minPosition.x) / (enemyHeldCards.Count + 1), minSpacing, maxSpacing);
+
         for (int i = 0; i < enemyHeldCards.Count; i++)
         {
-            // Her bir kart için pozisyon hesapla
-            Vector3 straightPosition = minPos.position + new Vector3(i * spacing, 0, 0); // Sadece yatay eksende hizala
-            enemyCardPositions.Add(straightPosition);
+            // Kartlarý ortalayarak yerleþtir
+            float offset = (i - (enemyHeldCards.Count - 1) / 2f) * spacing; // Ortada hizalamak için offset hesaplama
+            Vector3 newPosition = new Vector3(midPointX + offset, minPosition.y, minPosition.z);
+            Quaternion interpolatedRotation = Quaternion.Lerp(minPos.rotation, maxPos.rotation, 0.5f); // Rotasyonun ortasýnda kalmasý için
 
-            // Rotasyonu minimum ve maksimum pozisyon arasýnda doðrusal bir þekilde ayarla
-            Quaternion interpolatedRotation = Quaternion.Lerp(minPos.rotation, maxPos.rotation, (float)i / (enemyHeldCards.Count - 1));
+            // Pozisyonu listeye ekle
+            enemyCardPositions.Add(newPosition);
 
             // Kartý yeni pozisyonuna taþý
-            enemyHeldCards[i].MoveToPoint(enemyCardPositions[i], interpolatedRotation);
+            enemyHeldCards[i].MoveToPoint(newPosition, interpolatedRotation);
 
             // Kart bilgilerini güncelle
             enemyHeldCards[i].inEnemyHand = true;
@@ -107,7 +116,7 @@ public class EnemyHandController : MonoBehaviour
         foreach (Card heldCard in enemyHeldCards)
         {
             heldCard.inPlayerHand = false;
-            heldCard.MoveToPoint(BattleController.instance.discardPoint.position, Quaternion.identity);
+            heldCard.MoveToPoint(BattleController.instance.enemyDiscardPoint.position, Quaternion.identity);
 
             // Eðer bu kart isPlayer'a aitse discardPile'a ekle
             if (heldCard.isPlayer)

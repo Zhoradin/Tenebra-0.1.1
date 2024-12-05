@@ -23,7 +23,7 @@ public class BattleController : MonoBehaviour
     public MoonPhase currentMoonPhase;
     public int moonPhaseCount = 0;
 
-    public Transform discardPoint, graveyardPoint;
+    public Transform discardPoint, enemyDiscardPoint, graveyardPoint;
 
     public int playerHealth, enemyHealth;
 
@@ -165,6 +165,10 @@ public class BattleController : MonoBehaviour
                     FillPlayerEssence();
 
                     DeckController.instance.DrawMultipleCards(cardsToDrawPerTurn);
+                    if (EnemyController.instance.isStarting == false)
+                    {
+                        EnemyController.instance.SetupHand();
+                    }
                     CheckMoonPhaseForAllCards(CardPointsController.instance.playerCardPoints);
                     CheckMoonPhaseForAllCards(CardPointsController.instance.enemyCardPoints);
                     PlayerAbilityControl();
@@ -193,12 +197,11 @@ public class BattleController : MonoBehaviour
                     UIController.instance.drawCardButton.GetComponent<Button>().interactable = false;
                     UIController.instance.endTurnButton.GetComponent<Button>().interactable = false;
                     FillEnemyEssence();
-                    EnemyController.instance.StartAction();
-                    CheckMoonPhaseForAllCards(enemyCardPoints);
-                    EnemyAbilityControl();
+                    StartCoroutine(WaitForEnemyHandCo());
                     break;
 
                 case TurnOrder.enemyCardAttacks:
+                    EnemyHandController.instance.EmptyHand();
                     EnemyController.instance.isStarting = false;
                     if (turnCount >= 2)
                     {
@@ -261,6 +264,14 @@ public class BattleController : MonoBehaviour
         UIController.instance.drawCardButton.GetComponent<Button>().interactable = true;
         UIController.instance.endTurnButton.GetComponent<Button>().interactable = true;
         UIController.instance.isEndTurnKeyActive = true;
+    }
+
+    public IEnumerator WaitForEnemyHandCo()
+    {
+        yield return new WaitForSeconds(3f);
+        EnemyController.instance.StartAction();
+        CheckMoonPhaseForAllCards(enemyCardPoints);
+        EnemyAbilityControl();
     }
 
     public void EndPlayerTurn()
