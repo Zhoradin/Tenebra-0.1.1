@@ -189,6 +189,11 @@ public class UIController : MonoBehaviour, IDataPersistence
         Time.timeScale = 1f;
     }
 
+    public void OnOptionsClicked()
+    {
+        SettingsController.instance.optionsPanel.SetActive(true);
+    }
+
     public void PauseUnpause()
     {
         if (pauseScreen.activeSelf == false)

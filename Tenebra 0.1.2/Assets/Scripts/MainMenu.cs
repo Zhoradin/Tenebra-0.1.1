@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour
 
     public Button continueButton, loadGameButton;
 
-    public GameObject saveSlotPanel;
+    public GameObject saveSlotPanel, optionsPanel;
     public bool isLoadGame = false;
     public bool isNewGame = false;
 
@@ -63,6 +63,11 @@ public class MainMenu : MonoBehaviour
         saveSlotPanel.SetActive(false);       
         isLoadGame = false;
         isNewGame = false;
+    }
+
+    public void OnOptionsClicked()
+    {
+        optionsPanel.SetActive(true);
     }
 
     private void CheckButtonAvailability()

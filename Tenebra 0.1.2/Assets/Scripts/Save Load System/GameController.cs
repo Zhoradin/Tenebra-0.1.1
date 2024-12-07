@@ -15,6 +15,8 @@ public class GameController : MonoBehaviour
         saveLoadSystem = SaveLoadSystem.instance;
         dataPersistenceObjects = FindAllDataPersistenceObjects();
         currentSlot = saveLoadSystem.currentSlot;
+
+        LoadSettingsOnly();
     }
 
     public void SaveGame()
@@ -78,5 +80,53 @@ public class GameController : MonoBehaviour
     {
         IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>();
         return new List<IDataPersistence>(dataPersistenceObjects);
+    }
+
+    private void ApplyFPSLimit()
+    {
+        //Debug.Log($"FPSToggleOn: {DataCarrier.instance.FPSToggleOn}, FPSIndex: {DataCarrier.instance.FPSIndex}");
+
+        if (DataCarrier.instance.FPSToggleOn)
+        {
+            Application.targetFrameRate = DataCarrier.instance.FPSIndex;
+        }
+        else
+        {
+            Application.targetFrameRate = -1;
+        }
+
+        //Debug.Log($"Application.targetFrameRate set to: {Application.targetFrameRate}");
+    }
+
+    private void LoadSettingsOnly()
+    {
+        PlayerData loadedData = saveLoadSystem.LoadGame();
+
+        if (loadedData != null)
+        {
+            DataCarrier.instance.FPSToggleOn = loadedData.FPSToggleOn;
+            DataCarrier.instance.FPSIndex = loadedData.FPSIndex;
+            DataCarrier.instance.FPSValue = loadedData.FPSValue; // FPSValue'yu yüklüyoruz
+
+            //Debug.Log("FPS ayarları yüklendi.");
+
+            // Update the FPS Toggle
+            SettingsController.instance.limitFPSToggle.isOn = DataCarrier.instance.FPSToggleOn;
+
+            // Update the FPS Dropdown
+            if (SettingsController.instance.fpsDropdown != null && DataCarrier.instance.FPSValue >= 0 && DataCarrier.instance.FPSValue < SettingsController.instance.fpsDropdown.options.Count)
+            {
+                SettingsController.instance.fpsDropdown.value = DataCarrier.instance.FPSValue; // Yüklenen FPSValue'yu dropdown'da güncelliyoruz
+            }
+
+            // Apply FPS ayarlarını uygula
+            ApplyFPSLimit();
+
+            // Apply butonunu tıklanamaz yap
+            if (SettingsController.instance.applyButton != null)
+            {
+                SettingsController.instance.applyButton.interactable = false; // Apply butonunu tıklanamaz yap
+            }
+        }
     }
 }

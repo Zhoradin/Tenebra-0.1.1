@@ -26,6 +26,10 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
     public bool hasTenebraBadge;
     public bool hasAbororBadge;
 
+    public bool FPSToggleOn;
+    public int FPSIndex;
+    public int FPSValue;
+
     private void Awake()
     {
         if (instance == null)
@@ -96,6 +100,10 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
         hasSoliriaBadge = data.hasSoliriaBadge;
         hasTenebraBadge = data.hasTenebraBadge;
         hasAbororBadge = data.hasAbororBadge;
+
+        FPSToggleOn = data.FPSToggleOn;
+        FPSIndex = data.FPSIndex;
+        FPSValue = data.FPSValue;
     }
 
     public void SaveData(PlayerData data)
@@ -128,5 +136,9 @@ public class DataCarrier : MonoBehaviour, IDataPersistence
         data.hasSoliriaBadge = hasSoliriaBadge;
         data.hasTenebraBadge = hasTenebraBadge;
         data.hasAbororBadge = hasAbororBadge;
+
+        data.FPSToggleOn = FPSToggleOn;
+        data.FPSIndex = FPSIndex;
+        data.FPSValue = FPSValue;
     }
 }
