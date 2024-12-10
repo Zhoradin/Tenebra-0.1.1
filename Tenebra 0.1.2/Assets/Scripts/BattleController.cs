@@ -43,6 +43,11 @@ public class BattleController : MonoBehaviour
 
     void Start()
     {
+        if (DataCarrier.instance.enemy != null)
+        {
+            AudioManager.instance.PullBattleMusic();
+        }
+
         // Verileri DataCarrier'dan al
         if (DataCarrier.instance != null)
         {
@@ -301,6 +306,8 @@ public class BattleController : MonoBehaviour
             UIDamageIndicator damageClone = Instantiate(UIController.instance.playerDamage, UIController.instance.playerDamage.transform.parent);
             damageClone.damageText.text = damageAmount.ToString();
             damageClone.gameObject.SetActive(true);
+
+            AudioManager.instance.PlaySFX(5);
         }
     }
 
@@ -322,6 +329,8 @@ public class BattleController : MonoBehaviour
             UIDamageIndicator damageClone = Instantiate(UIController.instance.enemyDamage, UIController.instance.enemyDamage.transform.parent);
             damageClone.damageText.text = damageAmount.ToString();
             damageClone.gameObject.SetActive(true);
+
+            AudioManager.instance.PlaySFX(6);
         }
     }
 

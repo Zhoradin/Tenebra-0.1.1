@@ -364,6 +364,7 @@ public class DialogueManager : MonoBehaviour
 
     public void MakeChoice(int choiceIndex)
     {
+        AudioManager.instance.PlaySFX(0);
         if (canContinueToNextLine)
         {
             currentStory.ChooseChoiceIndex(choiceIndex);

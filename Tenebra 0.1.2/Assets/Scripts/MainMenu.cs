@@ -11,9 +11,11 @@ public class MainMenu : MonoBehaviour
 
     public Button continueButton, loadGameButton;
 
-    public GameObject saveSlotPanel;
+    public GameObject saveSlotPanel, optionsPanel;
     public bool isLoadGame = false;
     public bool isNewGame = false;
+
+    public AudioClip menuMusic;
 
     private void Start()
     {
@@ -23,12 +25,16 @@ public class MainMenu : MonoBehaviour
 
         // Butonun aktifliðini kontrol et
         CheckButtonAvailability();
+
+        AudioManager.instance.PullMenuMusic();
     }
 
     public void NewGame()
     {
         isNewGame = true;
         saveSlotPanel.SetActive(true);
+
+        AudioManager.instance.PlaySFX(0);
     }
 
     public void ContinueGame()
@@ -45,6 +51,7 @@ public class MainMenu : MonoBehaviour
         {
             Debug.LogWarning("No saved game found.");
         }
+        AudioManager.instance.PlaySFX(0);
     }
 
 
@@ -52,6 +59,7 @@ public class MainMenu : MonoBehaviour
     {
         isLoadGame = true;
         saveSlotPanel.SetActive(true);
+        AudioManager.instance.PlaySFX(0);
     }
 
     public void OnReturnClicked()
@@ -63,6 +71,14 @@ public class MainMenu : MonoBehaviour
         saveSlotPanel.SetActive(false);       
         isLoadGame = false;
         isNewGame = false;
+        AudioManager.instance.PlaySFX(0);
+    }
+
+    public void OnOptionsClicked()
+    {
+        optionsPanel.SetActive(true);
+        SettingsController.instance.OnVideoClicked();
+        AudioManager.instance.PlaySFX(0);
     }
 
     private void CheckButtonAvailability()
@@ -85,5 +101,6 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
         Debug.Log("Quitting Game");
+        AudioManager.instance.PlaySFX(0);
     }
 }

@@ -17,7 +17,8 @@ public class NPCController : MonoBehaviour
 
     public void OpenDialoguePanel()
     {
-        if(FindObjectOfType<BarController>() != null)
+        AudioManager.instance.PlaySFX(0);
+        if (FindObjectOfType<BarController>() != null)
         {
             BarController.instance.leaveButton.SetActive(false);
         }

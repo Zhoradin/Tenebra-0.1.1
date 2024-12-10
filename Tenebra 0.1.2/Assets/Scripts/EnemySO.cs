@@ -23,4 +23,6 @@ public class EnemySO : ScriptableObject
     public Sprite enemySprite;
 
     public List<CardSO> deckToUse = new List<CardSO>();
+
+    public AudioClip[] backgroundMusic;
 }

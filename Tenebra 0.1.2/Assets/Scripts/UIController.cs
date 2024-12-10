@@ -134,6 +134,7 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public void EndPlayerTurn()
     {
+        AudioManager.instance.PlaySFX(0);
         BattleController.instance.EndPlayerTurn();
         isEndTurnKeyActive = false;
     }
@@ -171,12 +172,14 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public void OnContinueClicked()
     {
+        AudioManager.instance.PlaySFX(0);
         SceneManager.LoadScene(whichTower);
         Time.timeScale = 1f;
     }
 
     public void OnMainMenuClicked()
     {
+        AudioManager.instance.PlaySFX(0);
         areYouSurePanel.SetActive(true);
         resultScreen.SetActive(false);
         fromResultScreen = true;
@@ -185,8 +188,15 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public void OnReturnHubClicked()
     {
+        AudioManager.instance.PlaySFX(0);
         SceneManager.LoadScene("Hub");
         Time.timeScale = 1f;
+    }
+
+    public void OnOptionsClicked()
+    {
+        AudioManager.instance.PlaySFX(0);
+        SettingsController.instance.optionsPanel.SetActive(true);
     }
 
     public void PauseUnpause()
@@ -205,6 +215,7 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public void OpenDrawPile()
     {
+        AudioManager.instance.PlaySFX(0);
         if (drawPileOpen == false)
         {
             drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileOpenPosition;
@@ -229,6 +240,7 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public void OpenDiscardPile()
     {
+        AudioManager.instance.PlaySFX(0);
         if (discardPileOpen == false)
         {
             discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileOpenPosition;
@@ -253,6 +265,7 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public void OpenGraveyardPile()
     {
+        AudioManager.instance.PlaySFX(0);
         if (graveyardPileOpen == false)
         {
             graveyardPilePanel.GetComponent<RectTransform>().anchoredPosition = graveyardPileOpenPosition;
@@ -299,6 +312,7 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public void OpenInventory()
     {
+        AudioManager.instance.PlaySFX(0);
         if (inventoryPanelOpen == false)
         {
             inventoryPanel.transform.localPosition = inventoryOpenPosition;
@@ -315,6 +329,7 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public void OpenEncyclopediaPanel()
     {
+        AudioManager.instance.PlaySFX(0);
         if (encyclopediaPanelOpen == false)
         {
             encyclopediaPanel.SetActive(true);
@@ -369,6 +384,7 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     public void OnSaveButtonClick()
     {
+        AudioManager.instance.PlaySFX(0);
         if (areYouSurePanel.activeSelf == false)
         {
             areYouSurePanel.SetActive(true);

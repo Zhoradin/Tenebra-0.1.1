@@ -25,6 +25,10 @@ public class PlayerData
     public bool hasTenebraBadge;
     public bool hasAbororBadge;
 
+    public bool FPSToggleOn;
+    public int FPSIndex;
+    public int FPSValue;
+
     // Oyuncunun en son uğradığı tower/god
     public string lastGod;
 
@@ -54,5 +58,9 @@ public class PlayerData
 
         // En son uğranılan kuleyi başlangıçta boş bırak
         lastGod = "";
+
+        FPSToggleOn = false;
+        FPSIndex = 0;
+        FPSValue = 0;
     }
 }

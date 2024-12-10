@@ -63,6 +63,7 @@ public class ItemMarket : MonoBehaviour
 
     public void OnSelectButtonClick()
     {
+        AudioManager.instance.PlaySFX(0);
         if (DataCarrier.instance.playerCoin > itemCost)
         {
             DataCarrier.instance.playerCoin -= itemCost;

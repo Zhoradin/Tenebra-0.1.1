@@ -29,11 +29,14 @@ public class BarController : MonoBehaviour
 
     public List<CardSO> unlockedCards = new List<CardSO>();
     public List<ItemSO> unlockedItems = new List<ItemSO>();
-
     private GameController gameController;
+
+    public AudioClip barMusic;
 
     void Start()
     {
+        AudioManager.instance.PullBarMusic();
+
         gameController = FindObjectOfType<GameController>();
 
         AssignRandomCardsToSlots(); // Kartlarý slotlara ata
@@ -47,11 +50,15 @@ public class BarController : MonoBehaviour
 
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OpenCloseOptions();
+        }
     }
 
     public void OpenShopPanel()
     {
+        AudioManager.instance.PlaySFX(0);
         shopPanel.transform.localPosition = shopPanelOpenPosition;
         dialogueButton.SetActive(false);
         leaveButton.SetActive(false);
@@ -60,14 +67,16 @@ public class BarController : MonoBehaviour
 
     public void CloseShopPanel()
     {
+        AudioManager.instance.PlaySFX(0);
         shopPanel.transform.localPosition = shopPanelClosedPosition;
         dialogueButton.SetActive(true);
         leaveButton.SetActive(true);
-        shopButton.SetActive(false);
+        shopButton.SetActive(true);
     }
 
     public void OnLeaveClicked()
     {
+        AudioManager.instance.PlaySFX(0);
         SceneManager.LoadScene("Hub");
     }
 
@@ -154,6 +163,18 @@ public class BarController : MonoBehaviour
 
                 availableItems.RemoveAt(randomIndex);
             }
+        }
+    }
+
+    public void OpenCloseOptions()
+    {
+        if (SettingsController.instance.optionsPanel.activeSelf == false)
+        {
+            SettingsController.instance.optionsPanel.SetActive(true);
+        }
+        else
+        {
+            SettingsController.instance.optionsPanel.SetActive(false);
         }
     }
 }

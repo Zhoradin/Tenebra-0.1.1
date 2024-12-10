@@ -41,8 +41,8 @@ public class Card : MonoBehaviour
     public float selectedRotateSpeed = 720f;
     public float scaleSpeed = 5f;
 
-    private Vector3 originalScale;
-    private Vector3 targetScale;
+    [HideInInspector]
+    public Vector3 originalScale, targetScale;
     public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f);
     public Vector3 selectedScale = new Vector3(1.2f, 1.2f, 1f);
 
@@ -294,6 +294,7 @@ public class Card : MonoBehaviour
         selectedPoint.activeCard = this;
         assignedPlace = selectedPoint;
 
+        AudioManager.instance.PlaySFX(4);
         MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 1.5f, 0f), Quaternion.identity);
 
         isSelected = false;
@@ -326,6 +327,7 @@ public class Card : MonoBehaviour
         targetScale = originalScale;
         theHC.RemoveCardFromHand(this);
         BattleController.instance.SpendPlayerEssence(essenceCost);
+        AudioManager.instance.PlaySFX(4);
         isActive = true;
         MoonPhaseController.instance.CheckMoonPhase(this);
         theCol.enabled = true;
@@ -338,7 +340,7 @@ public class Card : MonoBehaviour
             selectedPoint.activeCard = this;
             assignedPlace = selectedPoint;
 
-            MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 0.75f, 0f), Quaternion.identity);
+            MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 0.65f, 0f), Quaternion.identity);
 
             inPlayerHand = false;
             isSelected = false;
@@ -355,6 +357,7 @@ public class Card : MonoBehaviour
             }
 
             BattleController.instance.SpendPlayerEssence(essenceCost);
+            AudioManager.instance.PlaySFX(4);
             isActive = true;
             MoonPhaseController.instance.CheckMoonPhase(this);
             theCol.enabled = true;
@@ -455,10 +458,12 @@ public class Card : MonoBehaviour
                 MoveToPoint(hoverPosition, targetRot);
             }
 
-            if (isActive)
+            if (isActive && cardKind == CardKind.Field)
             {
+                MoveToPoint(this.assignedPlace.transform.position + new Vector3(0f, .85f, -2f), Quaternion.identity);
                 CheckForSuperEffectiveText();
             }
+            //else eklenecek
 
             if (Time.timeScale != 0f && cardSO.abilities.Length > 0)
             {
@@ -492,8 +497,10 @@ public class Card : MonoBehaviour
 
             theHC.ResetCardPositions();
         }
-        else if (isActive && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
+        else if (isActive && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false && cardKind == CardKind.Field)
         {
+            targetScale = originalScale / 1.2f;
+            MoveToPoint(assignedPlace.transform.position + new Vector3(0f, 0.65f, 0f), Quaternion.identity);
             abilityDescription.SetActive(false);
             abilityDescriptionToo.SetActive(false);
         }
@@ -586,13 +593,53 @@ public class Card : MonoBehaviour
             {
                 BattleController.instance.DamageEnemy(remainingDamage);
             }
+            AudioManager.instance.PlaySFX(2);
 
             StartCoroutine(WaitJumpAfterDeadCo());
         }
+        else
+        {
+            AudioManager.instance.PlaySFX(1);
+        }
 
+        StartCoroutine(FadeHealthArtCo());
         anim.SetTrigger("Hurt");
 
         UpdateCardDisplay();
+    }
+
+    private IEnumerator FadeHealthArtCo()
+    {
+        Color originalColor = healthArt.color; // Orijinal rengi kaydedin
+        Color fadedColor = originalColor;
+        fadedColor.a = 0.5f; // Hedef saydamlık (ör. 0.5)
+
+        float duration = 0.2f; // Saydamlaşma süresi
+        float elapsedTime = 0f;
+
+        // Yavaşça saydamlaştır
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            healthArt.color = Color.Lerp(originalColor, fadedColor, elapsedTime / duration);
+            yield return null; // Bir sonraki frame'i bekle
+        }
+
+        // Bekleme süresi (tam saydam durumda kalma süresi)
+        yield return new WaitForSeconds(0.2f);
+
+        elapsedTime = 0f;
+
+        // Yavaşça eski haline dön
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            healthArt.color = Color.Lerp(fadedColor, originalColor, elapsedTime / duration);
+            yield return null;
+        }
+
+        // Son renk ayarını garantiye alın
+        healthArt.color = originalColor;
     }
 
     public IEnumerator WaitJumpAfterDeadCo()
