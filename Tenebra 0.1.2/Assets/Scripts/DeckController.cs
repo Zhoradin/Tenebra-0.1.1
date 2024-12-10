@@ -70,6 +70,8 @@ public class DeckController : MonoBehaviour, IDataPersistence
 
         HandController.instance.AddCardToHand(newCard);
 
+        AudioManager.instance.PlaySFX(3);
+
         DrawPileController.instance.RemoveCardFromDrawPile(selectedCard);
 
         UIController.instance.ShowDrawPileCount();

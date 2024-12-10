@@ -351,6 +351,7 @@ public class EnemyController : MonoBehaviour
         selectedCard.targetScale = selectedCard.originalScale / 1.2f;
         placePoint.activeCard = selectedCard;
         selectedCard.assignedPlace = placePoint;
+        AudioManager.instance.PlaySFX(4);
 
         // Kartýn özelliklerini aktive et
         AbilityManager.instance.ActivateAbility(selectedCard);

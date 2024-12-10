@@ -96,6 +96,7 @@ public class SaveSlot : MonoBehaviour
         {
             overwritePanel.gameObject.SetActive(true);
         }
+        AudioManager.instance.PlaySFX(0);
     }
 
     public void OnEditClicked()
@@ -110,6 +111,7 @@ public class SaveSlot : MonoBehaviour
         slotNameText.gameObject.SetActive(false);
         slotNameInput.ActivateInputField();
         editButton.GetComponent<Button>().interactable = false;
+        AudioManager.instance.PlaySFX(0);
     }
 
     public void EditDone()
@@ -216,11 +218,13 @@ public class SaveSlot : MonoBehaviour
     public void OnDeleteClicked()
     {
         areYouSurePanel.SetActive(true);
+        AudioManager.instance.PlaySFX(0);
     }
 
     public void OnCancelClicked()
     {
         areYouSurePanel.SetActive(false);
+        AudioManager.instance.PlaySFX(0);
     }
 
     public void DeleteSave()
@@ -271,10 +275,12 @@ public class SaveSlot : MonoBehaviour
         gameController.currentSlot = slotNumber;
         gameController.SaveGame();
         SceneManager.LoadScene("Hub");
+        AudioManager.instance.PlaySFX(0);
     }
 
     public void OnOverwriteCancelled()
     {
         overwritePanel.gameObject.SetActive(false);
+        AudioManager.instance.PlaySFX(0);
     }
 }

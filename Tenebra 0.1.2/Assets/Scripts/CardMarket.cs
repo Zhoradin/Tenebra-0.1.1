@@ -146,6 +146,7 @@ public class CardMarket : MonoBehaviour
 
     public void OnSelectButtonClick()
     {
+        AudioManager.instance.PlaySFX(0);
         if (DataCarrier.instance.playerCoin >= coinAmount)
         {
             DataCarrier.instance.playerCoin -= coinAmount;

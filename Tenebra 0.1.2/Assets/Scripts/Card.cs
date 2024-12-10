@@ -294,6 +294,7 @@ public class Card : MonoBehaviour
         selectedPoint.activeCard = this;
         assignedPlace = selectedPoint;
 
+        AudioManager.instance.PlaySFX(4);
         MoveToPoint(selectedPoint.transform.position + new Vector3(0f, 1.5f, 0f), Quaternion.identity);
 
         isSelected = false;
@@ -326,6 +327,7 @@ public class Card : MonoBehaviour
         targetScale = originalScale;
         theHC.RemoveCardFromHand(this);
         BattleController.instance.SpendPlayerEssence(essenceCost);
+        AudioManager.instance.PlaySFX(4);
         isActive = true;
         MoonPhaseController.instance.CheckMoonPhase(this);
         theCol.enabled = true;
@@ -355,6 +357,7 @@ public class Card : MonoBehaviour
             }
 
             BattleController.instance.SpendPlayerEssence(essenceCost);
+            AudioManager.instance.PlaySFX(4);
             isActive = true;
             MoonPhaseController.instance.CheckMoonPhase(this);
             theCol.enabled = true;
@@ -455,11 +458,12 @@ public class Card : MonoBehaviour
                 MoveToPoint(hoverPosition, targetRot);
             }
 
-            if (isActive)
+            if (isActive && cardKind == CardKind.Field)
             {
                 MoveToPoint(this.assignedPlace.transform.position + new Vector3(0f, .85f, -2f), Quaternion.identity);
                 CheckForSuperEffectiveText();
             }
+            //else eklenecek
 
             if (Time.timeScale != 0f && cardSO.abilities.Length > 0)
             {
@@ -493,7 +497,7 @@ public class Card : MonoBehaviour
 
             theHC.ResetCardPositions();
         }
-        else if (isActive && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false)
+        else if (isActive && !isSelected && BattleController.instance.battleEnded == false && UIController.instance.drawPileOpen == false && UIController.instance.discardPileOpen == false && cardKind == CardKind.Field)
         {
             targetScale = originalScale / 1.2f;
             MoveToPoint(assignedPlace.transform.position + new Vector3(0f, 0.65f, 0f), Quaternion.identity);
@@ -589,8 +593,13 @@ public class Card : MonoBehaviour
             {
                 BattleController.instance.DamageEnemy(remainingDamage);
             }
+            AudioManager.instance.PlaySFX(2);
 
             StartCoroutine(WaitJumpAfterDeadCo());
+        }
+        else
+        {
+            AudioManager.instance.PlaySFX(1);
         }
 
         StartCoroutine(FadeHealthArtCo());

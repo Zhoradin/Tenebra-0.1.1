@@ -16,7 +16,10 @@ public class GameController : MonoBehaviour
         dataPersistenceObjects = FindAllDataPersistenceObjects();
         currentSlot = saveLoadSystem.currentSlot;
 
-        LoadSettingsOnly();
+        if (FindObjectOfType<SettingsController>())
+        {
+            LoadSettingsOnly();
+        }
     }
 
     public void SaveGame()
