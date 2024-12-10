@@ -102,6 +102,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Harvester:
                     card.harvester = true;
                     break;
+                case CardAbilitySO.AbilityType.Dreamweaving:
+                    card.dreamweaving = true;
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -560,5 +563,33 @@ public class AbilityManager : MonoBehaviour
         selectedPoint.activeCard = null;
 
         playedCard.theCol.enabled = true;
+    }
+
+    public IEnumerator ShowEvadedText(Card card)
+    {
+        card.evadedText.gameObject.SetActive(true);
+        Vector3 startPosition = card.evadedText.transform.position;
+
+        float duration = 1.5f; // Animasyon süresi
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            // Text yukarý hareket ediyor
+            card.evadedText.transform.position = startPosition + Vector3.up * (elapsed * 0.5f); // .5 birim/sn yukarý çýkma hýzý
+
+            // Text'in opaklýðýný azaltma
+            Color textColor = card.evadedText.color;
+            textColor.a = Mathf.Lerp(1f, 0f, elapsed / duration);
+            card.evadedText.color = textColor;
+
+            yield return null;
+        }
+
+        card.evadedText.gameObject.SetActive(false);
+        card.evadedText.transform.position = startPosition; // Pozisyonu sýfýrla
+        card.evadedText.color = new Color(card.evadedText.color.r, card.evadedText.color.g, card.evadedText.color.b, 1f); // Opaklýðý sýfýrla
     }
 }

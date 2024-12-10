@@ -20,7 +20,7 @@ public class Card : MonoBehaviour
     [HideInInspector]
     public int originalHealth, originalAttack, originalEssence, metamorphosisTurnCount, decayTurns, waxingCrescentCount, stunDuration;
 
-    public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo, superEffectiveText, notEffectiveText;
+    public TMP_Text healthText, attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo, superEffectiveText, notEffectiveText, evadedText;
 
     public Image characterArt, bgArt, moonPhaseArt, healthArt, attackArt, stunImage;
 
@@ -59,7 +59,7 @@ public class Card : MonoBehaviour
 
     [HideInInspector]
     public bool directHit, doubleTap, glassCannon, instaKill, mend, leech, metamorphosis, primalPact, scattershot, growth, decay, decayed, guardian, benevolence, snowball, multipleHit, duality, 
-        doppelganger, usedWaxingCrescent, gratis, stun, stunned, healBlock, mirror, harvester = false;
+        doppelganger, usedWaxingCrescent, gratis, stun, stunned, healBlock, mirror, harvester, dreamweaving = false;
     [HideInInspector]
     public Card decayedBy;
 
@@ -568,6 +568,16 @@ public class Card : MonoBehaviour
 
     public void DamageCard(int damageAmount)
     {
+        if (dreamweaving)
+        {
+            float chance = Random.Range(0f, 1f);
+            if (chance <= 0.33f)
+            {
+                Debug.Log("kaçtı");
+                StartCoroutine(AbilityManager.instance.ShowEvadedText(this));
+                return;
+            }
+        }
         int remainingDamage = damageAmount - currentHealth;
         currentHealth -= damageAmount;
         if (currentHealth <= 0)

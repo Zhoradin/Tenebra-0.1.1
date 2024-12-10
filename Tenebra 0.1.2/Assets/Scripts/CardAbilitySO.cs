@@ -29,7 +29,8 @@ public class CardAbilitySO : ScriptableObject
         Stun,
         HealBlock,
         Mirror,
-        Harvester
+        Harvester,
+        Dreamweaving
     }
 
     public AbilityType abilityType;

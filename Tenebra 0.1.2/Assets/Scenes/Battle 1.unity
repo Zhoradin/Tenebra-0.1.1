@@ -291,14 +291,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
-      propertyPath: deckToUse.Array.size
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
-      propertyPath: deckToUse.Array.data[11]
-      value: 
-      objectReference: {fileID: 11400000, guid: e7e5166fc7da51f4b9a8c6774a30341e, type: 2}
     - target: {fileID: 2727439233793707573, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: m_Name
       value: Data Carrier
@@ -828,14 +820,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1125926875317438291, guid: 7aa543e5f1fb29841a4c9e727e0b5ce1, type: 3}
-      propertyPath: m_Volume
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1586201396912260311, guid: 7aa543e5f1fb29841a4c9e727e0b5ce1, type: 3}
-      propertyPath: m_Volume
-      value: 0.4
-      objectReference: {fileID: 0}
     - target: {fileID: 3706747395634282582, guid: 7aa543e5f1fb29841a4c9e727e0b5ce1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1060
@@ -876,29 +860,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5700095068491941617, guid: 7aa543e5f1fb29841a4c9e727e0b5ce1, type: 3}
-      propertyPath: m_Volume
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6351207718174960729, guid: 7aa543e5f1fb29841a4c9e727e0b5ce1, type: 3}
-      propertyPath: m_Volume
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6537501878688722029, guid: 7aa543e5f1fb29841a4c9e727e0b5ce1, type: 3}
-      propertyPath: m_Volume
-      value: 0.4
-      objectReference: {fileID: 0}
     - target: {fileID: 8249106521533402183, guid: 7aa543e5f1fb29841a4c9e727e0b5ce1, type: 3}
       propertyPath: m_Name
       value: Audio Manager
-      objectReference: {fileID: 0}
-    - target: {fileID: 8971038430795050888, guid: 7aa543e5f1fb29841a4c9e727e0b5ce1, type: 3}
-      propertyPath: m_Volume
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 9219522814821599067, guid: 7aa543e5f1fb29841a4c9e727e0b5ce1, type: 3}
-      propertyPath: m_Volume
-      value: 0.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1071,8 +1035,7 @@ PrefabInstance:
       value: Battle Controller
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 806203223280795746, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d264cd01dfcdea40b9942d02a324e6b, type: 3}
