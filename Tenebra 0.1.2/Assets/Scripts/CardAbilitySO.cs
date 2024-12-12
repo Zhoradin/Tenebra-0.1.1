@@ -30,7 +30,8 @@ public class CardAbilitySO : ScriptableObject
         HealBlock,
         Mirror,
         Harvester,
-        Dreamweaving
+        Dreamweaving,
+        Bulwark
     }
 
     public AbilityType abilityType;

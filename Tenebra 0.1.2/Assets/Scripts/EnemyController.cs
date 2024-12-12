@@ -131,7 +131,10 @@ public class EnemyController : MonoBehaviour
             SetupDeck();
         }
 
-        yield return new WaitForSeconds(2f);
+        if(BattleController.instance.turnCount < 2)
+        {
+            yield return new WaitForSeconds(2f);
+        }
 
         if (enemyAIType != AIType.placeFromDeck && isStarting == false)
         {
