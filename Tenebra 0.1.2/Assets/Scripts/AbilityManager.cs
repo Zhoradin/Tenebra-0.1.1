@@ -111,6 +111,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.SoulSucking:
                     SoulSucking(card);
                     break;
+                case CardAbilitySO.AbilityType.Switch:
+                    card.switchAbility = true;
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -642,17 +645,52 @@ public class AbilityManager : MonoBehaviour
     {
         if (card.assignedPlace.oppositeCardPlacePoint.activeCard != null)
         {
-            if(card.assignedPlace.oppositeCardPlacePoint.activeCard.currentHealth >= 2)
+            if (card.isPlayer)
             {
-                card.currentHealth += 2;
-                card.UpdateCardDisplay();
-                card.assignedPlace.oppositeCardPlacePoint.activeCard.DamageCard(2);
+                if (card.assignedPlace.oppositeCardPlacePoint.activeCard.currentHealth >= 2)
+                {
+                    card.currentHealth += 2;
+                    card.UpdateCardDisplay();
+                    card.assignedPlace.oppositeCardPlacePoint.activeCard.DamageCard(2);
+                }
+                else
+                {
+                    card.currentHealth++;
+                    card.UpdateCardDisplay();
+                    card.assignedPlace.oppositeCardPlacePoint.activeCard.DamageCard(1);
+                }
             }
             else
             {
-                card.currentHealth++;
-                card.UpdateCardDisplay();
-                card.assignedPlace.oppositeCardPlacePoint.activeCard.DamageCard(1);
+                if (card.assignedPlace.oppositeCardPlacePoint.activeCard.currentHealth >= 2)
+                {
+                    card.currentHealth += 2;
+                    card.UpdateCardDisplay();
+                    card.assignedPlace.oppositeCardPlacePoint.activeCard.DamageCard(2);
+                }
+                else
+                {
+                    card.currentHealth++;
+                    card.UpdateCardDisplay();
+                    card.assignedPlace.oppositeCardPlacePoint.activeCard.DamageCard(1);
+                }
+            }
+        }
+    }
+
+    public void CheckSwitch(CardPlacePoint[] cardPoints)
+    {
+        foreach (var point in cardPoints)
+        {
+            if (point.activeCard != null && point.activeCard.switchAbility)
+            {
+                point.activeCard.attackPower = point.activeCard.cardSO.changedAttackPower;
+                point.activeCard.UpdateCardDisplay();
+            }
+            else if (point.activeCard != null && point.activeCard.switchedAbility)
+            {
+                point.activeCard.attackPower = point.activeCard.cardSO.attackPower;
+                point.activeCard.UpdateCardDisplay();
             }
         }
     }
