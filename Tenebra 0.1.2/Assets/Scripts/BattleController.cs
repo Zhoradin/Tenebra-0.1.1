@@ -250,6 +250,7 @@ public class BattleController : MonoBehaviour
         AbilityManager.instance.CheckStun(CardPointsController.instance.enemyCardPoints);
         AbilityManager.instance.ApplyHarvesterAbility(CardPointsController.instance.playerCardPoints);
         AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.playerCardPoints);
+        AbilityManager.instance.CheckSwitch(CardPointsController.instance.playerCardPoints);
     }
 
     public void EnemyAbilityControl()
@@ -262,6 +263,7 @@ public class BattleController : MonoBehaviour
         AbilityManager.instance.ApplyDuality(CardPointsController.instance.enemyCardPoints);
         AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.enemyCardPoints);
         AbilityManager.instance.ApplyHarvesterAbility(CardPointsController.instance.enemyCardPoints);
+        AbilityManager.instance.CheckSwitch(CardPointsController.instance.enemyCardPoints);
     }
 
     public IEnumerator WaitForButtonAvailabilityCo()

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
+  m_Name: Test Switch
+  m_EditorClassIdentifier: 
+  cardName: Siren Hunter
+  isGraveyard: 0
+  cardDescription: Has a unique combat style. Never let them know what's your next
+    move is
+  currentHealth: 5
+  attackPower: 3
+  essenceCost: 3
+  coinCost: 50
+  changedHealth: 0
+  changedAttackPower: 5
+  characterSprite: {fileID: 21300000, guid: 1d13a337383782f47bdc7c588f2d7467, type: 3}
+  bgSprite: {fileID: 21300000, guid: 3df0185171d1b804ca11f557c48a2d83, type: 3}
+  changedCharacterSprite: {fileID: 0}
+  moonPhaseSprite: {fileID: 21300000, guid: 1797e9cf5e0b99b4196fe2c102fba0e5, type: 3}
+  abilities:
+  - {fileID: 11400000, guid: 48af4b5a39292b74cbc3d94d4a0ba36f, type: 2}
+  moonPhase: 5
+  cardType: 5
+  cardKind: 0
+  cardRarity: 0
