@@ -31,7 +31,8 @@ public class CardAbilitySO : ScriptableObject
         Mirror,
         Harvester,
         Dreamweaving,
-        Bulwark
+        Bulwark,
+        SoulSucking
     }
 
     public AbilityType abilityType;

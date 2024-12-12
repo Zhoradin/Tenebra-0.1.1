@@ -106,11 +106,10 @@ public class AbilityManager : MonoBehaviour
                     card.dreamweaving = true;
                     break;
                 case CardAbilitySO.AbilityType.Bulwark:
-                    card.bulwark = true;
-                    card.bulwarkHealth = card.cardSO.abilities[0].value;
-                    card.bulwarkText.text = card.bulwarkHealth.ToString();
-                    card.bulwarkText.gameObject.SetActive(true);
-                    card.bulwarkImage.gameObject.SetActive(true);
+                    Bulwark(card);
+                    break;
+                case CardAbilitySO.AbilityType.SoulSucking:
+                    SoulSucking(card);
                     break;
             }
         }
@@ -600,6 +599,15 @@ public class AbilityManager : MonoBehaviour
         card.evadedText.color = new Color(card.evadedText.color.r, card.evadedText.color.g, card.evadedText.color.b, 1f); // Opaklýðý sýfýrla
     }
 
+    public void Bulwark(Card card)
+    {
+        card.bulwark = true;
+        card.bulwarkHealth = card.cardSO.abilities[0].value;
+        card.bulwarkText.text = card.bulwarkHealth.ToString();
+        card.bulwarkText.gameObject.SetActive(true);
+        card.bulwarkImage.gameObject.SetActive(true);
+    }
+
     public IEnumerator DestroyBulwarkCo(Card card)
     {
         float duration = 1f; // Saydamlýk azaltma süresi
@@ -628,5 +636,24 @@ public class AbilityManager : MonoBehaviour
         card.bulwark = false;
         card.bulwarkText.gameObject.SetActive(false);
         card.bulwarkImage.gameObject.SetActive(false);
+    }
+
+    public void SoulSucking(Card card)
+    {
+        if (card.assignedPlace.oppositeCardPlacePoint.activeCard != null)
+        {
+            if(card.assignedPlace.oppositeCardPlacePoint.activeCard.currentHealth >= 2)
+            {
+                card.currentHealth += 2;
+                card.UpdateCardDisplay();
+                card.assignedPlace.oppositeCardPlacePoint.activeCard.DamageCard(2);
+            }
+            else
+            {
+                card.currentHealth++;
+                card.UpdateCardDisplay();
+                card.assignedPlace.oppositeCardPlacePoint.activeCard.DamageCard(1);
+            }
+        }
     }
 }
