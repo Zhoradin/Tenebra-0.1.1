@@ -105,6 +105,13 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Dreamweaving:
                     card.dreamweaving = true;
                     break;
+                case CardAbilitySO.AbilityType.Bulwark:
+                    card.bulwark = true;
+                    card.bulwarkHealth = card.cardSO.abilities[0].value;
+                    card.bulwarkText.text = card.bulwarkHealth.ToString();
+                    card.bulwarkText.gameObject.SetActive(true);
+                    card.bulwarkImage.gameObject.SetActive(true);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -591,5 +598,35 @@ public class AbilityManager : MonoBehaviour
         card.evadedText.gameObject.SetActive(false);
         card.evadedText.transform.position = startPosition; // Pozisyonu sýfýrla
         card.evadedText.color = new Color(card.evadedText.color.r, card.evadedText.color.g, card.evadedText.color.b, 1f); // Opaklýðý sýfýrla
+    }
+
+    public IEnumerator DestroyBulwarkCo(Card card)
+    {
+        float duration = 1f; // Saydamlýk azaltma süresi
+        float elapsed = 0f;
+
+        // Baþlangýç renklerini al
+        Color textColor = card.bulwarkText.color;
+        Color imageColor = card.bulwarkImage.color;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
+
+            // Saydamlýðý azalt
+            textColor.a = alpha;
+            imageColor.a = alpha;
+
+            card.bulwarkText.color = textColor;
+            card.bulwarkImage.color = imageColor;
+
+            yield return null; // Bir sonraki frame'i bekle
+        }
+
+        // Son olarak SetActive(false) yap
+        card.bulwark = false;
+        card.bulwarkText.gameObject.SetActive(false);
+        card.bulwarkImage.gameObject.SetActive(false);
     }
 }

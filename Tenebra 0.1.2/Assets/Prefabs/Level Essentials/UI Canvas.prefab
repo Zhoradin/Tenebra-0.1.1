@@ -13713,7 +13713,7 @@ MonoBehaviour:
     description: Istemi Yabgu Description
   PhasesList:
   - phaseName: New Moon
-    phaseDescription: No effect right now
+    phaseDescription: Decreases attack power and health of the opposing card
     phaseSprite: {fileID: 21300000, guid: 21b71951eda532349b4a8f85137aa076, type: 3}
   - phaseName: Waxing Crescent
     phaseDescription: Increase health and attack power by 33%

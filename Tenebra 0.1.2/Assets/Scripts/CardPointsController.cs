@@ -154,6 +154,17 @@ public class CardPointsController : MonoBehaviour
                     defender.activeCard.anim.SetTrigger("Enemy Attack");
                 }
             }
+            //Bulwark Check
+            else if (defender.activeCard.bulwark)
+            {
+                defender.activeCard.bulwarkHealth--;
+                defender.activeCard.bulwarkText.text = defender.activeCard.bulwarkHealth.ToString();
+                defender.activeCard.anim.SetTrigger("Hurt");
+                if (defender.activeCard.bulwarkHealth == 0)
+                {
+                    StartCoroutine(AbilityManager.instance.DestroyBulwarkCo(defender.activeCard));
+                }
+            }
             //No Full Moon No Reflect
             else
             {
