@@ -114,6 +114,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Switch:
                     card.switchAbility = true;
                     break;
+                case CardAbilitySO.AbilityType.Armor:
+                    ActivateArmor(card);
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -146,7 +149,10 @@ public class AbilityManager : MonoBehaviour
                     break;
                 case CardAbilitySO.AbilityType.Gratis:
                     Gratis(playedCard);
-                    break;            
+                    break;
+                case CardAbilitySO.AbilityType.Armor:
+                    ActivateArmor(playedCard);
+                    break;
             }
         }
     }
@@ -693,5 +699,83 @@ public class AbilityManager : MonoBehaviour
                 point.activeCard.UpdateCardDisplay();
             }
         }
+    }
+
+    public void ActivateArmor(Card card)
+    {
+        if (UIController.instance.armorAmount == 0)
+        {
+            Debug.Log("deneme");
+            UIController.instance.armorText.color = new Color(UIController.instance.armorText.color.r, UIController.instance.armorText.color.g, UIController.instance.armorText.color.b, 0);
+            UIController.instance.armorImage.color = new Color(UIController.instance.armorImage.color.r, UIController.instance.armorImage.color.g, UIController.instance.armorImage.color.b, 0);
+
+            UIController.instance.armorText.gameObject.SetActive(true);
+            UIController.instance.armorImage.gameObject.SetActive(true);
+
+            StartCoroutine(ShowArmorCo()); // Saydamlýk artýrma coroutine'ini çaðýr
+        }
+
+        UIController.instance.armorAmount += card.cardSO.abilities[0].value;
+        UIController.instance.armorText.text = UIController.instance.armorAmount.ToString();
+    }
+
+    private IEnumerator ShowArmorCo()
+    {
+        float duration = 1f; // Saydamlýk artýrma süresi
+        float elapsed = 0f;
+
+        // Baþlangýç renklerini al
+        Color textColor = UIController.instance.armorText.color;
+        Color imageColor = UIController.instance.armorImage.color;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(0f, 1f, elapsed / duration);
+
+            // Saydamlýðý artýr
+            textColor.a = alpha;
+            imageColor.a = alpha;
+
+            UIController.instance.armorText.color = textColor;
+            UIController.instance.armorImage.color = imageColor;
+
+            yield return null; // Bir sonraki frame'i bekle
+        }
+
+        // Opaklýk 1'e ulaþtýktan sonra renklerin alpha deðerini tam olarak 1 yap
+        textColor.a = 1f;
+        imageColor.a = 1f;
+
+        UIController.instance.armorText.color = textColor;
+        UIController.instance.armorImage.color = imageColor;
+    }
+
+    public IEnumerator DestroyArmorCo()
+    {
+        UIController.instance.armorAmount = 0;
+        float duration = 1f; // Saydamlýk azaltma süresi
+        float elapsed = 0f;
+
+        // Baþlangýç renklerini al
+        Color textColor = UIController.instance.armorText.color;
+        Color imageColor = UIController.instance.armorImage.color;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
+
+            // Saydamlýðý azalt
+            textColor.a = alpha;
+            imageColor.a = alpha;
+
+            UIController.instance.armorText.color = textColor;
+            UIController.instance.armorImage.color = imageColor;
+
+            yield return null; // Bir sonraki frame'i bekle
+        }
+        UIController.instance.armorImage.gameObject.SetActive(false);
+        UIController.instance.armorText.gameObject.SetActive(false);
     }
 }
