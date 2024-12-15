@@ -153,6 +153,7 @@ public class BattleController : MonoBehaviour
             {
                 case TurnOrder.playerActive:
 
+                    StartCoroutine(AbilityManager.instance.DestroyArmorCo());
                     MoonPhaseController.instance.AdvanceMoonPhase();
                     moonPhaseCount++;
                     if (moonPhaseCount > 15)

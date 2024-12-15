@@ -14,7 +14,8 @@ public class UIController : MonoBehaviour, IDataPersistence
         instance = this;
     }
 
-    public TMP_Text playerEssenceText, playerHealthText, enemyHealthText, enemyEssenceText;
+    public TMP_Text playerEssenceText, playerHealthText, enemyHealthText, enemyEssenceText, armorText;
+    public Image armorImage;
 
     public GameObject essenceWarning;
     public float essenceWarningTime;
@@ -50,9 +51,14 @@ public class UIController : MonoBehaviour, IDataPersistence
     private bool isDrawKeyActive = true;
     [HideInInspector]
     public bool isEndTurnKeyActive = false;
+    [HideInInspector]
+    public int armorAmount;
 
     void Start()
     {
+        armorImage.gameObject.SetActive(false);
+        armorText.gameObject.SetActive(false);
+
         coinAmount = DataCarrier.instance.playerCoin;
         UpdateCoinAmountText();
 

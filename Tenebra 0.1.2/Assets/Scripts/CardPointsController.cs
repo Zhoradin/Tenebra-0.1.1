@@ -127,7 +127,31 @@ public class CardPointsController : MonoBehaviour
             // Slot boþ, ana düþmana hasar ver
             if (defender == playerCardPoints[targetIndex])
             {
-                BattleController.instance.DamagePlayer(Mathf.RoundToInt(damage));
+                if(UIController.instance.armorAmount > 0)
+                {
+                    //Armor Check
+                    if(damage > UIController.instance.armorAmount)
+                    {
+                        int remainingDamage = Mathf.RoundToInt(damage) - UIController.instance.armorAmount;
+                        UIController.instance.armorAmount = 0;
+                        StartCoroutine(AbilityManager.instance.DestroyArmorCo());
+                        UIController.instance.armorText.text = UIController.instance.armorAmount.ToString();
+                        BattleController.instance.DamagePlayer(remainingDamage);
+                    }
+                    else
+                    {
+                        UIController.instance.armorAmount -= Mathf.RoundToInt(damage);
+                        UIController.instance.armorText.text = UIController.instance.armorAmount.ToString();
+                        if(UIController.instance.armorAmount == 0)
+                        {
+                            StartCoroutine(AbilityManager.instance.DestroyArmorCo());
+                        }
+                    }
+                }
+                else
+                {
+                    BattleController.instance.DamagePlayer(Mathf.RoundToInt(damage));
+                }   
             }
             else if (defender == enemyCardPoints[targetIndex])
             {

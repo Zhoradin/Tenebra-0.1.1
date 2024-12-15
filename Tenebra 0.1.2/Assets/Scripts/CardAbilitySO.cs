@@ -33,7 +33,8 @@ public class CardAbilitySO : ScriptableObject
         Dreamweaving,
         Bulwark,
         SoulSucking,
-        Switch
+        Switch,
+        Armor
     }
 
     public AbilityType abilityType;
