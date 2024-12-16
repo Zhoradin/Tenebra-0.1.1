@@ -293,7 +293,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: deckToUse.Array.size
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: deckToUse.Array.data[9]
@@ -311,6 +311,10 @@ PrefabInstance:
       propertyPath: deckToUse.Array.data[12]
       value: 
       objectReference: {fileID: 11400000, guid: f4598559a7cf4a4488be4e95ad7f80e7, type: 2}
+    - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
+      propertyPath: deckToUse.Array.data[13]
+      value: 
+      objectReference: {fileID: 11400000, guid: d6239e5330dcc78419a00a0840abca76, type: 2}
     - target: {fileID: 2727439233793707573, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: m_Name
       value: Data Carrier
