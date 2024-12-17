@@ -102,10 +102,12 @@ public class SettingsController : MonoBehaviour
     {
         if (applyButton.interactable == true)
         {
+            Debug.Log("deneme");
             closeWithoutSavingPanel.SetActive(true);
         }
         else
         {
+            Debug.Log("deneme2");
             optionsPanel.SetActive(false);
         }
         AudioManager.instance.PlaySFX(0);

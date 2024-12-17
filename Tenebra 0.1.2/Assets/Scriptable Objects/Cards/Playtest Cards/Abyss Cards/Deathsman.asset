@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
+  m_Name: Deathsman
+  m_EditorClassIdentifier: 
+  cardName: Deathsman
+  isGraveyard: 0
+  cardDescription: Executioners from the old capital
+  currentHealth: 2
+  attackPower: 6
+  essenceCost: 2
+  coinCost: 70
+  changedHealth: 0
+  changedAttackPower: 0
+  characterSprite: {fileID: 21300000, guid: c4ae26115a738e540ad39d89e420612f, type: 3}
+  bgSprite: {fileID: 21300000, guid: 9f502dfcc9a14df43a9acb1679e34453, type: 3}
+  changedCharacterSprite: {fileID: 0}
+  moonPhaseSprite: {fileID: 21300000, guid: d928d264aa3127a40bbda8d0a7f46cbc, type: 3}
+  abilities: []
+  moonPhase: 6
+  cardType: 6
+  cardKind: 0
+  cardRarity: 0

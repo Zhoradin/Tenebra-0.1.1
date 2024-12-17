@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
+  m_Name: Dragoknight
+  m_EditorClassIdentifier: 
+  cardName: Dragoknight
+  isGraveyard: 0
+  cardDescription: 
+  currentHealth: 17
+  attackPower: 1
+  essenceCost: 4
+  coinCost: 187
+  changedHealth: 0
+  changedAttackPower: 0
+  characterSprite: {fileID: 21300000, guid: 0d5854c7e5afa904dba236a1c516f066, type: 3}
+  bgSprite: {fileID: 21300000, guid: 3df0185171d1b804ca11f557c48a2d83, type: 3}
+  changedCharacterSprite: {fileID: 0}
+  moonPhaseSprite: {fileID: 21300000, guid: 3df023b0b79547b4e8f6010ea3f4a6dc, type: 3}
+  abilities:
+  - {fileID: 11400000, guid: 93646be43b446ed4cb5e835209d11423, type: 2}
+  moonPhase: 4
+  cardType: 5
+  cardKind: 0
+  cardRarity: 2
