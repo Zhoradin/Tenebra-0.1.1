@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
-  m_Name: Deathsman
+  m_Name: Zealous Kiln
   m_EditorClassIdentifier: 
-  cardName: Deathsman
+  cardName: Zealous Kiln
   isGraveyard: 0
-  cardDescription: Executioners from the old capital
-  currentHealth: 2
+  cardDescription: 
+  currentHealth: 25
   attackPower: 6
-  essenceCost: 2
-  coinCost: 70
+  essenceCost: 4
+  coinCost: 198
   changedHealth: 0
   changedAttackPower: 0
-  characterSprite: {fileID: 21300000, guid: c4ae26115a738e540ad39d89e420612f, type: 3}
-  bgSprite: {fileID: 21300000, guid: ac44cb3326b919c4b93300164cde8661, type: 3}
+  characterSprite: {fileID: 21300000, guid: 1d59ca33e1e9d48499221ff685e472eb, type: 3}
+  bgSprite: {fileID: 21300000, guid: 5497578e3cd8a8e4db15437ebb95c430, type: 3}
   changedCharacterSprite: {fileID: 0}
-  moonPhaseSprite: {fileID: 21300000, guid: d928d264aa3127a40bbda8d0a7f46cbc, type: 3}
+  moonPhaseSprite: {fileID: 21300000, guid: 1797e9cf5e0b99b4196fe2c102fba0e5, type: 3}
   abilities: []
-  moonPhase: 6
-  cardType: 6
+  moonPhase: 5
+  cardType: 3
   cardKind: 0
-  cardRarity: 0
+  cardRarity: 2

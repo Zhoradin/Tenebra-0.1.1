@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d208f2cf5e977d142850072460cf2709, type: 3}
+  m_Name: Wild Goldfinch
+  m_EditorClassIdentifier: 
+  cardName: Wild Goldfinch
+  isGraveyard: 0
+  cardDescription: 
+  currentHealth: 5
+  attackPower: 3
+  essenceCost: 1
+  coinCost: 55
+  changedHealth: 0
+  changedAttackPower: 0
+  characterSprite: {fileID: 21300000, guid: eb08ac6f6ce0d754b8713522f516475f, type: 3}
+  bgSprite: {fileID: 21300000, guid: 06d52996028b9114fb7c35513a24ee20, type: 3}
+  changedCharacterSprite: {fileID: 0}
+  moonPhaseSprite: {fileID: 21300000, guid: 1797e9cf5e0b99b4196fe2c102fba0e5, type: 3}
+  abilities: []
+  moonPhase: 5
+  cardType: 1
+  cardKind: 0
+  cardRarity: 0
