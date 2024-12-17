@@ -15,10 +15,10 @@ MonoBehaviour:
   cardName: Lady Marika
   isGraveyard: 0
   cardDescription: 
-  currentHealth: 24
+  currentHealth: 20
   attackPower: 12
   essenceCost: 4
-  coinCost: 188
+  coinCost: 140
   changedHealth: 0
   changedAttackPower: 0
   characterSprite: {fileID: 21300000, guid: 7c7245b139115d54caba7cab4e553c48, type: 3}
@@ -29,4 +29,4 @@ MonoBehaviour:
   moonPhase: 6
   cardType: 2
   cardKind: 0
-  cardRarity: 2
+  cardRarity: 1

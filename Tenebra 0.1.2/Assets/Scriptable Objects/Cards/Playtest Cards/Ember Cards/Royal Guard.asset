@@ -15,10 +15,10 @@ MonoBehaviour:
   cardName: Royal Guard
   isGraveyard: 0
   cardDescription: 
-  currentHealth: 16
+  currentHealth: 12
   attackPower: 4
   essenceCost: 3
-  coinCost: 145
+  coinCost: 125
   changedHealth: 0
   changedAttackPower: 0
   characterSprite: {fileID: 21300000, guid: d705ca38bdd3fbd4d94243fe58dc0aab, type: 3}
@@ -30,4 +30,4 @@ MonoBehaviour:
   moonPhase: 4
   cardType: 3
   cardKind: 0
-  cardRarity: 2
+  cardRarity: 1

@@ -15,10 +15,10 @@ MonoBehaviour:
   cardName: Coral Scarab
   isGraveyard: 0
   cardDescription: 
-  currentHealth: 14
+  currentHealth: 6
   attackPower: 3
   essenceCost: 3
-  coinCost: 124
+  coinCost: 84
   changedHealth: 0
   changedAttackPower: 0
   characterSprite: {fileID: 21300000, guid: bbc7c8c2dfc527a45a454461d6eed4f0, type: 3}
@@ -30,4 +30,4 @@ MonoBehaviour:
   moonPhase: 2
   cardType: 0
   cardKind: 0
-  cardRarity: 1
+  cardRarity: 0

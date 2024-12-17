@@ -17,4 +17,12 @@ MonoBehaviour:
   enemyEssence: 3
   gainedCoin: 50
   enemySprite: {fileID: 21300000, guid: 71f8338a97da0344087b8aa469d0f966, type: 3}
-  deckToUse: []
+  deckToUse:
+  - {fileID: 11400000, guid: ec1f2178d46071342b94f0fc56bf0d1d, type: 2}
+  - {fileID: 11400000, guid: 1689db1a0c8ab194b9cd5002c61da644, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  backgroundMusic: []

@@ -16,9 +16,9 @@ MonoBehaviour:
   isGraveyard: 0
   cardDescription: 
   currentHealth: 11
-  attackPower: 9
+  attackPower: 5
   essenceCost: 3
-  coinCost: 100
+  coinCost: 91
   changedHealth: 0
   changedAttackPower: 0
   characterSprite: {fileID: 21300000, guid: 49d407e5d9e31d14195f75d1f0a206ed, type: 3}
@@ -29,4 +29,4 @@ MonoBehaviour:
   moonPhase: 1
   cardType: 2
   cardKind: 0
-  cardRarity: 1
+  cardRarity: 0

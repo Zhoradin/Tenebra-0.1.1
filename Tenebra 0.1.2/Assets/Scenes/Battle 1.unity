@@ -293,7 +293,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: deckToUse.Array.size
-      value: 7
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: deckToUse.Array.data[0]
@@ -326,31 +326,31 @@ PrefabInstance:
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: deckToUse.Array.data[7]
       value: 
-      objectReference: {fileID: 11400000, guid: 0fd4da1c336675c4eae78a061aa5f3a4, type: 2}
+      objectReference: {fileID: 11400000, guid: 88f57a6c12429e44f8890b2d91d5e0c6, type: 2}
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: deckToUse.Array.data[8]
       value: 
-      objectReference: {fileID: 11400000, guid: b4cab6e95be791a40ba373205e75054e, type: 2}
+      objectReference: {fileID: 11400000, guid: 5b3658f46d8fe0447bac7f6ad238b815, type: 2}
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: deckToUse.Array.data[9]
       value: 
-      objectReference: {fileID: 11400000, guid: b4cab6e95be791a40ba373205e75054e, type: 2}
+      objectReference: {fileID: 11400000, guid: e74e33a8f8620a0428da0042e8c761ab, type: 2}
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: deckToUse.Array.data[10]
       value: 
-      objectReference: {fileID: 11400000, guid: b4cab6e95be791a40ba373205e75054e, type: 2}
+      objectReference: {fileID: 11400000, guid: 3e64d6023e254a4448112d00c80b2bf2, type: 2}
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: deckToUse.Array.data[11]
       value: 
-      objectReference: {fileID: 11400000, guid: b4cab6e95be791a40ba373205e75054e, type: 2}
+      objectReference: {fileID: 11400000, guid: 0747bbcdd768fc849833ef5454b0221c, type: 2}
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: deckToUse.Array.data[12]
       value: 
-      objectReference: {fileID: 11400000, guid: b4cab6e95be791a40ba373205e75054e, type: 2}
+      objectReference: {fileID: 11400000, guid: d1f33dd4519f4684191f140eef08fd97, type: 2}
     - target: {fileID: 2177540398134763311, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: deckToUse.Array.data[13]
       value: 
-      objectReference: {fileID: 11400000, guid: d6239e5330dcc78419a00a0840abca76, type: 2}
+      objectReference: {fileID: 11400000, guid: a2b9f47d921c95d4385f80b774858c7c, type: 2}
     - target: {fileID: 2727439233793707573, guid: 1ee8e3b5c55cef04b94f6730e12d7bfb, type: 3}
       propertyPath: m_Name
       value: Data Carrier
