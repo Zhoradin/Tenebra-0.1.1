@@ -50,15 +50,20 @@ MonoBehaviour:
   playerCoin: 150
   possessedItems: []
   deckToUse:
-  - {fileID: 11400000, guid: e7e5166fc7da51f4b9a8c6774a30341e, type: 2}
-  - {fileID: 11400000, guid: dd4a4d73dbb02af4e8788f6eb269a274, type: 2}
-  - {fileID: 11400000, guid: 7a7890845cd90924a817b46da22e79bf, type: 2}
-  - {fileID: 11400000, guid: 67f9449e6a9e54243b9ada2724b201d4, type: 2}
-  - {fileID: 11400000, guid: 2c6d38f42f6cc7a4bb705dd736eddc23, type: 2}
-  - {fileID: 11400000, guid: afa6e802c8a56124894c7f4b7674236b, type: 2}
-  - {fileID: 11400000, guid: 17607c927ef400a4dbb24c84bc163d1c, type: 2}
-  - {fileID: 11400000, guid: 6dd7ff00c52fd5341847c72dbd8ccefa, type: 2}
-  - {fileID: 11400000, guid: 46f3e18153f467b448862f59f33d2923, type: 2}
+  - {fileID: 11400000, guid: 0fd4da1c336675c4eae78a061aa5f3a4, type: 2}
+  - {fileID: 11400000, guid: a8eeaff4447a72c4586e83dddaf4d317, type: 2}
+  - {fileID: 11400000, guid: 8aee441f847ffc34987fd8ed80dd9f2b, type: 2}
+  - {fileID: 11400000, guid: 91a3dc3994b03064b83284be6e05a625, type: 2}
+  - {fileID: 11400000, guid: e442bd5a0a8e8d449aa9151f1df03bc7, type: 2}
+  - {fileID: 11400000, guid: e0db6f01656ca89449259b23b615d158, type: 2}
+  - {fileID: 11400000, guid: 652ae9dc45ce54d4688755f32a8c96fc, type: 2}
+  - {fileID: 11400000, guid: 88f57a6c12429e44f8890b2d91d5e0c6, type: 2}
+  - {fileID: 11400000, guid: 5b3658f46d8fe0447bac7f6ad238b815, type: 2}
+  - {fileID: 11400000, guid: e74e33a8f8620a0428da0042e8c761ab, type: 2}
+  - {fileID: 11400000, guid: 3e64d6023e254a4448112d00c80b2bf2, type: 2}
+  - {fileID: 11400000, guid: 0747bbcdd768fc849833ef5454b0221c, type: 2}
+  - {fileID: 11400000, guid: d1f33dd4519f4684191f140eef08fd97, type: 2}
+  - {fileID: 11400000, guid: a2b9f47d921c95d4385f80b774858c7c, type: 2}
   pathwayRooms: []
   currentRoomName: 
   enemy: {fileID: 11400000, guid: 926c6e2bf115d3d4a8e757c366b80f12, type: 2}
