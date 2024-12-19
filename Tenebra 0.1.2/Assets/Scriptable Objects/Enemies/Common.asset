@@ -18,19 +18,20 @@ MonoBehaviour:
   gainedCoin: 50
   enemySprite: {fileID: 21300000, guid: fae3fb108e7208c46b7abb7ee1afaeab, type: 3}
   deckToUse:
-  - {fileID: 11400000, guid: 75869764fe1a8b14db9a3f8913e0e80b, type: 2}
-  - {fileID: 11400000, guid: 9bd58c0bdaee74348a8b41088f0f3246, type: 2}
-  - {fileID: 11400000, guid: 219e780c88339b74f82a694e22647bfc, type: 2}
-  - {fileID: 11400000, guid: 8c3cf27eb2ce1984ba4e19bf4a2f0baf, type: 2}
-  - {fileID: 11400000, guid: 35583191ae9e696469026924218ec6b5, type: 2}
-  - {fileID: 11400000, guid: de68d3b7ba2699942a0fc676a98a83a4, type: 2}
-  - {fileID: 11400000, guid: 922b0f7f5a4c6fc41930584643c108ea, type: 2}
-  - {fileID: 11400000, guid: 922b0f7f5a4c6fc41930584643c108ea, type: 2}
-  - {fileID: 11400000, guid: 922b0f7f5a4c6fc41930584643c108ea, type: 2}
-  - {fileID: 11400000, guid: c331c79125eeb0641a243efce9bdf902, type: 2}
-  - {fileID: 11400000, guid: 3e82718a6fc2cb448bf4773afaab2e5e, type: 2}
-  - {fileID: 11400000, guid: 92df72fa9e203c9409393aa7eef75710, type: 2}
-  - {fileID: 11400000, guid: 6dd7ff00c52fd5341847c72dbd8ccefa, type: 2}
+  - {fileID: 11400000, guid: 95d2fb8b1ab941b4fbaeff18fd7780e2, type: 2}
+  - {fileID: 11400000, guid: eb456c3f7e16f8e468c30006a02ce973, type: 2}
+  - {fileID: 11400000, guid: 7fbae5915d763d4488907b4cf916ed7e, type: 2}
+  - {fileID: 11400000, guid: 0a0ece2cbc5f7cd45b324a2041caa93e, type: 2}
+  - {fileID: 11400000, guid: c1d120f4cf4d1de4c99cfad50dbae9cd, type: 2}
+  - {fileID: 11400000, guid: 3514205d2ea9a4f46a19e1e71c3f2043, type: 2}
+  - {fileID: 11400000, guid: 6142fe1c77ea92f4d9036267323b7c68, type: 2}
+  - {fileID: 11400000, guid: 97285a0f5cefd364da3b1c45959d2f9f, type: 2}
+  - {fileID: 11400000, guid: 682a03f816ac1bc4291c8b162760bace, type: 2}
+  - {fileID: 11400000, guid: d2373f796a40ef943af591584ba6eea5, type: 2}
+  - {fileID: 11400000, guid: 168f02733f02a89449e0adce22e900da, type: 2}
+  - {fileID: 11400000, guid: 72f586e9351fd7442a0115049c0d40d2, type: 2}
+  - {fileID: 11400000, guid: 1ddc248429ff6f54b83153bff610507c, type: 2}
+  - {fileID: 11400000, guid: 04e1357aa5e71a4498dceb1e2933bca9, type: 2}
   backgroundMusic:
   - {fileID: 8300000, guid: 39be39b02a626c347a689b2c934f49f9, type: 3}
   - {fileID: 8300000, guid: 594ef038c1d4ad74cad41fc49bd5e59e, type: 3}

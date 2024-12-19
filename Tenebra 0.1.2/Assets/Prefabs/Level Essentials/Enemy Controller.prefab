@@ -78,9 +78,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySO: {fileID: 11400000, guid: 926c6e2bf115d3d4a8e757c366b80f12, type: 2}
   deckToUse: []
-  cardToSpawn: {fileID: 8569995307087556094, guid: 1b50b98e95acaed4691a2e36fe0e2a99, type: 3}
+  activeCards: []
+  cardsInHand: []
+  wannabeHeldCards: []
+  cardToSpawn: {fileID: 2516073563544608697, guid: dae4bfe83cf8e854993ed0c2617a033e, type: 3}
   cardSpawnPoint: {fileID: 3338439421060587878}
   enemyAIType: 2
   startHandSize: 5
+  cardsToDrawEachTurn: 5
   enemyHealth: 0
+  enemyEssence: 0
   enemyImage: {fileID: 0}
+  isStarting: 1

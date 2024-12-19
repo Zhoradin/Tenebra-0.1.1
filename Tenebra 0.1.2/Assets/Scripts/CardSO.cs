@@ -17,7 +17,7 @@ public class CardSO : ScriptableObject
 
     public Sprite characterSprite, bgSprite, changedCharacterSprite;
 
-    public Sprite moonPhaseSprite;
+    public Sprite moonPhaseSprite, typeSprite;
 
     public CardAbilitySO[] abilities;
 

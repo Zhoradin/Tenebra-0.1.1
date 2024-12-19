@@ -6,7 +6,7 @@ public enum CardType
     Ember,
     Dust,
     Holy,
-    Normal
+    Abyss
 }
 
 public static class TypeEffectiveness
@@ -21,7 +21,7 @@ public static class TypeEffectiveness
         { 1f, 1f, 1f, 1f, 1f, 1f, 1f }, // Ember
         { 1f, 1f, 1f, 1f, 1f, 1f, 1f }, // Dust
         { 1f, 1f, 1f, 1f, 1f, 1f, 1f },  // Holy
-        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }    // Normal */
+        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }    // Abyss */
 
         
         // Aqua, Gale, Gloom, Ember, Dust, Holy, Normal
@@ -31,7 +31,7 @@ public static class TypeEffectiveness
         { 2f, .5f, 1f, .5f, 2f, 1f, 1f }, // Ember
         { 2f, 2f, .5f, 1f, .5f, 1f, 1f }, // Dust
         { 1f, 2f, 2f, 1f, 1f, .5f, 1f },  // Holy
-        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }    // Normal 
+        { 1f, 1f, 1f, 1f, 1f, 1f, 1f }    // Abyss 
     };
 
     public static float GetEffectiveness(CardType attacker, CardType defender)

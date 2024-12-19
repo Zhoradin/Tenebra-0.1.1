@@ -350,8 +350,8 @@ public class EnemyController : MonoBehaviour
         }
 
         // Kartý hedef noktaya taþý
-        selectedCard.MoveToPoint(placePoint.transform.position + new Vector3(0f, 0.65f, 0f), placePoint.transform.rotation);
-        selectedCard.targetScale = selectedCard.originalScale / 1.2f;
+        selectedCard.MoveToPoint(placePoint.transform.position + new Vector3(0f, 0f, 0f), placePoint.transform.rotation);
+        selectedCard.targetScale = selectedCard.originalScale;
         placePoint.activeCard = selectedCard;
         selectedCard.assignedPlace = placePoint;
         AudioManager.instance.PlaySFX(4);

@@ -46,6 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deckToUse: []
   drawDeck: []
-  cardToSpawn: {fileID: 1243885134900030152, guid: 514223ae58f5e7840bbf3561feb33fc3, type: 3}
+  cardToSpawn: {fileID: 1243885134900030152, guid: ac459ec488b3cc2428f150174cb3ca41, type: 3}
   drawCardCost: 1
   waitBetweenDrawingCards: 0.25
