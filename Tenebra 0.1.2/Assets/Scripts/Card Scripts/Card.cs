@@ -30,7 +30,7 @@ public class Card : MonoBehaviour
 
     [Header("Texts")]
     public TMP_Text healthText;
-    public TMP_Text attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo, superEffectiveText, notEffectiveText, evadedText, bulwarkText,
+    public TMP_Text attackText, costText, nameText, descriptionText, abilityDescriptionText, abilityDescriptionTextToo, superEffectiveText, notEffectiveText, evadedText, respawnedText, bulwarkText,
         backHealthText, backAttackText, backCostText, backNameText, backAbilityDescriptionText, backAbilityDescriptionTextToo, backSuperEffectiveText, backNotEffectiveText;
 
     public Image characterArt, bgArt, moonPhaseArt, healthArt, attackArt, typeArt, stunImage, bulwarkImage, backCharacterArt, backbgArt, backMoonphaseArt, backHealthArt, backAttackArt, backTypeArt, backStunImage, backBulwarkArt;
@@ -71,7 +71,8 @@ public class Card : MonoBehaviour
 
     [HideInInspector]
     public bool directHit, doubleTap, glassCannon, instaKill, mend, leech, metamorphosis, primalPact, scattershot, growth, decay, decayed, guardian, benevolence, snowball, multipleHit, duality,
-        doppelganger, usedWaxingCrescent, gratis, stun, stunned, healBlock, mirror, harvester, dreamweaving, bulwark, switchAbility, switchedAbility, flipped, isMouseOver, fullMoon = false;
+        doppelganger, usedWaxingCrescent, gratis, stun, stunned, healBlock, mirror, harvester, dreamweaving, bulwark, switchAbility, switchedAbility, flipped, isMouseOver, fullMoon, animateDead,
+        respawnedByAnimateDead = false;
     [HideInInspector]
     public Card decayedBy;
 
@@ -611,6 +612,11 @@ public class Card : MonoBehaviour
         {
             currentHealth = 0;
 
+            AbilityManager.instance.CheckAnimateDead(this);
+            if(respawnedByAnimateDead == true)
+            {
+                return;
+            }
             assignedPlace.activeCard = null;
 
             if (isPlayer)
