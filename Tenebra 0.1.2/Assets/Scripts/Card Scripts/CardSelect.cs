@@ -2,20 +2,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Text;
+using System.Collections;
 
-public class CardSlot : MonoBehaviour
+public class CardSelect : MonoBehaviour
 {
-    public Image cardImage;
-    public Image cardBgImage;
-    public Image cardMoonPhaseImage;
+    public Image characterImage;
+    public Image typeFrameImage;
+    public Image moonPhaseImage;
+    public Image typeImage;
     public Image attackImage, healthImage;
     public TMP_Text cardNameText;
-    public TMP_Text cardDescriptionText;
     public TMP_Text healthText;
     public TMP_Text attackText;
     public TMP_Text costText;
     public GameObject abilityDescription1, abilityDescription2;
     public TMP_Text abilityDescriptionText, abilityDescriptionTextToo;
+    public float flipDuration = 1f;
 
     private CardSO cardData;
 
@@ -38,24 +40,17 @@ public class CardSlot : MonoBehaviour
     public void SetupCardSlot(CardSO card)
     {
         cardData = card;
-        cardImage.sprite = card.characterSprite;
-        cardBgImage.sprite = card.bgSprite;
+        characterImage.sprite = card.characterSprite;
+        typeFrameImage.sprite = card.typeFrameSprite;
+        moonPhaseImage.sprite = card.moonPhaseSprite;
         cardNameText.text = card.cardName;
-        cardDescriptionText.text = card.cardDescription;
         healthText.text = card.currentHealth.ToString();
         attackText.text = card.attackPower.ToString();
         costText.text = card.essenceCost.ToString();
 
-        if(cardData.cardKind == CardKind.Field)
+        if (cardData.cardKind != CardKind.Field)
         {
-            if(cardMoonPhaseImage != null)
-            {
-                cardMoonPhaseImage.sprite = card.moonPhaseSprite;
-            }            
-        }
-        else
-        {
-            cardMoonPhaseImage.gameObject.SetActive(false);
+            moonPhaseImage.gameObject.SetActive(false);
             healthImage.gameObject.SetActive(false);
             attackImage.gameObject.SetActive(false);
             healthText.gameObject.SetActive(false);
@@ -134,11 +129,10 @@ public class CardSlot : MonoBehaviour
     public void OnSelectButtonClick()
     {
         DeckController.instance.deckToUse.Add(cardData);
-        BattleController.instance.StartCoroutine(BattleController.instance.ShowResultsCo());
-        UIController.instance.CardSelected(cardNameText.text.ToString());
-
-        // Card Trigger'daki button interactable durumu devre dýþý býrakýlacak
         CardSelectController.instance.DisableOtherCardSlots(this);
+        Destroy(gameObject);
+        BattleController.instance.StartCoroutine(BattleController.instance.ShowResultsCo());
+        UIController.instance.CardSelected(cardNameText.text.ToString());        
     }
 
     public void SetCardTriggerInteractable(bool state)

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Common
   m_EditorClassIdentifier: 
   enemyRarity: 0
-  enemyHealth: 50
+  enemyHealth: 1
   enemyEssence: 0
   gainedCoin: 50
   enemySprite: {fileID: 21300000, guid: fae3fb108e7208c46b7abb7ee1afaeab, type: 3}
@@ -34,4 +34,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 04e1357aa5e71a4498dceb1e2933bca9, type: 2}
   backgroundMusic:
   - {fileID: 8300000, guid: 39be39b02a626c347a689b2c934f49f9, type: 3}
-  - {fileID: 8300000, guid: 594ef038c1d4ad74cad41fc49bd5e59e, type: 3}
+  - {fileID: 8300000, guid: 07b42508f103ff342a14c57900093ca5, type: 3}

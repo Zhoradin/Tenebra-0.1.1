@@ -48,7 +48,7 @@ public class UIController : MonoBehaviour, IDataPersistence
     public bool coinSelected = false;
 
     public string whichTower;
-    private bool isDrawKeyActive = true;
+    private bool isDrawKeyActive, fromPauseScreen = true;
     [HideInInspector]
     public bool isEndTurnKeyActive = false;
     [HideInInspector]
@@ -56,6 +56,7 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     void Start()
     {
+        graveyardPileButton.SetActive(false);
         armorImage.gameObject.SetActive(false);
         armorText.gameObject.SetActive(false);
 
@@ -83,7 +84,14 @@ public class UIController : MonoBehaviour, IDataPersistence
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            PauseUnpause();
+            if (encyclopediaPanel.activeSelf == true)
+            {
+                OpenEncyclopediaPanel();
+            }
+            else
+            {
+                PauseUnpause();
+            }       
         }
 
         if (Input.GetKeyDown(KeyCode.D) && isDrawKeyActive && BattleController.instance.currentPhase == BattleController.TurnOrder.playerActive)
@@ -333,11 +341,19 @@ public class UIController : MonoBehaviour, IDataPersistence
         }
     }
 
+    public void OnEncyclopediaClicked()
+    {
+        fromPauseScreen = true;
+        pauseScreen.SetActive(false);
+        OpenEncyclopediaPanel();
+    }
+
     public void OpenEncyclopediaPanel()
     {
         AudioManager.instance.PlaySFX(0);
         if (encyclopediaPanelOpen == false)
         {
+            Time.timeScale = 0f;
             encyclopediaPanel.SetActive(true);
             graveyardPileButton.GetComponent<Button>().interactable = false;
             discardPileButton.GetComponent<Button>().interactable = false;
@@ -353,6 +369,10 @@ public class UIController : MonoBehaviour, IDataPersistence
             drawPileButton.GetComponent<Button>().interactable = true;
             inventoryButton.GetComponent<Button>().interactable = true;
             encyclopediaPanelOpen = false;
+            if (fromPauseScreen == true)
+            {
+                pauseScreen.SetActive(true);
+            }
         }
     }
 

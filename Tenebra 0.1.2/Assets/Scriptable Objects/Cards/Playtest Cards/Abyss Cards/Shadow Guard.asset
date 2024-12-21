@@ -22,7 +22,7 @@ MonoBehaviour:
   changedHealth: 0
   changedAttackPower: 0
   characterSprite: {fileID: 21300000, guid: 84a9a5996cc44dc44bdef604e212d2c7, type: 3}
-  bgSprite: {fileID: 21300000, guid: a25f13fb192cf374c8af7daa1d366425, type: 3}
+  typeFrameSprite: {fileID: 21300000, guid: a25f13fb192cf374c8af7daa1d366425, type: 3}
   changedCharacterSprite: {fileID: 0}
   moonPhaseSprite: {fileID: 21300000, guid: e9f5b648acbf62a49addbd28593afe75, type: 3}
   typeSprite: {fileID: 21300000, guid: 979a1a960a618fd41bfd889539e93319, type: 3}

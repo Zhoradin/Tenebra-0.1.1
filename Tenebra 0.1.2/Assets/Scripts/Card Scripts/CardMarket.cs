@@ -6,11 +6,12 @@ using System.Collections;
 
 public class CardMarket : MonoBehaviour
 {
-    public Image cardImage;
-    public Image cardBgImage;
-    public Image cardMoonPhaseImage;
+    public Image characterImage;
+    public Image cardTypeFrame;
+    public Image moonPhaseImage;
     public Image attackImage;
     public Image healthImage;
+    public Image typeImage;
     public TMP_Text cardNameText;
     public TMP_Text cardDescriptionText;
     public TMP_Text healthText;
@@ -21,7 +22,9 @@ public class CardMarket : MonoBehaviour
     public GameObject saleImage;
     public GameObject abilityDescription1, abilityDescription2;
     public TMP_Text abilityDescriptionText, abilityDescriptionTextToo;
+    [HideInInspector]
     public int coinAmount;
+    [HideInInspector]
     public string cardName;
 
     private CardSO cardData;
@@ -48,8 +51,8 @@ public class CardMarket : MonoBehaviour
     public void SetupCardSlot(CardSO card)
     {
         cardData = card;
-        cardImage.sprite = card.characterSprite;
-        cardBgImage.sprite = card.bgSprite;
+        characterImage.sprite = card.characterSprite;
+        cardTypeFrame.sprite = card.typeFrameSprite;
         cardNameText.text = card.cardName;
         cardName = card.cardName;
         cardDescriptionText.text = card.cardDescription;
@@ -61,11 +64,12 @@ public class CardMarket : MonoBehaviour
 
         if (cardData.cardKind == CardKind.Field)
         {
-            cardMoonPhaseImage.sprite = card.moonPhaseSprite;
+            moonPhaseImage.sprite = card.moonPhaseSprite;
+            typeImage.sprite = card.typeSprite;
         }
         else
         {
-            cardMoonPhaseImage.gameObject.SetActive(false);
+            moonPhaseImage.gameObject.SetActive(false);
             healthImage.gameObject.SetActive(false);
             attackImage.gameObject.SetActive(false);
             healthText.gameObject.SetActive(false);
@@ -146,7 +150,7 @@ public class CardMarket : MonoBehaviour
 
     public void OnSelectButtonClick()
     {
-        AudioManager.instance.PlaySFX(0);
+        //AudioManager.instance.PlaySFX(0);
         if (DataCarrier.instance.playerCoin >= coinAmount)
         {
             DataCarrier.instance.playerCoin -= coinAmount;

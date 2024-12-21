@@ -38,7 +38,7 @@ public class Card : MonoBehaviour
     public bool inPlayerHand, inEnemyHand, isActive, isSelected, returningToHand, justPressed, isPlayer, isGraveyard, isLocked, isTransformed;
     public int handPosition;
 
-    public GameObject abilityDescription, abilityDescriptionToo;
+    public GameObject abilityDescription, abilityDescriptionToo, reverseGear, backReverseGear;
 
     public CardType cardType;
 
@@ -111,9 +111,9 @@ public class Card : MonoBehaviour
         descriptionText.text = cardSO.cardDescription;
 
         characterArt.sprite = cardSO.characterSprite;
-        bgArt.sprite = cardSO.bgSprite;
+        bgArt.sprite = cardSO.typeFrameSprite;
         backCharacterArt.sprite = cardSO.characterSprite;
-        backbgArt.sprite = cardSO.bgSprite;
+        backbgArt.sprite = cardSO.typeFrameSprite;
 
         cardType = cardSO.cardType;
         cardKind = cardSO.cardKind;
@@ -780,6 +780,9 @@ public class Card : MonoBehaviour
 
     private IEnumerator FlipCardCo()
     {
+        reverseGear.GetComponent<Button>().interactable = false;
+        backReverseGear.GetComponent<Button>().interactable = false;
+
         float elapsed = 0f;
 
         Transform cardTransform = this.transform; // Kartın transform'u
@@ -823,6 +826,8 @@ public class Card : MonoBehaviour
 
         // Tam başlangıç rotasyonuna geri dön
         cardTransform.rotation = startRotation;
+        reverseGear.GetComponent<Button>().interactable = true;
+        backReverseGear.GetComponent<Button>().interactable = true;
 
         // Eğer kartın backCard yüzü açık ve mouse kartın üzerinde değilse ön yüze döndür
         if (backCard.activeSelf && !isMouseOver)

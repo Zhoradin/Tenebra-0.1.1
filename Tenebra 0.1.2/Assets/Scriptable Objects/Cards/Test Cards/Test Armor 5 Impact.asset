@@ -22,9 +22,10 @@ MonoBehaviour:
   changedHealth: 0
   changedAttackPower: 0
   characterSprite: {fileID: 21300000, guid: d5554357146254d4f985187d261696ce, type: 3}
-  bgSprite: {fileID: 21300000, guid: 3df0185171d1b804ca11f557c48a2d83, type: 3}
+  bgSprite: {fileID: 21300000, guid: 2c95573463672bc4da44d38df20025ce, type: 3}
   changedCharacterSprite: {fileID: 0}
   moonPhaseSprite: {fileID: 0}
+  typeSprite: {fileID: 0}
   abilities:
   - {fileID: 11400000, guid: c9b034afd3f6ab643b03ffe307ee2f6f, type: 2}
   moonPhase: 0
