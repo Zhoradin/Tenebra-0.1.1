@@ -15,7 +15,7 @@ public class CardSO : ScriptableObject
 
     public int currentHealth, attackPower, essenceCost, coinCost, changedHealth, changedAttackPower;
 
-    public Sprite characterSprite, bgSprite, changedCharacterSprite;
+    public Sprite characterSprite, typeFrameSprite, changedCharacterSprite;
 
     public Sprite moonPhaseSprite, typeSprite;
 

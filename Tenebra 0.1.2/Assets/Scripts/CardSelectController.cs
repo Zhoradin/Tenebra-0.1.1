@@ -13,7 +13,7 @@ public class CardSelectController : MonoBehaviour
     }
 
     public List<CardSO> cardToSelect = new List<CardSO>();
-    public List<CardSlot> activeCardSlots = new List<CardSlot>();
+    public List<CardSelect> activeCardSlots = new List<CardSelect>();
     public GameObject cardSlotPrefab;
     public Transform scrollViewContent; // Scroll view içindeki Content alaný
 
@@ -53,7 +53,7 @@ public class CardSelectController : MonoBehaviour
         foreach (CardSO card in randomCards)
         {
             GameObject cardSlot = Instantiate(cardSlotPrefab, scrollViewContent);
-            CardSlot slotScript = cardSlot.GetComponent<CardSlot>();
+            CardSelect slotScript = cardSlot.GetComponent<CardSelect>();
             slotScript.SetupCardSlot(card);
 
             // Kart slotunu aktif kart slotlarý listesine ekleyin
@@ -64,9 +64,9 @@ public class CardSelectController : MonoBehaviour
     }
 
     // Diðer kart slotlarýnýn týklanabilirliðini devre dýþý býrak
-    public void DisableOtherCardSlots(CardSlot selectedSlot)
+    public void DisableOtherCardSlots(CardSelect selectedSlot)
     {
-        foreach (CardSlot slot in activeCardSlots)
+        foreach (CardSelect slot in activeCardSlots)
         {
             if (slot != selectedSlot)
             {

@@ -44,11 +44,19 @@ public class GraveyardPileController : MonoBehaviour
         foreach (Transform child in cardSlotParent)
         {
             Destroy(child.gameObject);
+            if(graveyardPile.Count == 0)
+            {
+                UIController.instance.graveyardPileButton.SetActive(false);
+            }
         }
     }
 
     public void AddToGraveyardPile(CardSO card)
     {
+        if (UIController.instance.graveyardPileButton.activeSelf == false)
+        {
+            UIController.instance.graveyardPileButton.SetActive(true);
+        }
         graveyardPile.Add(card);
         CreateGraveyardPileCardSlots();
     }
