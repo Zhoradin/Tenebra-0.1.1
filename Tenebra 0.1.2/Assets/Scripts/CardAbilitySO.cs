@@ -34,7 +34,8 @@ public class CardAbilitySO : ScriptableObject
         Bulwark,
         SoulSucking,
         Switch,
-        Armor
+        Armor,
+        AnimateDead
     }
 
     public AbilityType abilityType;

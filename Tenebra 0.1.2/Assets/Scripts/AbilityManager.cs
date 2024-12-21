@@ -117,6 +117,9 @@ public class AbilityManager : MonoBehaviour
                 case CardAbilitySO.AbilityType.Armor:
                     ActivateArmor(card);
                     break;
+                case CardAbilitySO.AbilityType.AnimateDead:
+                    card.animateDead = true;
+                    break;
             }
         }
         CheckPrimalPactInteractions(card);
@@ -777,5 +780,108 @@ public class AbilityManager : MonoBehaviour
         }
         UIController.instance.armorImage.gameObject.SetActive(false);
         UIController.instance.armorText.gameObject.SetActive(false);
+    }
+
+    public void CheckAnimateDead(Card card)
+    {
+        if (card.isPlayer && CanHeal(CardPointsController.instance.enemyCardPoints))
+        {
+            if(card.assignedPlace.placePointOrder != 0)
+            {
+                if (CardPointsController.instance.playerCardPoints[card.assignedPlace.placePointOrder - 1].activeCard != null)
+                {
+                    if (CardPointsController.instance.playerCardPoints[card.assignedPlace.placePointOrder - 1].activeCard.animateDead == true)
+                    {
+                        card.SetupCard();
+                        StartCoroutine(ShowRespawnedText(card));
+                        card.respawnedByAnimateDead = true;
+                    }
+                }
+            }
+            if (card.assignedPlace.placePointOrder != 5)
+            {
+                if (CardPointsController.instance.playerCardPoints[card.assignedPlace.placePointOrder + 1].activeCard != null)
+                {
+                    if (CardPointsController.instance.playerCardPoints[card.assignedPlace.placePointOrder + 1].activeCard.animateDead == true)
+                    {
+                        if (card.respawnedByAnimateDead == false)
+                        {
+                            card.SetupCard();
+                            StartCoroutine(ShowRespawnedText(card));
+                            card.respawnedByAnimateDead = true;
+                        }
+                    }
+                }
+            }      
+        }
+        else if (card.isPlayer! && CanHeal(CardPointsController.instance.playerCardPoints))
+        {
+            if(card.assignedPlace.placePointOrder != 0)
+            {
+                if (CardPointsController.instance.enemyCardPoints[card.assignedPlace.placePointOrder - 1].activeCard != null)
+                {
+                    if (CardPointsController.instance.enemyCardPoints[card.assignedPlace.placePointOrder - 1].activeCard.animateDead == true)
+                    {
+                        card.SetupCard();
+                        StartCoroutine(ShowRespawnedText(card));
+                        card.respawnedByAnimateDead = true;
+                    }
+                }
+            }
+            if (card.assignedPlace.placePointOrder != 5)
+            {
+                if (CardPointsController.instance.enemyCardPoints[card.assignedPlace.placePointOrder + 1].activeCard != null)
+                {
+                    if (CardPointsController.instance.enemyCardPoints[card.assignedPlace.placePointOrder + 1].activeCard.animateDead == true)
+                    {
+                        if (card.respawnedByAnimateDead == false)
+                        {
+                            card.SetupCard();
+                            StartCoroutine(ShowRespawnedText(card));
+                            card.respawnedByAnimateDead = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void ResetRespawnByAnimateDead(CardPlacePoint[] cardPoints)
+    {
+        foreach (var point in cardPoints)
+        {
+            if (point.activeCard != null && point.activeCard.respawnedByAnimateDead)
+            {
+                point.activeCard.respawnedByAnimateDead = false;
+            }
+        }
+    }
+
+    public IEnumerator ShowRespawnedText(Card card)
+    {
+        card.respawnedText.gameObject.SetActive(true);
+        Vector3 startPosition = card.respawnedText.transform.position;
+
+        float duration = 1.5f; // Animasyon süresi
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            // Text yukarý hareket ediyor
+            card.respawnedText.transform.position = startPosition + Vector3.up * (elapsed * 0.5f); // .5 birim/sn yukarý çýkma hýzý
+
+            // Text'in opaklýðýný azaltma
+            Color textColor = card.respawnedText.color;
+            textColor.a = Mathf.Lerp(1f, 0f, elapsed / duration);
+            card.respawnedText.color = textColor;
+
+            yield return null;
+        }
+
+        card.respawnedText.gameObject.SetActive(false);
+        card.respawnedText.transform.position = startPosition; // Pozisyonu sýfýrla
+        card.respawnedText.color = new Color(card.respawnedText.color.r, card.respawnedText.color.g, card.respawnedText.color.b, 1f); // Opaklýðý sýfýrla
     }
 }

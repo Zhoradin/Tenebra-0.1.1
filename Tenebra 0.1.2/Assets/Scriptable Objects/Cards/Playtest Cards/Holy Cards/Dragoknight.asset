@@ -15,8 +15,8 @@ MonoBehaviour:
   cardName: Dragoknight
   isGraveyard: 0
   cardDescription: 
-  currentHealth: 17
-  attackPower: 1
+  currentHealth: 1
+  attackPower: 17
   essenceCost: 4
   coinCost: 187
   changedHealth: 0

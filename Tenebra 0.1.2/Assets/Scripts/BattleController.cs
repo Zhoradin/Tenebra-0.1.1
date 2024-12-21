@@ -12,7 +12,7 @@ public class BattleController : MonoBehaviour
         instance = this;
     }
 
-    public int startingEssenceAmount = 4, maxEssence = 12;
+    public int maxEssence = 12;
     public int playerEssence, enemyEssence;
 
     public int startingCardsAmount = 5;
@@ -53,6 +53,7 @@ public class BattleController : MonoBehaviour
         {
             playerHealth = DataCarrier.instance.playerHealth;
             playerEssence = DataCarrier.instance.playerEssence;
+            enemyEssence = DataCarrier.instance.enemy.enemyEssence;
         }
 
         FillPlayerEssence();
@@ -104,7 +105,7 @@ public class BattleController : MonoBehaviour
 
     public void FillPlayerEssence()
     {
-        playerEssence = startingEssenceAmount;
+        playerEssence = DataCarrier.instance.playerEssence;
         UIController.instance.SetPlayerEssenceText(playerEssence);
     }
 
@@ -122,7 +123,7 @@ public class BattleController : MonoBehaviour
 
     public void FillEnemyEssence()
     {
-        enemyEssence = startingEssenceAmount;
+        enemyEssence = DataCarrier.instance.enemy.enemyEssence;
         UIController.instance.SetEnemyEssenceText(enemyEssence);
     }
 
@@ -252,6 +253,7 @@ public class BattleController : MonoBehaviour
         AbilityManager.instance.ApplyHarvesterAbility(CardPointsController.instance.playerCardPoints);
         AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.playerCardPoints);
         AbilityManager.instance.CheckSwitch(CardPointsController.instance.playerCardPoints);
+        AbilityManager.instance.ResetRespawnByAnimateDead(CardPointsController.instance.playerCardPoints);
     }
 
     public void EnemyAbilityControl()
@@ -265,6 +267,7 @@ public class BattleController : MonoBehaviour
         AbilityManager.instance.ApplyGrowthAbility(CardPointsController.instance.enemyCardPoints);
         AbilityManager.instance.ApplyHarvesterAbility(CardPointsController.instance.enemyCardPoints);
         AbilityManager.instance.CheckSwitch(CardPointsController.instance.enemyCardPoints);
+        AbilityManager.instance.ResetRespawnByAnimateDead(CardPointsController.instance.enemyCardPoints);
     }
 
     public IEnumerator WaitForButtonAvailabilityCo()
