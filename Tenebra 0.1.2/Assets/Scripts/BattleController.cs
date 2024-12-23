@@ -202,6 +202,7 @@ public class BattleController : MonoBehaviour
 
                 case TurnOrder.enemyActive:
 
+                    EnemyHandController.instance.OpenCloseSwitchContainer();
                     UIController.instance.drawCardButton.GetComponent<Button>().interactable = false;
                     UIController.instance.endTurnButton.GetComponent<Button>().interactable = false;
                     FillEnemyEssence();
@@ -209,6 +210,7 @@ public class BattleController : MonoBehaviour
                     break;
 
                 case TurnOrder.enemyCardAttacks:
+                    EnemyHandController.instance.OpenCloseSwitchContainer();
                     EnemyHandController.instance.EmptyHand();
                     EnemyController.instance.isStarting = false;
                     if (turnCount >= 2)

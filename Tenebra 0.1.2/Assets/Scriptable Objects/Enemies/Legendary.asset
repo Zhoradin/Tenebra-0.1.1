@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e5d97b587c9d5f419ddade626af41f1, type: 3}
   m_Name: Legendary
   m_EditorClassIdentifier: 
+  enemyName: Legendary
   enemyRarity: 4
   enemyHealth: 1
+  enemyEssence: 0
   gainedCoin: 100
   enemySprite: {fileID: 21300000, guid: a2c9bc6c9f65f844c941595d4736c98d, type: 3}
   deckToUse:
@@ -24,3 +26,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 35583191ae9e696469026924218ec6b5, type: 2}
   - {fileID: 11400000, guid: dd4a4d73dbb02af4e8788f6eb269a274, type: 2}
   - {fileID: 11400000, guid: 67f9449e6a9e54243b9ada2724b201d4, type: 2}
+  backgroundMusic: []

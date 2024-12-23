@@ -12,6 +12,8 @@ public class EnemySO : ScriptableObject
         Boss
     }
 
+    public string enemyName;
+
     public EnemyRarity enemyRarity;
 
     public int enemyHealth;

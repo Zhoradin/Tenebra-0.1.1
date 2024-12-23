@@ -14,7 +14,7 @@ public class HandController : MonoBehaviour
     public List<Card> playerHeldCards = new List<Card>();
 
     public Transform minPos, maxPos;
-    public Vector3 lockedPosition;
+    public Transform lockedPosition;
     public Quaternion lockedRotation;
     public List<Vector3> playerCardPositions = new List<Vector3>();
     public List<Quaternion> playerCardRotations = new List<Quaternion>();

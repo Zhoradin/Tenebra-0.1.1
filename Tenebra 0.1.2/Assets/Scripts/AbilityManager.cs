@@ -471,7 +471,10 @@ public class AbilityManager : MonoBehaviour
     public void Stun(Card card)
     {
         card.stun = true;
-        ApplyStun(card, card.assignedPlace.oppositeCardPlacePoint.activeCard);
+        if(card.assignedPlace.oppositeCardPlacePoint.activeCard != null)
+        {
+            ApplyStun(card, card.assignedPlace.oppositeCardPlacePoint.activeCard);
+        }     
     }
 
     public void ApplyStun(Card attackerCard, Card defenderCard)

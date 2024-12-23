@@ -31,8 +31,6 @@ public class EnemyController : MonoBehaviour
     [HideInInspector]
     public int enemyHealth, enemyEssence;
     [HideInInspector]
-    public Image enemyImage;
-    [HideInInspector]
     public bool isStarting = true;
 
     // Start is called before the first frame update
@@ -66,8 +64,6 @@ public class EnemyController : MonoBehaviour
         {
             SetupHand();
         }
-
-        enemyImage.sprite = enemySO.enemySprite;
     }
 
     public void SetupDeck()
@@ -333,11 +329,14 @@ public class EnemyController : MonoBehaviour
     {
         // EnemyHandController'daki kartý bul
         Card selectedCard = null;
-        foreach (Card card in EnemyHandController.instance.enemyHeldCards)
+        int selectedCardIndex = -1; // Seçilen kartýn indeksini tutacak deðiþken
+
+        for (int i = 0; i < EnemyHandController.instance.enemyHeldCards.Count; i++)
         {
-            if (card.cardSO == cardSO)
+            if (EnemyHandController.instance.enemyHeldCards[i].cardSO == cardSO)
             {
-                selectedCard = card;
+                selectedCard = EnemyHandController.instance.enemyHeldCards[i];
+                selectedCardIndex = i;  // Kartýn indeksini al
                 break;
             }
         }
@@ -349,7 +348,16 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        // Kartý hedef noktaya taþý
+        // Kartýn eþleniðini sola kaydýr
+        StartCoroutine(SlideCardAndMove(selectedCardIndex, 0.5f, placePoint, selectedCard));
+    }
+
+    private IEnumerator SlideCardAndMove(int selectedCardIndex, float slideDuration, CardPlacePoint placePoint, Card selectedCard)
+    {
+        // Kartý sola kaydýr
+        yield return StartCoroutine(EnemyHandController.instance.SlideCardLeft(selectedCardIndex, slideDuration));
+
+        // Kayma tamamlandýktan sonra kartý hedef noktaya taþý
         selectedCard.MoveToPoint(placePoint.transform.position + new Vector3(0f, 0f, 0f), placePoint.transform.rotation);
         selectedCard.targetScale = selectedCard.originalScale;
         placePoint.activeCard = selectedCard;
@@ -370,7 +378,7 @@ public class EnemyController : MonoBehaviour
         EnemyHandController.instance.SetCardPositionsInHand();
 
         // Essence harcama
-        BattleController.instance.SpendEnemyEssence(cardSO.essenceCost);
+        BattleController.instance.SpendEnemyEssence(selectedCard.cardSO.essenceCost);
     }
 
     CardSO SelectedCardToPlay()
@@ -409,11 +417,4 @@ public class EnemyController : MonoBehaviour
             return null;
         }
     }
-
-    //Hide the informations of the enemy card, will flip the card later
-    /*
-    public void HideEssentials(Card card)
-    {
-        card.abilityDescriptionText.gameObject.SetActive(false);
-    }*/
 }

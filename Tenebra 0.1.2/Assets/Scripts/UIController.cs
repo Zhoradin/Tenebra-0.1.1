@@ -14,6 +14,9 @@ public class UIController : MonoBehaviour, IDataPersistence
         instance = this;
     }
 
+    public Image enemyImage;
+    public TMP_Text enemyNameText;
+
     public TMP_Text playerEssenceText, playerHealthText, enemyHealthText, enemyEssenceText, armorText;
     public Image armorImage;
 
@@ -56,6 +59,9 @@ public class UIController : MonoBehaviour, IDataPersistence
 
     void Start()
     {
+        enemyImage.sprite = DataCarrier.instance.enemy.enemySprite;
+        enemyNameText.text = DataCarrier.instance.enemy.enemyName;
+
         graveyardPileButton.SetActive(false);
         armorImage.gameObject.SetActive(false);
         armorText.gameObject.SetActive(false);
@@ -233,21 +239,11 @@ public class UIController : MonoBehaviour, IDataPersistence
         if (drawPileOpen == false)
         {
             drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileOpenPosition;
-            graveyardPileButton.GetComponent<Button>().interactable = false;
-            drawPileButton.GetComponent<Button>().interactable = false;
-            discardPileButton.GetComponent<Button>().interactable = false;
-            inventoryButton.GetComponent<Button>().interactable = false;
-            encyclopediaButton.GetComponent<Button>().interactable = false;
             drawPileOpen = true;
         }
         else
         {
             drawPilePanel.GetComponent<RectTransform>().anchoredPosition = drawPileClosedPosition;
-            graveyardPileButton.GetComponent<Button>().interactable = true;
-            drawPileButton.GetComponent<Button>().interactable = true;
-            discardPileButton.GetComponent<Button>().interactable = true;
-            inventoryButton.GetComponent<Button>().interactable = true;
-            encyclopediaButton.GetComponent<Button>().interactable = true;
             drawPileOpen = false;
         }
     }
@@ -258,21 +254,11 @@ public class UIController : MonoBehaviour, IDataPersistence
         if (discardPileOpen == false)
         {
             discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileOpenPosition;
-            graveyardPileButton.GetComponent<Button>().interactable = false;
-            discardPileButton.GetComponent<Button>().interactable = false;
-            drawPileButton.GetComponent<Button>().interactable = false;
-            inventoryButton.GetComponent<Button>().interactable = false;
-            encyclopediaButton.GetComponent<Button>().interactable = false;
             discardPileOpen = true;
         }
         else
         {
             discardPilePanel.GetComponent<RectTransform>().anchoredPosition = discardPileClosedPosition;
-            graveyardPileButton.GetComponent<Button>().interactable = true;
-            discardPileButton.GetComponent<Button>().interactable = true;
-            drawPileButton.GetComponent<Button>().interactable = true;
-            inventoryButton.GetComponent<Button>().interactable = true;
-            encyclopediaButton.GetComponent<Button>().interactable = true;
             discardPileOpen = false;
         }
     }
@@ -283,46 +269,14 @@ public class UIController : MonoBehaviour, IDataPersistence
         if (graveyardPileOpen == false)
         {
             graveyardPilePanel.GetComponent<RectTransform>().anchoredPosition = graveyardPileOpenPosition;
-            graveyardPileButton.GetComponent<Button>().interactable = false;
-            discardPileButton.GetComponent<Button>().interactable = false;
-            drawPileButton.GetComponent<Button>().interactable = false;
-            inventoryButton.GetComponent<Button>().interactable = false;
-            encyclopediaButton.GetComponent<Button>().interactable = false;
             graveyardPileOpen = true;
         }
         else
         {
             graveyardPilePanel.GetComponent<RectTransform>().anchoredPosition = graveyardPileClosedPosition;
-            graveyardPileButton.GetComponent<Button>().interactable = true;
-            discardPileButton.GetComponent<Button>().interactable = true;
-            drawPileButton.GetComponent<Button>().interactable = true;
-            inventoryButton.GetComponent<Button>().interactable = true;
-            encyclopediaButton.GetComponent<Button>().interactable = true;
             graveyardPileOpen = false;
         }
     }
-
-    /*public void OpenInventoryPanel()
-    {
-        if (inventoryPanelOpen == false)
-        {
-            inventoryPanel.transform.localPosition = inventoryOpenPosition;
-            graveyardPileButton.GetComponent<Button>().interactable = false;
-            discardPileButton.GetComponent<Button>().interactable = false;
-            drawPileButton.GetComponent<Button>().interactable = false;
-            encyclopediaButton.GetComponent<Button>().interactable = false;
-            inventoryPanelOpen = true;
-        }
-        else if (inventoryPanelOpen == true)
-        {
-            inventoryPanel.transform.localPosition = inventoryClosedPosition;
-            graveyardPileButton.GetComponent<Button>().interactable = true;
-            discardPileButton.GetComponent<Button>().interactable = true;
-            drawPileButton.GetComponent<Button>().interactable = true;
-            encyclopediaButton.GetComponent<Button>().interactable = true;
-            inventoryPanelOpen = false;
-        }
-    }*/
 
     public void OpenInventory()
     {
@@ -355,19 +309,11 @@ public class UIController : MonoBehaviour, IDataPersistence
         {
             Time.timeScale = 0f;
             encyclopediaPanel.SetActive(true);
-            graveyardPileButton.GetComponent<Button>().interactable = false;
-            discardPileButton.GetComponent<Button>().interactable = false;
-            drawPileButton.GetComponent<Button>().interactable = false;
-            inventoryButton.GetComponent<Button>().interactable = false;
             encyclopediaPanelOpen = true;
         }
         else if (encyclopediaPanelOpen == true)
         {
-            encyclopediaPanel.SetActive(false);
-            graveyardPileButton.GetComponent<Button>().interactable = true;
-            discardPileButton.GetComponent<Button>().interactable = true;
-            drawPileButton.GetComponent<Button>().interactable = true;
-            inventoryButton.GetComponent<Button>().interactable = true;
+            encyclopediaPanel.SetActive(false);  
             encyclopediaPanelOpen = false;
             if (fromPauseScreen == true)
             {

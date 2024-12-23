@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e5d97b587c9d5f419ddade626af41f1, type: 3}
   m_Name: Tenebra Common
   m_EditorClassIdentifier: 
+  enemyName: Tenebra Common
   enemyRarity: 0
   enemyHealth: 50
   enemyEssence: 3
@@ -26,3 +27,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 35583191ae9e696469026924218ec6b5, type: 2}
   - {fileID: 11400000, guid: dd4a4d73dbb02af4e8788f6eb269a274, type: 2}
   - {fileID: 11400000, guid: 67f9449e6a9e54243b9ada2724b201d4, type: 2}
+  backgroundMusic: []

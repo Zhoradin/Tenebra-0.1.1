@@ -12,6 +12,8 @@ public class DeckController : MonoBehaviour, IDataPersistence
         instance = this;
     }
 
+    public Transform cardContainer;
+
     public List<CardSO> deckToUse = new List<CardSO>();
     public List<CardSO> drawDeck = new List<CardSO>();
 
@@ -62,7 +64,8 @@ public class DeckController : MonoBehaviour, IDataPersistence
         int selected = Random.Range(0, drawDeck.Count);
         CardSO selectedCard = drawDeck[selected];
 
-        Card newCard = Instantiate(cardToSpawn, transform.position, transform.rotation);
+        // Yeni kart oluşturuluyor ve CardContainer'ın altında konumlandırılıyor.
+        Card newCard = Instantiate(cardToSpawn, cardContainer);
         newCard.cardSO = selectedCard;
         newCard.SetupCard();
 
