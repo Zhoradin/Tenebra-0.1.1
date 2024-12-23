@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e5d97b587c9d5f419ddade626af41f1, type: 3}
   m_Name: Common
   m_EditorClassIdentifier: 
+  enemyName: Common
   enemyRarity: 0
   enemyHealth: 50
   enemyEssence: 4

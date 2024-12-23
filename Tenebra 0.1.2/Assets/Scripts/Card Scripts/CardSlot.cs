@@ -47,6 +47,7 @@ public class CardSlot : MonoBehaviour
         characterImage.sprite = card.characterSprite;
         typeFrameImage.sprite = card.typeFrameSprite;
         moonPhaseImage.sprite = card.moonPhaseSprite;
+        typeImage.sprite = card.typeSprite;
         cardNameText.text = card.cardName;
         cardDescriptionText.text = card.cardDescription;
         healthText.text = card.currentHealth.ToString();
@@ -66,6 +67,7 @@ public class CardSlot : MonoBehaviour
             moonPhaseImage.gameObject.SetActive(false);
             healthImage.gameObject.SetActive(false);
             attackImage.gameObject.SetActive(false);
+            typeImage.gameObject.SetActive(false);
             healthText.gameObject.SetActive(false);
             attackText.gameObject.SetActive(false);
 

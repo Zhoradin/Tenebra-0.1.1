@@ -52,6 +52,7 @@ public class Card : MonoBehaviour
     public float selectedRotateSpeed = 720f;
     public float scaleSpeed = 5f;
     public float flipDuration = 1f;
+    public float lockedScaleDivider = 1.5f;
 
     [HideInInspector]
     public Vector3 originalScale, targetScale;
@@ -470,7 +471,7 @@ public class Card : MonoBehaviour
 
                 if (isLocked)
                 {
-                    hoverPosition = theHC.lockedPosition + new Vector3(0f, 0f, -2f);
+                    hoverPosition = theHC.lockedPosition.position + new Vector3(0f, 0f, -2f);
                 }
                 else
                 {
@@ -508,8 +509,8 @@ public class Card : MonoBehaviour
         {
             if (isLocked)
             {
-                targetScale = originalScale / 1.2f;
-                MoveToPoint(theHC.lockedPosition + new Vector3(0f, 0, -2f), targetRot);
+                targetScale = originalScale / lockedScaleDivider;
+                MoveToPoint(theHC.lockedPosition.position + new Vector3(0f, 0, -2f), targetRot);
             }
             else
             {

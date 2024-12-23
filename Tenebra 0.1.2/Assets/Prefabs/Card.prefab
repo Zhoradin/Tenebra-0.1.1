@@ -5783,6 +5783,7 @@ MonoBehaviour:
   selectedRotateSpeed: 30
   scaleSpeed: 10
   flipDuration: 0.5
+  lockedScaleDivider: 2.5
   originalScale: {x: 0, y: 0, z: 0}
   targetScale: {x: 0, y: 0, z: 0}
   hoverScale: {x: 1.2, y: 1.2, z: 1}

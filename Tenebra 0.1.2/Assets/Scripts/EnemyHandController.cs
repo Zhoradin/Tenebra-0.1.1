@@ -11,7 +11,12 @@ public class EnemyHandController : MonoBehaviour
         instance = this;
     }
 
+    public GameObject enemyCardContainer;
+    public Transform cardContainerOpenPosition, cardContainerClosePosition;
+
     public List<Card> enemyHeldCards = new List<Card>();
+    public List<EnemyCardContainer> enemyPortraitHeldCards = new List<EnemyCardContainer>();
+    public float slideDistance = -2f;
     public Transform minPos, maxPos;
 
     public List<Vector3> enemyCardPositions = new List<Vector3>();
@@ -25,6 +30,7 @@ public class EnemyHandController : MonoBehaviour
 
     void Start()
     {
+        enemyCardContainer.transform.localPosition = cardContainerClosePosition.transform.localPosition;
         SetCardPositionsInHand();
     }
 
@@ -107,7 +113,28 @@ public class EnemyHandController : MonoBehaviour
 
     public void AddCardToHand(Card cardToAdd)
     {
+        // Kartý düþman eline ekle
         enemyHeldCards.Add(cardToAdd);
+
+        // Kartýn tip frame'ini enemyPortraitHeldCards'a atama
+        if (enemyPortraitHeldCards.Count > enemyHeldCards.Count - 1) // Geçerli kart sayýsýný kontrol et
+        {
+            var enemyCardContainer = enemyPortraitHeldCards[enemyHeldCards.Count - 1];
+            if (cardToAdd.cardSO != null && cardToAdd.cardSO.typeFrameSprite != null)
+            {
+                enemyCardContainer.cardTypeFrame.sprite = cardToAdd.cardSO.typeFrameSprite;
+            }
+            else
+            {
+                Debug.LogWarning("cardSO or typeFrameSprite is null for card: " + cardToAdd.name);
+            }
+        }
+        else
+        {
+            Debug.LogError("No EnemyCardContainer available for card: " + cardToAdd.name);
+        }
+
+        // Kart pozisyonlarýný güncelle
         SetCardPositionsInHand();
     }
 
@@ -138,5 +165,89 @@ public class EnemyHandController : MonoBehaviour
 
         // Kartý discardPoint'e taþýdýktan sonra yok et
         Destroy(card.gameObject);
+    }
+
+    public IEnumerator SlideCardLeft(int cardIndex, float slideDuration)
+    {
+        // Kartý sola kaydýrmaya baþla
+        EnemyCardContainer cardContainer = enemyPortraitHeldCards[cardIndex];
+        Vector3 originalPosition = cardContainer.transform.position;
+
+        // Kaydýrma mesafesini slideDistance kullanarak hesapla
+        Vector3 targetPosition = originalPosition + new Vector3(slideDistance, 0f, 0f); // X ekseninde sola kaydýrma
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < slideDuration)
+        {
+            cardContainer.transform.position = Vector3.Lerp(originalPosition, targetPosition, elapsedTime / slideDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        cardContainer.transform.position = targetPosition; // Tam hedef pozisyonuna ulaþ
+    }
+
+    public void ResetCardContainerPositions()
+    {
+        // Her bir kartýn baþlangýç pozisyonunu sýfýrlýyoruz
+        foreach (EnemyCardContainer portraitCard in enemyPortraitHeldCards)
+        {
+            RectTransform rectTransform = portraitCard.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                // Kartýn yerel pozisyonunu sýfýrla veya istediðiniz baþlangýç pozisyonuna ayarla
+                rectTransform.anchoredPosition = new Vector2(3f, rectTransform.anchoredPosition.y);
+            }
+            else
+            {
+                Debug.LogWarning("EnemyPortraitHeldCards öðesinde RectTransform bulunamadý.");
+            }
+        }
+    }
+
+
+    public void OpenCloseSwitchContainer()
+    {
+        StartCoroutine(SwitchContainerCo());
+    }
+
+    private IEnumerator SwitchContainerCo()
+    {
+        float duration = 0.5f;
+        float elapsedTime = 0f;
+
+        Vector3 startPosition = enemyCardContainer.transform.position;
+        Vector3 targetPosition;
+
+        // Eðer kapalýysa açýlacak pozisyonu ayarla, açýksa kapanacak pozisyonu ayarla
+        if (!enemyCardContainer.activeSelf)
+        {
+            targetPosition = cardContainerOpenPosition.position;
+            enemyCardContainer.SetActive(true); // Açýlma animasyonu baþlýyor
+        }
+        else
+        {
+            targetPosition = cardContainerClosePosition.position;
+        }
+
+        // Animasyon
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+            enemyCardContainer.transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+            yield return null;
+        }
+
+        // Son pozisyonu ayarla
+        enemyCardContainer.transform.position = targetPosition;
+
+        // Eðer kapanma tamamlandýysa görünürlüðü kapat
+        if (targetPosition == cardContainerClosePosition.position)
+        {
+            enemyCardContainer.SetActive(false);
+            ResetCardContainerPositions(); // Kapanma tamamlandýktan sonra çaðýr
+        }
     }
 }
